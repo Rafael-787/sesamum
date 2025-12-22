@@ -525,6 +525,37 @@ const { data, loading, error } = useApi("/events", "GET");
 - Apply via Tailwind classes: `className="bg-primary text-white p-sm rounded-lg"`
 - Benefits: Centralized theme management, easy dark mode support, maintainability across components
 
+**Responsive Design - Mobile First**:
+
+- **All components MUST be fully responsive and optimized for mobile devices**
+- Design approach: Mobile-first (start with mobile layout, then add styles for larger screens)
+- Breakpoints: `sm` (640px), `md` (768px), `lg` (1024px), `xl` (1280px)
+- Common responsive patterns:
+  - **Navigation**: Hide desktop menu on mobile, use hamburger/collapsible sidebar
+  - **Grids**: `grid-cols-1` on mobile → `md:grid-cols-2` → `lg:grid-cols-4` on desktop
+  - **Spacing**: `p-4` on mobile → `md:p-6` → `lg:p-8` on desktop
+  - **Font sizes**: `text-sm` on mobile → `md:text-base` on desktop
+  - **Buttons/Forms**: Full width on mobile → `w-full md:w-auto` on desktop
+- Examples:
+
+  ```typescript
+  // Grid responsive layout
+  className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4";
+
+  // Padding responsive
+  className = "p-4 sm:p-5 md:p-6 lg:p-8";
+
+  // Hidden on mobile, visible on larger screens
+  className = "hidden md:block";
+
+  // Full width on mobile, constrained on desktop
+  className = "w-full md:max-w-2xl mx-auto";
+  ```
+
+- **Testing requirements**: Verify all pages on mobile devices (320px, 375px, 425px widths) before deployment
+- **Touch targets**: Ensure clickable elements have minimum 44px height for mobile users
+- **Avoid**: Horizontal scrolling, fixed widths, pixel-perfect designs that break on different screen sizes
+
 ### Development Commands
 
 ```bash
