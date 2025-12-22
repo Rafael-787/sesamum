@@ -672,6 +672,6 @@ CREATE DATABASE sesamum CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 ## File Examples & Reference
 
-- **UI Mockup**: [.example](.example) - Reference design with component examples
-- **Django Settings Template**: [backend/api/settings.py](backend/api/settings.py)
-- **Frontend Config**: [dashboard/vite.config.ts](dashboard/vite.config.ts)
+- **UI Mockup**: [.example](../.example) - Reference design with component examples
+- **Django Settings Template**: [backend/api/settings.py](../backend/api/settings.py)
+- **Frontend Config**: [dashboard/vite.config.ts](../dashboard/vite.config.ts)
