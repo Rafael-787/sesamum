@@ -488,42 +488,41 @@ const { data, loading, error } = useApi("/events", "GET");
 - Mobile-first: design for mobile, use `md:`, `lg:` for larger screens
 - Example: `className="p-4 md:p-6 lg:p-8"`
 
-**CSS Variables with Tailwind**:
+**CSS Variables for All Visual Properties**:
 
-- Define custom CSS variables in `src/index.css` for brand colors, spacing, and theme values
+- All shared/layout components (e.g., Sidebar, PageHeader, PageContainer, ListToolbar, buttons, inputs) **must use CSS variables** for all visual properties (colors, backgrounds, borders, radii, spacing, shadows, font sizes, etc).
+- Define all variables in `src/index.css` under `:root` (and optionally for themes/dark mode).
 - Example in `index.css`:
   ```css
   :root {
     --color-primary: #2563eb;
     --color-secondary: #64748b;
-    --color-success: #16a34a;
-    --color-error: #dc2626;
-    --color-warning: #ea580c;
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 1rem;
-    --spacing-md: 1.5rem;
+    --sidebar-bg: #0f172a;
+    --toolbar-bg: #fff;
+    --input-bg: #f8fafc;
+    --button-bg: var(--color-primary);
+    --header-title-size: 2rem;
+    --container-radius: 1.5rem;
+    /* ...see file for full list... */
   }
   ```
-- Use CSS variables in Tailwind `tailwind.config.js` for custom utilities and theme extensions
-- Example in `tailwind.config.js`:
-  ```javascript
-  theme: {
-    colors: {
-      primary: 'var(--color-primary)',
-      secondary: 'var(--color-secondary)',
-      success: 'var(--color-success)',
-      error: 'var(--color-error)',
-      warning: 'var(--color-warning)',
-    },
-    spacing: {
-      xs: 'var(--spacing-xs)',
-      sm: 'var(--spacing-sm)',
-      md: 'var(--spacing-md)',
-    }
-  }
+- **Never hardcode colors, radii, or spacing in component styles**—always use a CSS variable, and add a new one if needed.
+- Use inline `style={{ ... }}` or Tailwind classes for layout only (flex, grid, gap, etc), but all visual tokens must be variables.
+- This enables instant theming, dark mode, and brand customization by overriding variables only.
+- Example usage in a component:
+  ```tsx
+  <div
+    style={{
+      background: "var(--toolbar-bg)",
+      borderRadius: "var(--toolbar-radius)",
+      color: "var(--header-title-color)",
+    }}
+  >
+    ...
+  </div>
   ```
-- Apply via Tailwind classes: `className="bg-primary text-white p-sm rounded-lg"`
-- Benefits: Centralized theme management, easy dark mode support, maintainability across components
+- **When creating a new component or visual element, always add a variable for any new visual property.**
+- Document new variables in `index.css` with comments for clarity.
 
 **Responsive Design - Mobile First**:
 
@@ -611,10 +610,52 @@ npm run lint                 # Check ESLint
 
 ### File Naming
 
-- **React Components**: `ComponentName-page.tsx` (e.g., `Dashboard-page.tsx`, `CheckIn-page.tsx`)
-- **Services/Utilities**: `kebab-case.ts` (e.g., `auth-service.ts`, `api-client.ts`)
-- **Hooks**: `use-feature-name.ts` (e.g., `use-auth.ts`, `use-api.ts`)
-- **Types**: `types/index.ts` or feature-specific `types/feature.ts`
+**Key UI/Frontend Decisions (2025-12-22/23):**
+
+- **CSS Variables for All Visual Properties:**
+
+  - All shared/layout components (Sidebar, PageHeader, PageContainer, ListToolbar, buttons, inputs, etc.) must use CSS variables for all visual properties (colors, backgrounds, borders, radii, spacing, shadows, font sizes, etc.).
+  - Variables are defined in `src/index.css` under `:root` and must be used via inline `style={{ ... }}` for all visual tokens. Tailwind classes are used only for layout (flex, grid, gap, etc.).
+  - When creating a new component or visual element, always add a variable for any new visual property and document it in `index.css`.
+  - This enables instant theming, dark mode, and brand customization by overriding variables only.
+
+- **Reusable Page Skeletons:**
+
+  - All resource pages (Events, Staffs, Companies, Projects, Users) use a common skeleton: `PageHeader`, `ListToolbar` (search, filter, add), and a list/grid area. These are implemented as reusable components.
+
+- **Scrollbar on Hover Only:**
+
+  - The main scrollable content area (e.g., the main `<main>` in App.tsx) must hide the scrollbar by default and only show it on hover, for a cleaner UI. Use a CSS rule like:
+    ```css
+    .scrollbar-hide::-webkit-scrollbar {
+      opacity: 0;
+      width: 0;
+    }
+    .scrollbar-hover:hover::-webkit-scrollbar {
+      opacity: 1;
+      width: 8px;
+    }
+    /* Add for Firefox as well */
+    ```
+  - Apply these classes to the main scrollable container.
+
+- **Theme Support:**
+
+  - All visual tokens are themeable via CSS variables. To create a new theme (e.g., dark mode), override variables in a selector (e.g., `body.dark { ... }`).
+
+- **No Hardcoded Visuals:**
+
+  - Never hardcode colors, radii, or spacing in component styles—always use a CSS variable, and add a new one if needed.
+
+- **Component/Variable Documentation:**
+  - All new variables must be documented in `index.css` with comments for clarity.
+
+**File Naming:**
+
+- React Components: `ComponentName-page.tsx` (e.g., `Dashboard-page.tsx`, `CheckIn-page.tsx`)
+- Services/Utilities: `kebab-case.ts` (e.g., `auth-service.ts`, `api-client.ts`)
+- Hooks: `use-feature-name.ts` (e.g., `use-auth.ts`, `use-api.ts`)
+- Types: `types/index.ts` or feature-specific `types/feature.ts`
 
 ### API Response Format
 

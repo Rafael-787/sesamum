@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/layout/Sidebar-page";
 import { Menu } from "lucide-react";
+import EventsPage from "./pages/Events-page";
 
 // Placeholder pages for now
 const DashboardPage = () => (
@@ -10,7 +11,6 @@ const DashboardPage = () => (
 const ProjectsPage = () => (
   <div className="p-4">Projetos (conteúdo em breve)</div>
 );
-const EventsPage = () => <div className="p-4">Eventos (conteúdo em breve)</div>;
 const CompaniesPage = () => (
   <div className="p-4">Empresas (conteúdo em breve)</div>
 );
@@ -48,7 +48,7 @@ const App: React.FC = () => {
 
           {/* Scrollable Content */}
           <div
-            className="hidden md:block h-screen"
+            className="h-screen"
             style={{
               background: "var(--sidebar-bg)",
             }}
