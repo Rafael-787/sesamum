@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import {
-  PageHeader,
-  PageContainer,
-} from "../components/shared/PageLayout-page";
-import ListToolbar from "../components/shared/ListToolbar-page";
-import ListCard from "../components/shared/ListCard-page";
+import { PageHeader, PageContainer } from "../components/shared/PageLayout";
+import ListToolbar from "../components/shared/ListToolbar";
+import ListCard from "../components/shared/ListCard";
 import { type Event } from "../types/index";
 import { Calendar, Building2, Users } from "lucide-react";
 
