@@ -1,5 +1,7 @@
 import React from "react";
-import { Search, Filter, Plus } from "lucide-react";
+import { Select } from "radix-ui";
+import { Search, Filter, Plus, ChevronDown } from "lucide-react";
+//import { ChevronDownIcon } from "@radix-ui/react-icons";
 
 interface ListToolbarProps {
   searchPlaceholder?: string;
@@ -63,24 +65,49 @@ const ListToolbar: React.FC<ListToolbarProps> = ({
             size={18}
             style={{ color: "var(--input-icon, #94a3b8)" }}
           />
-          <select
-            className="w-full pl-10 pr-8 py-2 appearance-none cursor-pointer rounded-lg focus:outline-none text-sm"
-            style={{
-              background: "var(--input-bg, #f8fafc)",
-              border: "1px solid var(--input-border, #e2e8f0)",
-              color: "var(--input-text, #0f172a)",
-              borderRadius: "var(--input-radius, 0.5rem)",
-              boxShadow: "var(--input-shadow, none)",
-            }}
-            value={filterValue}
-            onChange={(e) => onFilterChange?.(e.target.value)}
-          >
-            {filterOptions.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
+          <Select.Root value={filterValue} onValueChange={onFilterChange}>
+            <Select.Trigger
+              className="w-full pl-10 pr-4 py-2 appearance-none cursor-pointer rounded-lg focus:outline-none text-sm flex items-center justify-between"
+              style={{
+                background: "var(--input-bg, #f8fafc)",
+                border: "1px solid var(--input-border, #e2e8f0)",
+                color: "var(--input-text, #0f172a)",
+                borderRadius: "var(--input-radius, 0.5rem)",
+                boxShadow: "var(--input-shadow, none)",
+              }}
+              aria-label="Filtrar"
+            >
+              <Select.Value />
+              <Select.Icon>
+                <ChevronDown
+                  size={16}
+                  style={{ color: "var(--input-icon, #94a3b8)" }}
+                />
+              </Select.Icon>
+            </Select.Trigger>
+            <Select.Content
+              position="popper"
+              side="bottom"
+              align="start"
+              className="bg-white border border-slate-200 rounded-lg shadow-lg p-1 z-50 min-w-[180px]"
+              style={{
+                boxShadow:
+                  "var(--dropdown-shadow, 0 4px 24px rgba(0,0,0,0.08))",
+              }}
+            >
+              <Select.Viewport>
+                {filterOptions.map((opt) => (
+                  <Select.Item
+                    key={opt.value}
+                    value={opt.value}
+                    className="px-3 py-2 rounded hover:bg-blue-50 text-slate-700 cursor-pointer text-sm"
+                  >
+                    <Select.ItemText>{opt.label}</Select.ItemText>
+                  </Select.Item>
+                ))}
+              </Select.Viewport>
+            </Select.Content>
+          </Select.Root>
         </div>
       </div>
     )}

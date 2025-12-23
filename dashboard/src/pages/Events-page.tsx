@@ -69,7 +69,7 @@ const EventsPage: React.FC = () => {
       <ListToolbar
         searchPlaceholder="Buscar evento..."
         filterOptions={[
-          { value: "all", label: "Todos os Status" },
+          { value: "all", label: "Todos" },
           { value: "open", label: "Abertos" },
           { value: "close", label: "Concluídos" },
         ]}
