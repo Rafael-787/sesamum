@@ -1,3 +1,10 @@
+// Project type based on copilot-instructions
+export interface Project {
+  id: number;
+  name: string;
+  status: "open" | "close";
+  company_id: number;
+}
 // Event type based on copilot-instructions
 export interface Event {
   id: number;

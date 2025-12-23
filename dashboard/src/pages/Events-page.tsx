@@ -6,6 +6,7 @@ import { type Event } from "../types/index";
 import { Modal } from "../components/shared/Modal";
 import { Toast } from "../components/shared/Toast";
 import { Calendar, Building2, Users } from "lucide-react";
+import { formatDate } from "../lib/dateUtils";
 
 // Mockup events based on the data schema
 const MOCK_EVENTS: Event[] = [
@@ -43,14 +44,6 @@ const MOCK_EVENTS: Event[] = [
     ],
   },
 ];
-
-const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
-};
 
 const EventsPage: React.FC = () => {
   const [search, setSearch] = useState("");

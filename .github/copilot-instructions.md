@@ -1,103 +1,150 @@
-# Sesamum Project - AI Assistant Instructions
+# Sesamum Project – AI Agent Coding Guide
 
-## 1. Project Context
+## Overview
 
-**Sesamum** is an event staff credentialing platform.
+Sesamum is an event staff credentialing platform with a Django 6/DRF backend and a React 19/TypeScript dashboard. The system manages projects, events, companies, and staff check-in/out, with strict role-based access and clear separation of admin, company, and control workflows.
 
-- **Goal:** Manage projects, events, companies, and staff check-in/out.
-- **Core Workflow:** Admin creates Event → Assigns Companies → Companies assign Staff → Control performs Check-in/out.
-- **Roles:**
-  - `Admin`: Full system access.
-  - `Company`: Manage own staff and view assigned events.
-  - `Control`: Operational role (check-in/out only).
+## Architecture & Data Flow
 
-## 2. Tech Stack & Environment
+- **Backend (`backend/`)**: Django 6.0 + DRF 3.14, MySQL 8.0, JWT auth (simplejwt). All business logic and permissions are enforced server-side. Key models: Company, User, Staff, Project, Event, EventCompany, EventStaff, Check.
 
-### Backend
+  - **API versioning**: All endpoints are under `api/v1/`.
+  - **Permissions**: Custom roles (`admin`, `company`, `control`) enforced via DRF permissions. See `v1/views.py` for role logic.
+  - **Serializers**: Use `Full` and `Minimal` variants. When exposing staff to a production company, always use `StaffMinimalSerializer`.
+  - **Settings**: JWT access (15m), refresh (7d). CORS origins from `.env`.
 
-- **Framework:** Django 6.0 + DRF 3.14.
-- **Auth:** `djangorestframework-simplejwt` (JWT).
-- **DB:** MySQL 8.0 (`mysqlclient`).
-- **Tools:** `python-decouple`, `django-cors-headers`.
+- **Frontend (`dashboard/`)**: React 19, Vite 7, TypeScript 5.9, Tailwind CSS v4, Radix UI. State via Context API, routing with React Router v7, API via Axios.
+  - **Folder structure**: See `src/` for `api/`, `components/`, `context/`, `hooks/`, `pages/`, `types/`.
+  - **Styling**: Layout with Tailwind, visuals with CSS variables in `index.css`.
+  - **Component conventions**: Shared UI in `components/shared/`, layout in `components/layout/`.
+  - **Types**: All API data shapes in `types/index.ts` (match backend schema).
 
-### Frontend
+## Developer Workflows
 
-- **Core:** React 19, TypeScript 5.9, Vite 7.
-- **Styling:** Tailwind CSS v4 (Layout) + **CSS Variables** (Visuals).
-- **Components:** Headless UI via **Radix UI** primitives.
-- **State/Routing:** Context API, React Router v7, Axios.
+- **Backend**:
 
----
+  - Run: `python manage.py runserver` (from `backend/`)
+  - Migrate: `python manage.py makemigrations && python manage.py migrate`
+  - Test: `python manage.py test`
+  - Environment: Use `.env` for DB and CORS config
 
-## 3. Data Schema (MySQL)
+- **Frontend**:
+  - Dev: `npm run dev` (from `dashboard/`)
+  - Build: `npm run build`
+  - Lint: `npm run lint`
+  - Type-check: `npm run type-check`
 
-### Core Entities
+## Project-Specific Patterns & Conventions
 
-| Model       | Fields                                                  | Constraints    | Notes                                                                  |
-| :---------- | :------------------------------------------------------ | :------------- | :--------------------------------------------------------------------- |
-| **Company** | `id`, `name`, `cnpj`                                    | `cnpj` UNIQUE  |                                                                        |
-| **User**    | `id`, `name`, `email`, `password`, `role`, `company_id` | `email` UNIQUE | Roles: `admin`, `company`, `control`. `company_id` nullable for admin. |
-| **Staff**   | `id`, `name`, `cpf`, `company_id`                       | `cpf` UNIQUE   | FK -> Company                                                          |
+- **Backend**:
 
-### Project Management
+  - All API endpoints are versioned under `/api/v1/`.
+  - Use `Minimal` serializers for cross-company data exposure (see `v1/serializers.py`).
+  - Permissions are role-based and enforced in `v1/views.py`.
+  - Only `admin` can CRUD all; `company` can CRUD own staff; `control` can only check-in/out.
 
-| Model       | Fields                                                         | Constraints | Notes                                                  |
-| :---------- | :------------------------------------------------------------- | :---------- | :----------------------------------------------------- |
-| **Project** | `id`, `name`, `status`, `company_id`                           |             | Status: `aberto`, `finalizado`. FK -> Company (owner). |
-| **Event**   | `id`, `name`, `date_begin`, `date_end`, `status`, `project_id` |             | Status: `open`, `close`. FK -> Project.                |
+- **Frontend**:
+  - API calls are abstracted in `src/api/`.
+  - Auth state and logic in `src/context/AuthContext.tsx`.
+  - Use Radix UI primitives for all interactive components.
+  - All types/interfaces must be defined in `src/types/index.ts` and kept in sync with backend models.
+  - Use Context API for global state, avoid Redux.
 
-### Relationships
+## Integration & Cross-Component Communication
 
-| Model            | Fields                                 | Notes                                                      |
-| :--------------- | :------------------------------------- | :--------------------------------------------------------- |
-| **EventCompany** | `id`, `role`, `event_id`, `company_id` | Roles: `production` (manages), `service` (supplies staff). |
-| **EventUser**    | `id`, `user_id`, `event_id`            | Future use / Specific access.                              |
-| **EventStaff**   | `id`, `event_id`, `staff_id`           | The specific assignment of a person to an event.           |
+- **Auth**: JWT tokens managed in frontend context, sent via Axios headers.
+- **Event/Staff Assignment**: EventCompany and EventStaff models mediate company/event/staff relationships. See backend `v1/models.py` and frontend `src/types/index.ts`.
+- **Check-in/out**: Only `control` users can POST to `CheckViewSet`.
 
-### Operational
+## References
 
-| Model     | Fields                                                           | Notes                                                |
-| :-------- | :--------------------------------------------------------------- | :--------------------------------------------------- |
-| **Check** | `id`, `action`, `timestamp`, `event_staff_id`, `user_control_id` | Action: `check-in`, `check-out`. Timestamp auto-now. |
-
----
-
-## 4. Backend Implementation Guidelines (`backend/`)
-
-### Configuration
-
-- **Settings:** `AUTH_USER_MODEL` (Custom), `CORS_ALLOWED_ORIGINS` (from .env).
-- **JWT:** Access (15m), Refresh (7d).
-- **Permissions:**
-  - `IsAdmin`: `user.role == 'admin'`
-  - `IsCompany`: `user.role == 'company'`
-  - `IsControl`: `user.role == 'control'`
-
-### API Architecture (`v1/`)
-
-- **Serializers:** Create `Full` variants for details and `Minimal` variants (id, name only) for restricted visibility (e.g., Production viewing Service staff).
-- **ViewSets:**
-  - **Admin:** Full CRUD on all endpoints.
-  - **Company:** Read-only on Events (filtered by assignment). CRUD on own Staff.
-  - **Control:** Read-only Events. Write permissions on `CheckViewSet`.
-- **Logic:**
-  - `StaffMinimalSerializer` must be used when a `production` company views staff from a `service` company.
+- Backend: `backend/v1/models.py`, `backend/v1/views.py`, `backend/v1/serializers.py`
+- Frontend: `dashboard/src/api/`, `dashboard/src/types/index.ts`, `dashboard/src/context/AuthContext.tsx`
 
 ---
 
-## 5. Frontend Implementation Guidelines (`dashboard/`)
+**For AI agents:**
 
-### Folder Structure
+- Always respect role-based access and serializer conventions.
+- When in doubt, check referenced files for patterns.
+- Keep backend and frontend types in sync.
+- Use project scripts for builds/tests; do not assume defaults.
 
-```text
-src/
-├── api/             # Axios instances & endpoints (auth, events, checks...)
-├── components/
-│   ├── layout/      # Sidebar, Header, ProtectedRoute
-│   └── shared/      # StatCard, Toast, Radix primitives
-├── context/         # AuthContext (User state & Logic)
-├── hooks/           # useAuth, useApi, useLocalStorage
-├── pages/           # Views (Login, Dashboard, CheckIn...)
-├── types/           # TypeScript interfaces (match DB schema)
-└── index.css        # Tailwind @imports & :root Variables
-```
+## Schema de Banco de Dados Simplificado
+
+### 1. Entidades Principais
+
+#### `company`
+
+- **id** (PK)
+- **name**
+- **cnpj** (Unique)
+
+#### `users`
+
+- **id** (PK)
+- **name**
+- **email**
+- **role** (`admin`, `company`, `control`)
+- **company_id** (FK -> `company.id`)
+
+#### `staffs`
+
+- **id** (PK)
+- **name**
+- **cpf** (Unique)
+- **company_id** (FK -> `company.id`)
+
+---
+
+### 2. Gestão de Projetos e Eventos
+
+#### `projects`
+
+- **id** (PK)
+- **name**
+- **status** (`aberto`, `finalizado`)
+- **company_id** (FK -> `company.id`)
+
+#### `events`
+
+- **id** (PK)
+- **name**
+- **date_begin** / **date_end**
+- **status** (`open`, `close`)
+- **project_id** (FK -> `projects.id`)
+
+---
+
+### 3. Tabelas de Ligação (Relacionamentos)
+
+#### `events_company`
+
+- **id** (PK)
+- **role** (`production`, `service`)
+- **event_id** (FK -> `events.id`)
+- **company_id** (FK -> `company.id`)
+
+#### `events_user`
+
+- **id** (PK)
+- **user_id** (FK -> `users.id`)
+- **event_id** (FK -> `events.id`)
+
+#### `events_staff`
+
+- **id** (PK)
+- **event_id** (FK -> `events.id`)
+- **staff_cpf** (FK -> `staffs.cpf`)
+
+---
+
+### 4. Operacional
+
+#### `checks`
+
+- **id** (PK)
+- **action** (`check-in`, `check-out`)
+- **timestamp**
+- **events_staff_id** (FK -> `events_staff.id`)
+- **user_control_id** (FK -> `users.id`)
