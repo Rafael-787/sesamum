@@ -1,3 +1,11 @@
+// Company type based on copilot-instructions
+export interface Company {
+  id: number;
+  name: string;
+  type: "production" | "service";
+  cnpj: string;
+}
+
 // Project type based on copilot-instructions
 export interface Project {
   id: number;

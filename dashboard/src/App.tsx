@@ -4,14 +4,13 @@ import Sidebar from "./components/layout/Sidebar";
 import { Menu } from "lucide-react";
 import EventsPage from "./pages/Events-page";
 import ProjectsPage from "./pages/Projects-page";
+import CompaniesPage from "./pages/Companies-page";
 
 // Placeholder pages for now
 const DashboardPage = () => (
   <div className="p-4">Dashboard (conteúdo em breve)</div>
 );
-const CompaniesPage = () => (
-  <div className="p-4">Empresas (conteúdo em breve)</div>
-);
+
 const UsersPage = () => <div className="p-4">Usuários (conteúdo em breve)</div>;
 
 const App: React.FC = () => {
