@@ -12,12 +12,14 @@ const MOCK_USERS: User[] = [
     id: 1,
     name: "João Silva",
     email: "joao.silva@produevent.com",
+    picture: "https://thispersondoesnotexist.com/",
     role: "admin",
     company_id: 1,
   },
   {
     id: 2,
     name: "Maria Santos",
+    picture: "",
     email: "maria.santos@techsolutions.com",
     role: "company",
     company_id: 2,
@@ -25,6 +27,7 @@ const MOCK_USERS: User[] = [
   {
     id: 3,
     name: "Pedro Costa",
+    picture: "",
     email: "pedro.costa@esportes.com",
     role: "control",
     company_id: 3,
@@ -32,6 +35,7 @@ const MOCK_USERS: User[] = [
   {
     id: 4,
     name: "Ana Oliveira",
+    picture: "",
     email: "ana.oliveira@agroexpo.com",
     role: "company",
     company_id: 4,
@@ -64,7 +68,7 @@ const UsersPage: React.FC = () => {
       <PageHeader title="Usuários" subtitle="Gerencie usuários do sistema." />
 
       <ListToolbar
-        searchPlaceholder="Buscar usuário..."
+        searchPlaceholder="Buscar por Nome ou Email..."
         filterOptions={[
           { value: "all", label: "Todos" },
           { value: "admin", label: "Administradores" },
@@ -95,8 +99,17 @@ const UsersPage: React.FC = () => {
         notFoundMessage="Nenhum usuário encontrado"
       >
         {(user) => {
-          const getRoleIcon = (role: string) => {
-            switch (role) {
+          const getRoleIcon = (user: any) => {
+            if (user.picture) {
+              return (
+                <img
+                  src={user.picture}
+                  alt={user.name}
+                  className="w-14 h-14 rounded-lg"
+                />
+              );
+            }
+            switch (user.role) {
               case "admin":
                 return <Shield size={28} />;
               case "control":
@@ -136,12 +149,14 @@ const UsersPage: React.FC = () => {
               <div
                 className="flex flex-col items-center justify-center w-14 h-14 rounded-lg border shrink-0"
                 style={{
-                  background: "var(--input-primary, #2563eb)",
+                  background: user.picture
+                    ? "var(--toolbar-bg, #fff)"
+                    : "var(--input-primary, #2563eb)",
                   border: "1px solid var(--input-border, #e2e8f0)",
                   color: "var(--sidebar-text, #2563eb)",
                 }}
               >
-                {getRoleIcon(user.role)}
+                {getRoleIcon(user)}
               </div>
 
               {/* Content */}

@@ -5,8 +5,7 @@ import ListCard from "../components/shared/ListCard";
 import { type Event } from "../types/index";
 import { Modal } from "../components/shared/Modal";
 import { Toast } from "../components/shared/Toast";
-import { Calendar, Building2, Users } from "lucide-react";
-import { formatDate } from "../lib/dateUtils";
+import { Calendar, Building2, Users, MapPin } from "lucide-react";
 
 // Mockup events based on the data schema
 const MOCK_EVENTS: Event[] = [
@@ -17,6 +16,8 @@ const MOCK_EVENTS: Event[] = [
     date_end: "2024-12-22T23:00:00Z",
     status: "open",
     project_id: 1,
+    location: "Praia do Forte, Salvador",
+    staffs_qnt: 150,
     companies: [
       { id: 1, role: "production", event_id: 1, company_id: 1 },
       { id: 2, role: "service", event_id: 1, company_id: 2 },
@@ -29,6 +30,8 @@ const MOCK_EVENTS: Event[] = [
     date_end: "2024-12-21T20:00:00Z",
     status: "open",
     project_id: 2,
+    location: "Centro de Convenções, São Paulo",
+    staffs_qnt: 80,
     companies: [{ id: 3, role: "production", event_id: 2, company_id: 3 }],
   },
   {
@@ -38,6 +41,8 @@ const MOCK_EVENTS: Event[] = [
     date_end: "2024-12-23T23:00:00Z",
     status: "close",
     project_id: 3,
+    location: "Parque Ibirapuera, São Paulo",
+    staffs_qnt: 40,
     companies: [
       { id: 4, role: "production", event_id: 3, company_id: 4 },
       { id: 5, role: "service", event_id: 3, company_id: 5 },
@@ -177,13 +182,12 @@ const EventsPage: React.FC = () => {
                       : ""}
                   </span>
                   <span className="flex items-center gap-1">
-                    <Calendar size={14} />
-                    {formatDate(event.date_begin)} -{" "}
-                    {formatDate(event.date_end)}
+                    <MapPin size={14} />
+                    {event.location ?? "Local não informado"}
                   </span>
                   <span className="flex items-center gap-1">
                     <Users size={14} />
-                    {event.companies?.length ?? 0} empresas
+                    {event.staffs_qnt ?? "N/A"} staffs
                   </span>
                 </div>
               </div>

@@ -4,7 +4,8 @@ import ListToolbar from "../components/shared/ListToolbar";
 import ListCard from "../components/shared/ListCard";
 import { type Project } from "../types/index";
 import { Modal } from "../components/shared/Modal";
-import { Building2, Briefcase } from "lucide-react";
+import { Building2, Briefcase, Calendar } from "lucide-react";
+import { formatDate } from "../lib/dateUtils";
 
 // Mockup projects based on the data schema
 const MOCK_PROJECTS: Project[] = [
@@ -13,24 +14,36 @@ const MOCK_PROJECTS: Project[] = [
     name: "Festival de Verão 2024",
     status: "open",
     company_id: 1,
+    date_begin: "2024-01-10",
+    date_end: "2024-01-20",
+    events_qnt: 5,
   },
   {
     id: 2,
     name: "Tech Summit SP",
     status: "open",
     company_id: 2,
+    date_begin: "2024-02-15",
+    date_end: "2024-02-18",
+    events_qnt: 3,
   },
   {
     id: 3,
     name: "Corrida Noturna",
     status: "close",
     company_id: 3,
+    date_begin: "2024-03-10",
+    date_end: "2024-03-12",
+    events_qnt: 2,
   },
   {
     id: 4,
     name: "Expo Agro 2025",
     status: "open",
     company_id: 4,
+    date_begin: "2024-04-05",
+    date_end: "2024-04-10",
+    events_qnt: 4,
   },
 ];
 
@@ -73,11 +86,14 @@ const ProjectsPage: React.FC = () => {
         onFilterChange={setFilter}
       />
 
-      <Modal open={modalOpen} onOpenChange={setModalOpen} title="Novo Projeto">
+      <Modal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        title="Novo Projeto"
+        description="Formulário de novo projeto em breve."
+      >
         {/* Future form goes here */}
-        <div className="text-sm text-gray-600">
-          Formulário de novo projeto em breve.
-        </div>
+        <div className="text-sm text-gray-600">Formulário de novo projeto.</div>
       </Modal>
       <div className="text-sm text-gray-600">
         {/* Projects List */}
@@ -149,7 +165,15 @@ const ProjectsPage: React.FC = () => {
                       <Building2 size={14} />
                       {`Empresa #${project.company_id}`}
                     </span>
-                    {/* Placeholder for more project info if needed */}
+                    <span className="flex items-center gap-1">
+                      <Calendar size={14} />
+                      {formatDate(project.date_begin)} -{" "}
+                      {formatDate(project.date_end)}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Calendar size={14} />
+                      {project.events_qnt ?? 0} eventos
+                    </span>
                   </div>
                 </div>
               </>

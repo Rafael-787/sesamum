@@ -2,6 +2,7 @@
 export interface User {
   id: number;
   name: string;
+  picture: string;
   email: string;
   role: "admin" | "company" | "control";
   company_id: number;
@@ -21,6 +22,9 @@ export interface Project {
   name: string;
   status: "open" | "close";
   company_id: number;
+  date_begin?: string;
+  date_end?: string;
+  events_qnt?: number;
 }
 // Event type based on copilot-instructions
 export interface Event {
@@ -29,7 +33,9 @@ export interface Event {
   date_begin: string;
   date_end: string;
   status: "open" | "close";
-  project_id: number;
+  project_id?: number;
+  location?: string;
+  staffs_qnt?: number;
   companies?: EventCompany[];
 }
 

@@ -51,7 +51,7 @@ const CompaniesPage: React.FC = () => {
       <PageHeader title="Empresas" subtitle="Gerencie empresas do sistema." />
 
       <ListToolbar
-        searchPlaceholder="Buscar empresa..."
+        searchPlaceholder="Buscar por Nome ou CNPJ..."
         filterOptions={[]}
         addLabel="Nova Empresa"
         onAdd={() => setModalOpen(true)}
