@@ -45,3 +45,56 @@ export interface EventCompany {
   event_id: number;
   company_id: number;
 }
+
+// Dashboard types
+export interface DashboardMetrics {
+  activeEvents: number;
+  totalProjects: number;
+  totalCompanies: number;
+  totalUsers: number;
+  recentCheckIns: number;
+}
+
+export interface CalendarEvent {
+  id: number;
+  title: string;
+  start: Date;
+  end: Date;
+  resource: Event;
+  color?: string;
+  status: "open" | "close";
+}
+
+export interface CalendarViewProps {
+  events: Event[];
+  loading?: boolean;
+  onEventClick?: (event: Event) => void;
+  onSelectSlot?: (slotInfo: { start: Date; end: Date }) => void;
+}
+
+export interface RecentActivity {
+  id: number;
+  type: "event" | "project" | "user" | "checkin" | "staff";
+  title: string;
+  description?: string;
+  timestamp: string;
+  icon?: string;
+}
+
+export interface MetricCardProps {
+  title: string;
+  value: number | string;
+  icon: React.ReactNode;
+  trend?: {
+    value: number;
+    isPositive: boolean;
+  };
+  color?: "primary" | "success" | "warning" | "error";
+  loading?: boolean;
+}
+
+export interface PollingConfig {
+  interval: number;
+  enabled: boolean;
+  pauseWhenHidden: boolean;
+}

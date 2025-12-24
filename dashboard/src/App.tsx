@@ -2,15 +2,11 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/layout/Sidebar";
 import { Menu } from "lucide-react";
+import DashboardPage from "./pages/Dashboard-page";
 import EventsPage from "./pages/Events-page";
 import ProjectsPage from "./pages/Projects-page";
 import CompaniesPage from "./pages/Companies-page";
 import UsersPage from "./pages/Users-page";
-
-// Placeholder pages for now
-const DashboardPage = () => (
-  <div className="p-4">Dashboard (conteúdo em breve)</div>
-);
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
