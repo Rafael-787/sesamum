@@ -209,6 +209,10 @@ const DashboardPage: React.FC = () => {
         color: "var(--header-title-color, #0f172a)",
         fontSize: "0.875rem",
         fontWeight: "500",
+        cursor:
+          metricsLoading || eventsLoading || activitiesLoading
+            ? "not-allowed"
+            : "pointer",
       }}
     >
       <RefreshCw

@@ -76,22 +76,22 @@ export const RecentActivityList: React.FC<RecentActivityProps> = ({
       ) : (
         <div className="space-y-3">
           {displayedActivities.map((activity) => (
-            <div
+            <button
               key={activity.id}
-              className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors"
+              className="flex w-full items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors hover:cursor-pointer"
             >
               <div className="shrink-0 mt-1.5">
                 {getActivityIcon(activity.type)}
               </div>
               <div className="flex-1 min-w-0">
                 <p
-                  className="text-sm font-medium truncate"
+                  className="text-sm text-left font-medium truncate"
                   style={{ color: "var(--header-title-color, #0f172a)" }}
                 >
                   {activity.title}
                 </p>
                 <p
-                  className="text-xs truncate"
+                  className="text-xs text-left truncate"
                   style={{ color: "var(--header-subtitle-color, #64748b)" }}
                 >
                   {activity.description ?? "Sem descrição disponível"}
@@ -105,7 +105,7 @@ export const RecentActivityList: React.FC<RecentActivityProps> = ({
                   {formatDateShort(activity.timestamp)}
                 </span>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       )}
