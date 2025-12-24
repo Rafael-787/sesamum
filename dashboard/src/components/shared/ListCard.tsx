@@ -41,45 +41,37 @@ const ListCard: React.FC<ListCardProps> = ({
         </div>
       ) : (
         filteredElements.map((event, idx) => (
-          <button
+          <div
             key={event.id ?? idx}
-            className={
-              `p-4 sm:p-6 transition-all flex items-center gap-4 shadow-sm hover:cursor-pointer` +
-              (isClosed ? " grayscale opacity-80" : " hover:border-blue-400")
-            }
             style={{
-              background: isClosed
-                ? "var(--container-bg, #f1f5f9)"
-                : "var(--toolbar-bg, #fff)",
-              border: "1px solid var(--toolbar-border, #e2e8f0)",
+              background: "var(--toolbar-bg, #fff)",
               borderRadius: "var(--container-radius, 1.5rem)",
               boxShadow:
                 "var(--toolbar-shadow, 0 1px 2px 0 rgba(16,30,54,0.04))",
               ...style,
             }}
-            onMouseOver={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background =
-                "color-mix(in srgb, var(--button-bg-hover, #1d4ed8) 5%, transparent)";
-            }}
-            onMouseOut={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.background =
-                "var(--toolbar-bg, #fff)";
-            }}
-            onClick={() => onClick?.(event)}
           >
-            {/* Children: pass event object */}
-            {children(event)}
-            {/* Action part (e.g., Chevron button) */}
-            <div
-              className="p-2 rounded-lg transition-colors"
-              style={{
-                color: "var(--color-primary, #2563eb)80",
-                background: "transparent",
-              }}
+            <button
+              className={
+                "p-4 sm:p-6 w-full border-2 border-white transition-colors flex items-center gap-4 hover:cursor-pointer hover:bg-slate-100 hover:border-gray-200"
+              }
+              style={{ borderRadius: "var(--container-radius, 1.5rem)" }}
+              onClick={() => onClick?.(event)}
             >
-              <ChevronRight size={20} />
-            </div>
-          </button>
+              {/* Children: pass event object */}
+              {children(event)}
+              {/* Action part (e.g., Chevron button) */}
+              <div
+                className="p-2 rounded-lg transition-colors"
+                style={{
+                  color: "var(--color-primary, #2563eb)80",
+                  background: "transparent",
+                }}
+              >
+                <ChevronRight size={20} />
+              </div>
+            </button>
+          </div>
         ))
       )}
     </div>
