@@ -3,7 +3,7 @@ import { PageHeader, PageContainer } from "../components/shared/PageLayout";
 import ListToolbar from "../components/shared/ListToolbar";
 import ListCard from "../components/shared/ListCard";
 import { type Company } from "../types/index";
-import { Modal } from "../components/shared/Modal";
+import { Modal } from "../components/ui/Modal";
 import { Building2 } from "lucide-react";
 
 // Mockup companies based on the data schema

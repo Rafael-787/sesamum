@@ -3,10 +3,10 @@ import { PageHeader, PageContainer } from "../components/shared/PageLayout";
 import ListToolbar from "../components/shared/ListToolbar";
 import ListCard from "../components/shared/ListCard";
 import { type Project } from "../types/index";
-import { Modal } from "../components/shared/Modal";
+import { Modal } from "../components/ui/Modal";
 import { Building2, Briefcase, Calendar } from "lucide-react";
 import { formatDate } from "../lib/dateUtils";
-import Badge from "../components/shared/Badge";
+import Badge from "../components/ui/Badge";
 
 // Mockup projects based on the data schema
 const MOCK_PROJECTS: Project[] = [

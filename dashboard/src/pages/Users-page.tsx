@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { PageHeader, PageContainer } from "../components/shared/PageLayout";
 import ListToolbar from "../components/shared/ListToolbar";
 import ListCard from "../components/shared/ListCard";
-import Badge from "../components/shared/Badge";
+import Badge from "../components/ui/Badge";
 import { type User } from "../types/index";
-import { Modal } from "../components/shared/Modal";
+import { Modal } from "../components/ui/Modal";
 import { Building2, User as UserIcon, Shield, Eye } from "lucide-react";
 
 // Mockup users based on the data schema
