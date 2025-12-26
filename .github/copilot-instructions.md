@@ -15,7 +15,7 @@ Sesamum is an event staff credentialing platform with a Django 6/DRF backend and
 
 - **Frontend (`dashboard/`)**: React 19, Vite 7, TypeScript 5.9, Tailwind CSS v4, Radix UI. State via Context API, routing with React Router v7, API via Axios.
   - **Folder structure**: See `src/` for `api/`, `components/`, `context/`, `hooks/`, `pages/`, `types/`.
-  - **Styling**: Layout with Tailwind, visuals with CSS variables in `index.css`.
+  - **Styling**: Layout with Tailwind, visuals tailwind tokens in `theme.css`.
   - **Component conventions**: Shared UI in `components/shared/`, layout in `components/layout/`.
   - **Types**: All API data shapes in `types/index.ts` (match backend schema).
 
