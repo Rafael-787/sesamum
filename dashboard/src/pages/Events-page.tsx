@@ -76,7 +76,7 @@ const EventsPage: React.FC = () => {
       <Toast
         open={successOpen}
         onOpenChange={setSuccessOpen}
-        type="success"
+        type="default"
         message="Bem-vindo ao painel! (Sucesso)"
         duration={2500}
       />

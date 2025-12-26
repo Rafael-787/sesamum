@@ -36,6 +36,9 @@
   --color-input-icon: #94a3b8; /* ícones cinza para inputs */
 
   /* Toast (Radix UI) */
+  --color-toast-default-bg: var(--color-card-primary);
+  --color-toast-default-text: var(--color-title);
+  --color-toast-default-border: var(--color-primary);
   --color-toast-success-bg: #e6f9ed;
   --color-toast-success-text: #15803d;
   --color-toast-success-border: #22c55e;
