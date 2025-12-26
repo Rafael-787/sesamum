@@ -9,6 +9,7 @@ import {
   LogOut,
   X,
 } from "lucide-react";
+import { AvatarComponent } from "../ui/Avatar";
 
 const menuItems = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/" },
@@ -82,8 +83,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           {/* User Profile / Logout */}
           <div className="p-4 border-t border-sidebar-border">
             <div className="flex items-center gap-3 px-4 py-3 mb-2">
-              <button className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold hover:cursor-pointer">
-                AD
+              <button className="hover:cursor-pointer">
+                <AvatarComponent size={32} alt="Admin User" />
               </button>
               <div className="flex-1 overflow-hidden">
                 <p className="text-sm font-medium truncate">Admin User</p>
