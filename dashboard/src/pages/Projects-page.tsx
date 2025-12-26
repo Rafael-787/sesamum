@@ -6,6 +6,7 @@ import { type Project } from "../types/index";
 import { Modal } from "../components/shared/Modal";
 import { Building2, Briefcase, Calendar } from "lucide-react";
 import { formatDate } from "../lib/dateUtils";
+import Badge from "../components/shared/Badge";
 
 // Mockup projects based on the data schema
 const MOCK_PROJECTS: Project[] = [
@@ -105,62 +106,26 @@ const ProjectsPage: React.FC = () => {
           notFoundMessage="Nenhum projeto encontrado"
         >
           {(project) => {
-            const isClosed = project.status === "close";
+            const isActive = project.status === "open";
             return (
               <>
-                {/* Icon Badge */}
-                <div
-                  className="flex flex-col items-center justify-center w-14 h-14 rounded-lg border shrink-0"
-                  style={{
-                    background: isClosed
-                      ? "var(--color-secondary, #f8fafc)"
-                      : "var(--input-primary, #2563eb)",
-                    border: "1px solid var(--input-border, #e2e8f0)",
-                    color: "var(--sidebar-text, #2563eb)",
-                  }}
-                >
+                <ListCard.Icon active={isActive}>
                   <Briefcase size={28} />
-                </div>
+                </ListCard.Icon>
 
                 {/* Content */}
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <h3
-                      className="text-base font-semibold"
-                      style={{
-                        color: isClosed
-                          ? "var(--header-subtitle-color, #64748b)"
-                          : "var(--header-title-color, #0f172a)",
-                      }}
+                      className={`text-base font-semibold ${
+                        isActive ? "text-title" : "text-subtitle"
+                      }`}
                     >
                       {project.name}
                     </h3>
-                    {isClosed ? (
-                      <span
-                        className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide"
-                        style={{
-                          background: "var(--input-bg, #f8fafc)",
-                          color: "var(--input-text, #0f172a)",
-                        }}
-                      >
-                        Concluído
-                      </span>
-                    ) : (
-                      <span
-                        className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide"
-                        style={{
-                          background: "var(--color-success, #16a34a)10",
-                          color: "var(--color-success, #16a34a)",
-                        }}
-                      >
-                        Ativo
-                      </span>
-                    )}
+                    <Badge variant={project.status} />
                   </div>
-                  <div
-                    className="flex flex-wrap gap-x-4 gap-y-1 text-sm"
-                    style={{ color: "var(--sidebar-muted, #64748b)" }}
-                  >
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-subtitle">
                     <span className="flex items-center gap-1">
                       <Building2 size={14} />
                       {`Empresa #${project.company_id}`}

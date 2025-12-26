@@ -76,49 +76,27 @@ const CompaniesPage: React.FC = () => {
         }
         notFoundMessage="Nenhuma empresa encontrada"
       >
-        {(company) => {
-          const isClosed = company.status === "close";
-          return (
-            <>
-              {/* Icon */}
-              <div
-                className="flex flex-col items-center justify-center w-14 h-14 rounded-lg border shrink-0"
-                style={{
-                  background: isClosed
-                    ? "var(--color-secondary, #f8fafc)"
-                    : "var(--input-primary, #2563eb)",
-                  border: "1px solid var(--input-border, #e2e8f0)",
-                  color: "var(--sidebar-text, #2563eb)",
-                }}
-              >
-                <Building2 size={24} />
-              </div>
+        {(company) => (
+          <>
+            <ListCard.Icon>
+              <Building2 size={24} />
+            </ListCard.Icon>
 
-              {/* Content */}
+            <ListCard.Body>
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <h3
-                    className="text-base font-semibold"
-                    style={{
-                      color: "var(--header-title-color, #0f172a)",
-                    }}
-                  >
-                    {company.name}
-                  </h3>
+                  <h3 className="text-title font-semibold">{company.name}</h3>
                 </div>
-                <div
-                  className="flex flex-wrap gap-x-4 gap-y-1 text-sm"
-                  style={{ color: "var(--sidebar-muted, #64748b)" }}
-                >
+                <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-subtitle">
                   <span className="flex items-center gap-1">
                     <Building2 size={14} />
                     {company.cnpj}
                   </span>
                 </div>
               </div>
-            </>
-          );
-        }}
+            </ListCard.Body>
+          </>
+        )}
       </ListCard>
     </PageContainer>
   );

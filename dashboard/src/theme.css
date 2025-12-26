@@ -1,37 +1,41 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #2563eb; // azul claro padrão
-  --color-secondary: #64748b; // azul escuro padrão
-  --color-base: #f1f5f9; // cinza claro para fundos
+  --color-primary: #2563eb; /* azul claro padrão */
+  --color-secondary: #64748b; /* azul escuro padrão */
+  --color-base: #f1f5f9; /* cinza claro para fundos */
 
-  // Cores dos títulos e subtítulos
-  --color-title: #0f172a; // cor do título
-  --color-subtitle: #64748b; // cor do subtítulo
+  /* Cores dos títulos e subtítulos */
+  --color-title: #0f172a; /* cor do título */
+  --color-subtitle: #64748b; /* cor do subtítulo */
 
-  // Cores dos cartões
-  --color-card-primary: #fff; // branco padrão para cartões
-  --color-card-secondary: #f8fafc; // cinza claro para hover
+  /* Cores dos cartões */
+  --color-card-primary: #fff; /* branco padrão para cartões */
+  --color-card-secondary: #f8fafc; /* cinza claro para hover */
+  --color-card-border: #e2e8f0; /* borda cinza para cartões */
 
-  // Cores da sidebar
-  --color-sidebar-bg: #0f172a; // azul escuro para sidebar
-  --color-sidebar-border: #1e293b; // borda azul escuro para sidebar
-  --color-sidebar-text: #f1f5f9; // texto claro para sidebar
-  --color-sidebar-hover-bg: #1e293b; // hover azul médio para sidebar
+  /* Cores da sidebar */
+  --color-sidebar-bg: #0f172a; /* azul escuro para sidebar */
+  --color-sidebar-border: #1e293b; /* borda azul escuro para sidebar */
+  --color-sidebar-text: #f1f5f9; /* texto claro para sidebar */
+  --color-sidebar-text-muted: var(
+    --color-subtitle
+  ); /* texto mutado para sidebar */
+  --color-sidebar-hover-bg: #1e293b; /* hover azul médio para sidebar */
 
-  // Cores dos botões
-  --color-button-bg: var(--color-primary); // cor primária
-  --color-button-text: #fff; // texto branco para botões
-  --color-button-bg-hover: #1d4ed8; // azul mais escuro para hover de botões
-  --color-button-shadow: #000103; // sombra preta leve para botões
+  /* Cores dos botões */
+  --color-button-bg: var(--color-primary); /* cor primária */
+  --color-button-text: var(--color-card-primary); /* texto branco para botões */
+  --color-button-bg-hover: #1d4ed8; /* azul mais escuro para hover de botões */
+  --color-button-shadow: #000103; /* sombra preta leve para botões */
 
-  // Cores dos inputs
-  --color-input-bg: #f8fafc; // cinza claro para fundo de
-  --color-input-border: #e2e8f0; // borda cinza para inputs
-  --color-input-text: #0f172a; // texto escuro para inputs
-  --color-input-icon: #94a3b8; // ícones cinza para inputs
+  /* Cores dos inputs */
+  --color-input-bg: #f8fafc; /* cinza claro para fundo de */
+  --color-input-border: var(--color-card-border); /* borda cinza para inputs */
+  --color-input-text: var(--color-title); /* texto escuro para inputs */
+  --color-input-icon: #94a3b8; /* ícones cinza para inputs */
 
-  // Toast (Radix UI)
+  /* Toast (Radix UI) */
   --color-toast-success-bg: #e6f9ed;
   --color-toast-success-text: #15803d;
   --color-toast-success-border: #22c55e;

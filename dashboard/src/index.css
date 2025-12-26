@@ -1,65 +1,66 @@
 @import "tailwindcss";
+@import "./theme.css" layer(theme);
 
-:root {
+/* :root {
   /* Toast (Radix UI) */
-  --toast-success-bg: #e6f9ed;
-  --toast-success-text: #15803d;
-  --toast-success-border: #22c55e;
-  --toast-error-bg: #fef2f2;
-  --toast-error-text: #b91c1c;
-  --toast-error-border: #ef4444;
-  --toast-warning-bg: #fef9c3;
-  --toast-warning-text: #b45309;
-  --toast-warning-border: #facc15;
-  /* Page Header */
-  --header-bg: transparent;
-  --header-padding: 0;
-  --header-radius: 0;
-  --header-title-size: 2rem;
-  --header-title-color: #0f172a;
-  --header-subtitle-color: #64748b;
+/* --toast-success-bg: #e6f9ed;
+--toast-success-text: #15803d;
+--toast-success-border: #22c55e;
+--toast-error-bg: #fef2f2;
+--toast-error-text: #b91c1c;
+--toast-error-border: #ef4444;
+--toast-warning-bg: #fef9c3;
+--toast-warning-text: #b45309;
+--toast-warning-border: #facc15; */
+/* Page Header */
+/* --header-bg: transparent;
+--header-padding: 0;
+--header-radius: 0;
+--header-title-size: 2rem;
+--header-title-color: #0f172a;
+--header-subtitle-color: #64748b; */
 
-  /* Page Container */
-  --container-bg: transparent;
-  --container-padding: 2rem 1rem;
-  --container-radius: 1.5rem;
-  --color-primary: #2563eb;
-  --color-secondary: #64748b;
-  --color-success: #16a34a;
-  --color-error: #dc2626;
-  --color-warning: #ea580c;
-  --color-main-bg: #f1f5f9;
-  --sidebar-bg: #0f172a;
-  --sidebar-border: #1e293b;
-  --sidebar-active-bg: var(--color-primary);
-  --sidebar-hover-bg: #1e293b;
-  --sidebar-text: #f1f5f9;
-  --sidebar-muted: #64748b;
-  --sidebar-shadow: 0 4px 24px 0 rgba(37, 99, 235, 0.15);
+/* Page Container */
+/* --container-bg: transparent;
+--container-padding: 2rem 1rem;
+--container-radius: 1.5rem;
+--color-primary: #2563eb;
+--color-secondary: #64748b;
+--color-success: #16a34a;
+--color-error: #dc2626;
+--color-warning: #ea580c;
+--color-main-bg: #f1f5f9;
+--sidebar-bg: #0f172a;
+--sidebar-border: #1e293b;
+--sidebar-active-bg: var(--color-primary);
+--sidebar-hover-bg: #1e293b;
+--sidebar-text: #f1f5f9;
+--sidebar-muted: #64748b;
+--sidebar-shadow: 0 4px 24px 0 rgba(37, 99, 235, 0.15); */
 
-  /* Toolbar/ListToolbar */
-  --toolbar-bg: #fff;
-  --toolbar-padding: 1rem;
-  --toolbar-radius: 0.75rem;
-  --toolbar-border: #e2e8f0;
-  --toolbar-shadow: 0 1px 2px 0 rgba(16, 30, 54, 0.04);
+/* Toolbar/ListToolbar */
+/* --toolbar-bg: #fff;
+--toolbar-padding: 1rem;
+--toolbar-radius: 0.75rem;
+--toolbar-border: #e2e8f0;
+--toolbar-shadow: 0 1px 2px 0 rgba(16, 30, 54, 0.04); */
 
-  /* Input fields */
-  --input-bg: #f8fafc;
-  --input-border: #e2e8f0;
-  --input-text: #0f172a;
-  --input-radius: 0.5rem;
-  --input-shadow: none;
-  --input-icon: #94a3b8;
+/* Input fields */
+/* --input-bg: #f8fafc;
+--input-border: #e2e8f0;
+--input-text: #0f172a;
+--input-radius: 0.5rem;
+--input-shadow: none;
+--input-icon: #94a3b8; */
 
-  /* Button (primary) */
-  --button-bg: var(--color-primary);
-  --button-bg-hover: #1d4ed8;
-  --button-text: #fff;
-  --button-radius: 0.5rem;
-  --button-shadow: 0 1px 2px 0 rgba(37, 99, 235, 0.1);
-  --button-padding: 0.5rem 1rem;
-}
+/* Button (primary) */
+/* --button-bg: var(--color-primary);
+--button-bg-hover: #1d4ed8;
+--button-text: #fff;
+--button-radius: 0.5rem;
+--button-shadow: 0 1px 2px 0 rgba(37, 99, 235, 0.1);
+--button-padding: 0.5rem 1rem;
+} */
 
 /* Skeleton Loading Animation */
 @keyframes skeleton-loading {

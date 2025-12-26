@@ -204,16 +204,7 @@ const DashboardPage: React.FC = () => {
     <button
       onClick={handleRefresh}
       disabled={metricsLoading || eventsLoading || activitiesLoading}
-      className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-      style={{
-        color: "var(--header-title-color, #0f172a)",
-        fontSize: "0.875rem",
-        fontWeight: "500",
-        cursor:
-          metricsLoading || eventsLoading || activitiesLoading
-            ? "not-allowed"
-            : "pointer",
-      }}
+      className="flex text-title text-sm items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
     >
       <RefreshCw
         size={16}
@@ -288,17 +279,8 @@ const DashboardPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Calendar Section */}
         <div className="lg:col-span-2">
-          <div
-            className="bg-white rounded-xl border border-slate-100 p-6"
-            style={{
-              boxShadow:
-                "var(--toolbar-shadow, 0 1px 2px 0 rgba(16, 30, 54, 0.04))",
-            }}
-          >
-            <h3
-              className="text-lg font-semibold mb-4"
-              style={{ color: "var(--header-title-color, #0f172a)" }}
-            >
+          <div className="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
+            <h3 className="text-lg text-title font-semibold mb-4">
               Calendário de Eventos
             </h3>
             <EventCalendar events={events || []} loading={eventsLoading} />
