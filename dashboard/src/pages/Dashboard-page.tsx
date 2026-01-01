@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  RefreshCw,
-  Calendar,
-  Building2,
-  Users,
-  TrendingUp,
-} from "lucide-react";
+import { RefreshCw, Calendar, Building2, Users, Briefcase } from "lucide-react";
 import { PageContainer, PageHeader } from "../components/shared/PageLayout";
 import { MetricCard } from "../components/shared/MetricCard";
 import { EventCalendar } from "../components/shared/EventCalendar";
@@ -32,60 +26,66 @@ const MOCK_EVENTS: Event[] = [
   {
     id: 1,
     name: "Festival de Música 2024",
-    date_begin: "2024-12-25T10:00:00Z",
-    date_end: "2024-12-25T22:00:00Z",
+    date_begin: "2025-12-25T10:00:00Z",
+    date_end: "2025-12-25T22:00:00Z",
     status: "open",
     project_id: 1,
+    type: "event",
     location: "Arena Principal",
     staffs_qnt: 45,
   },
   {
     id: 2,
     name: "Conferência Tech Brasil",
-    date_begin: "2024-12-28T09:00:00Z",
-    date_end: "2024-12-28T18:00:00Z",
+    date_begin: "2025-12-28T09:00:00Z",
+    date_end: "2025-12-30T18:00:00Z",
     status: "open",
     project_id: 2,
+    type: "project",
     location: "Centro de Convenções",
     staffs_qnt: 32,
   },
   {
     id: 3,
     name: "Workshop de Design",
-    date_begin: "2025-01-05T14:00:00Z",
-    date_end: "2025-01-05T17:00:00Z",
+    date_begin: "2026-01-05T14:00:00Z",
+    date_end: "2026-01-05T17:00:00Z",
     status: "open",
     project_id: 1,
+    type: "event",
     location: "Studio A",
     staffs_qnt: 15,
   },
   {
     id: 4,
     name: "Evento Corporativo - Ano Novo",
-    date_begin: "2025-01-10T19:00:00Z",
-    date_end: "2025-01-10T23:30:00Z",
+    date_begin: "2026-01-10T19:00:00Z",
+    date_end: "2026-01-13T23:30:00Z",
     status: "open",
     project_id: 3,
+    type: "project",
     location: "Hotel Grand Plaza",
     staffs_qnt: 28,
   },
   {
     id: 5,
     name: "Feira de Negócios",
-    date_begin: "2025-01-15T08:00:00Z",
-    date_end: "2025-01-17T18:00:00Z",
+    date_begin: "2026-01-15T08:00:00Z",
+    date_end: "2026-01-15T18:00:00Z",
     status: "open",
     project_id: 2,
+    type: "event",
     location: "Expo Center Sul",
     staffs_qnt: 67,
   },
   {
     id: 6,
     name: "Show Beneficente",
-    date_begin: "2024-12-20T20:00:00Z",
-    date_end: "2024-12-20T23:00:00Z",
+    date_begin: "2025-12-20T20:00:00Z",
+    date_end: "2025-12-23T23:00:00Z",
     status: "close",
     project_id: 1,
+    type: "project",
     location: "Teatro Municipal",
     staffs_qnt: 22,
   },
@@ -123,14 +123,14 @@ const MOCK_RECENT_ACTIVITIES: RecentActivity[] = [
   },
   {
     id: 5,
-    type: "event",
+    type: "staff",
     title: "Evento encerrado",
     description: "Show Beneficente foi finalizado com sucesso",
     timestamp: "2024-12-23T14:10:00Z",
   },
   {
     id: 6,
-    type: "checkin",
+    type: "company",
     title: "Check-ins registrados",
     description: "20 funcionários fizeram check-in no Conferência Tech Brasil",
     timestamp: "2024-12-22T11:30:00Z",
@@ -249,28 +249,28 @@ const DashboardPage: React.FC = () => {
           title="Eventos Ativos"
           value={metrics?.activeEvents || 0}
           icon={<Calendar size={20} />}
-          color="primary"
+          color="event"
           loading={metricsLoading}
         />
         <MetricCard
           title="Projetos"
           value={metrics?.totalProjects || 0}
-          icon={<TrendingUp size={20} />}
-          color="success"
+          icon={<Briefcase size={20} />}
+          color="project"
           loading={metricsLoading}
         />
         <MetricCard
           title="Empresas"
           value={metrics?.totalCompanies || 0}
           icon={<Building2 size={20} />}
-          color="warning"
+          color="company"
           loading={metricsLoading}
         />
         <MetricCard
           title="Usuários"
           value={metrics?.totalUsers || 0}
           icon={<Users size={20} />}
-          color="primary"
+          color="user"
           loading={metricsLoading}
         />
       </div>
@@ -280,9 +280,9 @@ const DashboardPage: React.FC = () => {
         {/* Calendar Section */}
         <div className="lg:col-span-2">
           <div className="bg-white rounded-xl border border-slate-100 p-6 shadow-sm">
-            <h3 className="text-lg text-title font-semibold mb-4">
+            {/* <h3 className="text-lg text-title font-semibold mb-4">
               Calendário de Eventos
-            </h3>
+            </h3> */}
             <EventCalendar events={events || []} loading={eventsLoading} />
           </div>
         </div>

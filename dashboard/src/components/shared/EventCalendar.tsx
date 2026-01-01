@@ -1,101 +1,52 @@
 import React from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment from "moment";
-import "react-big-calendar/lib/css/react-big-calendar.css";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import ptbrLocales from "@fullcalendar/core/locales/pt-br";
+import dayjs from "dayjs";
+import "dayjs/locale/pt-br";
 import { useNavigate } from "react-router-dom";
-import { type CalendarViewProps, type CalendarEvent } from "../../types";
+import { type CalendarViewProps } from "../../types";
 import { SkeletonCalendar } from "./SkeletonLoader";
 
-// Configure moment.js with Portuguese locale
-moment.locale("pt-br");
-const localizer = momentLocalizer(moment);
-
-// Portuguese messages for calendar
-const messages = {
-  allDay: "Dia inteiro",
-  previous: "Anterior",
-  next: "Próximo",
-  today: "Hoje",
-  month: "Mês",
-  week: "Semana",
-  day: "Dia",
-  agenda: "Agenda",
-  date: "Data",
-  time: "Horário",
-  event: "Evento",
-  noEventsInRange: "Não há eventos neste período.",
-  showMore: (total: number) => `+ ${total} mais`,
-};
+// Configure dayjs with Portuguese locale
+dayjs.locale("pt-br");
 
 export const EventCalendar: React.FC<CalendarViewProps> = ({
   events,
   loading = false,
-  onEventClick,
+  //onEventClick,
 }) => {
   const navigate = useNavigate();
+  const events_converted = events.map((event) => ({
+    id: String(event.id),
+    title: event.name,
+    start: event.date_begin,
+    end: event.date_end,
+    extendedProps: {
+      type: event.type,
+    },
+  }));
 
   if (loading) {
     return <SkeletonCalendar />;
   }
-
-  const calendarEvents: CalendarEvent[] = events.map((event) => ({
-    id: event.id,
-    title: event.name,
-    start: new Date(event.date_begin),
-    end: new Date(event.date_end),
-    resource: event,
-    status: event.status,
-    color:
-      event.status === "open"
-        ? "var(--color-success)"
-        : "var(--color-secondary)",
-  }));
-
-  const handleSelectEvent = (event: CalendarEvent) => {
-    if (onEventClick) {
-      onEventClick(event.resource);
-    } else {
-      // Default behavior: navigate to event page
-      navigate(`/events/${event.resource.id}`);
-    }
-  };
-
-  const eventStyleGetter = (event: CalendarEvent) => {
-    return {
-      style: {
-        backgroundColor:
-          event.status === "open"
-            ? "var(--color-success)"
-            : "var(--color-secondary)",
-        borderRadius: "var(--input-radius, 0.5rem)",
-        opacity: event.status === "open" ? 0.9 : 0.6,
-        color: "white",
-        border: "none",
-        fontSize: "0.75rem",
-        fontWeight: "500",
-      },
-    };
-  };
-
   return (
-    <div className="event-calendar-container">
-      <Calendar
-        localizer={localizer}
-        events={calendarEvents}
-        startAccessor="start"
-        endAccessor="end"
-        onSelectEvent={handleSelectEvent}
-        eventPropGetter={eventStyleGetter}
-        messages={messages}
-        style={{ height: 500 }}
-        className="sesamum-calendar"
-        views={["month"]} // Only month view as requested
-        defaultView="month"
-        popup
-        showMultiDayTimes
-        step={60}
-        showAllEvents
-      />
-    </div>
+    <FullCalendar
+      plugins={[dayGridPlugin]}
+      initialView="dayGridMonth"
+      weekends={true}
+      eventClassNames={(arg) => [
+        "hover:cursor-pointer",
+        arg.event.extendedProps.type === "project" ? "calendar-project" : "",
+      ]}
+      eventDisplay="auto"
+      locale={ptbrLocales}
+      events={events_converted}
+      eventClick={(info) => {
+        navigate(info.event.url || "/events/" + String(info.event.title));
+      }}
+    />
   );
 };
+
+export default EventCalendar;

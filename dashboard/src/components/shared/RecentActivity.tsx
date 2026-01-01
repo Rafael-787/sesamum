@@ -1,5 +1,12 @@
 import React from "react";
-import { Calendar, Clock, User, ShieldUser } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  User,
+  ShieldUser,
+  Building2,
+  Briefcase,
+} from "lucide-react";
 import { type RecentActivity } from "../../types";
 import { SkeletonCard } from "./SkeletonLoader";
 import { formatDateShort } from "../../lib/dateUtils";
@@ -14,15 +21,17 @@ interface RecentActivityProps {
 const getActivityIcon = (type: RecentActivity["type"]) => {
   switch (type) {
     case "event":
-      return <Calendar size={24} className="text-blue-600" />;
+      return <Calendar size={24} className="text-event-bg" />;
     case "project":
-      return <Clock size={24} className="text-green-600" />;
+      return <Briefcase size={24} className="text-project-bg" />;
     case "user":
-      return <ShieldUser size={24} className="text-orange-600" />;
+      return <ShieldUser size={24} className="text-user-bg" />;
     case "staff":
-      return <User size={24} className="text-purple-600" />;
+      return <User size={24} className="text-staff-bg" />;
+    case "company":
+      return <Building2 size={24} className="text-company-bg" />;
     default:
-      return <Clock size={24} className="text-gray-600" />;
+      return <Clock size={24} className="text-default-bg" />;
   }
 };
 

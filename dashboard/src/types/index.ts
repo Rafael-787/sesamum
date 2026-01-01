@@ -34,6 +34,7 @@ export interface Event {
   date_end: string;
   status: "open" | "close";
   project_id?: number;
+  type?: "event" | "project";
   location?: string;
   staffs_qnt?: number;
   companies?: EventCompany[];
@@ -72,9 +73,17 @@ export interface CalendarViewProps {
   onSelectSlot?: (slotInfo: { start: Date; end: Date }) => void;
 }
 
+const types = [
+  "event",
+  "project",
+  "user",
+  "checkin",
+  "staff",
+  "company",
+] as const;
 export interface RecentActivity {
   id: number;
-  type: "event" | "project" | "user" | "checkin" | "staff";
+  type: (typeof types)[number];
   title: string;
   description?: string;
   timestamp: string;
@@ -89,7 +98,7 @@ export interface MetricCardProps {
     value: number;
     isPositive: boolean;
   };
-  color?: "primary" | "success" | "warning" | "error";
+  color?: (typeof types)[number];
   loading?: boolean;
 }
 

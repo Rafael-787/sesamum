@@ -62,6 +62,19 @@
   --color-badge-company-text: var(--color-badge-default-text);
   --color-badge-controller-text: var(--color-badge-pending-text);
 
+  /* Cores tipos */
+  --color-event-bg: var(--color-primary);
+  --color-project-bg: var(--color-toast-warning-border);
+  --color-user-bg: var(--color-toast-success-border);
+  --color-staff-bg: var(--color-user-bg);
+  --color-company-bg: var(--color-toast-error-border);
+  --color-default-bg: var(--color-input-border);
+
+  /* Cores Calendário */
+  --color-calendar-event: var(--color-primary);
+  --color-calendar-project: var(--color-toast-warning-border);
+  --color-today-bg: var(--color-input-border);
+
   --animate-skeleton-loader: skeleton-loading 1.5s ease-in-out infinite;
 
   @keyframes skeleton-loading {
@@ -71,5 +84,15 @@
     100% {
       background-position: calc(200px + 100%) 0;
     }
+  }
+}
+@layer components {
+  .calendar-project {
+    background-color: var(--color-calendar-project) !important;
+    border-color: var(--color-calendar-project) !important;
+  }
+
+  .fc .fc-day-today {
+    background-color: var(--fc-today-bg-color) !important;
   }
 }

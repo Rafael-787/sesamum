@@ -6,7 +6,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   title,
   value,
   icon,
-  color = "primary",
+  color = "default",
   loading = false,
 }) => {
   if (loading) {
@@ -14,10 +14,11 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   }
 
   const colorClasses = {
-    primary: "text-blue-600 bg-blue-50",
-    success: "text-green-600 bg-green-50",
-    warning: "text-orange-600 bg-orange-50",
-    error: "text-red-600 bg-red-50",
+    event: "text-event-bg bg-event-bg/10",
+    project: "text-project-bg bg-project-bg/10",
+    company: "text-company-bg bg-company-bg/10",
+    user: "text-user-bg bg-user-bg/10",
+    default: "text-default-bg bg-default-bg/10",
   };
 
   return (
@@ -42,7 +43,13 @@ export const MetricCard: React.FC<MetricCardProps> = ({
             {typeof value === "number" ? value.toLocaleString("pt-BR") : value}
           </p>
         </div>
-        <div className={`p-3 rounded-lg ${colorClasses[color]}`}>{icon}</div>
+        <div
+          className={`p-3 rounded-lg ${
+            colorClasses[color as keyof typeof colorClasses]
+          }`}
+        >
+          {icon}
+        </div>
       </div>
     </div>
   );

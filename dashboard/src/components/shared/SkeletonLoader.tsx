@@ -14,16 +14,14 @@ export const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({
   className = "",
 }) => (
   <div
-    className={`skeleton-loader ${className}`}
-    style={{
-      width,
-      height,
-      borderRadius,
-      background:
-        "linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)",
-      backgroundSize: "200% 100%",
-      animation: "skeleton-loading 1.5s infinite",
-    }}
+    className={`bg-linear-to-r from-gray-100 via-gray-200 to-gray-100 bg-size[200%_100%] animate-skeleton-loader ${className}`}
+    style={
+      {
+        width,
+        height,
+        borderRadius,
+      } as React.CSSProperties
+    }
   />
 );
 
