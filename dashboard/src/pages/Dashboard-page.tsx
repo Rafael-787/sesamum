@@ -1,6 +1,6 @@
 import React from "react";
 import { RefreshCw, Calendar, Building2, Users, Briefcase } from "lucide-react";
-import { PageContainer, PageHeader } from "../components/shared/PageLayout";
+import { PageContainer, PageHeader } from "../components/layout/PageLayout";
 import { MetricCard } from "../components/shared/MetricCard";
 import { EventCalendar } from "../components/shared/EventCalendar";
 import { RecentActivityList } from "../components/shared/RecentActivity";

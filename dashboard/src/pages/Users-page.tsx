@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PageHeader, PageContainer } from "../components/shared/PageLayout";
+import { PageHeader, PageContainer } from "../components/layout/PageLayout";
 import ListToolbar from "../components/shared/ListToolbar";
 import ListCard from "../components/shared/ListCard";
 import Badge from "../components/ui/Badge";
