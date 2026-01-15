@@ -275,6 +275,8 @@ Sesamum/
 
 ## 🗄️ Schema do Banco de Dados
 
+O Schema também pode ser visualizado através desse [link.](https://app.brmodeloweb.com/#!/publicview/693f3527e3cf52c0abdf4634)
+
 ### Entidades Principais
 
 #### `company`
@@ -290,6 +292,7 @@ Sesamum/
 - **email**: Endereço de e-mail do usuário
 - **role**: Função do usuário (`admin`, `company`, `control`)
 - **company_id** (FK): Referência à empresa
+- **created_At** : Timestamp de quando foi criado
 
 #### `staffs`
 
@@ -297,6 +300,7 @@ Sesamum/
 - **name**: Nome completo do funcionário
 - **cpf**: CPF brasileiro (Único)
 - **company_id** (FK): Referência à empresa
+- **created_At** : Timestamp de quando foi criado
 
 ### Gerenciamento de Projetos e Eventos
 

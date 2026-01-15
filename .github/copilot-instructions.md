@@ -87,13 +87,16 @@ Sesamum is an event staff credentialing platform with a Django 6/DRF backend and
 - **email**
 - **role** (`admin`, `company`, `control`)
 - **company_id** (FK -> `company.id`)
+- **created_at** (DateTime - data de credenciamento)
 
 #### `staffs`
 
 - **id** (PK)
 - **name**
 - **cpf** (Unique)
+- **email**
 - **company_id** (FK -> `company.id`)
+- **created_at** (DateTime - data de credenciamento)
 
 ---
 

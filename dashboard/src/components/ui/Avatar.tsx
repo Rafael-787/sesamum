@@ -32,3 +32,5 @@ export const AvatarComponent: React.FC<AvatarProps> = ({
     </Avatar.Root>
   );
 };
+
+export default AvatarComponent;
