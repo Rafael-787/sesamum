@@ -67,11 +67,14 @@ const CompaniesPage: React.FC = () => {
         onFilterChange={setFilter}
       />
 
-      <Modal open={modalOpen} onOpenChange={setModalOpen} title="Nova Empresa">
+      <Modal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        title="Nova Empresa"
+        description="Formulário de nova empresa em breve."
+      >
         {/* Future form goes here */}
-        <div className="text-sm text-gray-600">
-          Formulário de nova empresa em breve.
-        </div>
+        <div className="text-sm text-gray-600">Formulário de nova empresa.</div>
       </Modal>
 
       {/* Companies List */}

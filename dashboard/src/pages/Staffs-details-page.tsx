@@ -7,14 +7,16 @@ import {
 } from "../components/layout/DetailsPageLayout";
 import EventsTab from "../components/tabs/EventsTab";
 import AvatarComponent from "../components/ui/Avatar";
+import { Modal } from "../components/ui/Modal";
 //import { type  } from "../types/index";
 
 const StaffsDetailsPage: React.FC = () => {
   const [eventSearch, setEventSearch] = useState("");
   const [eventFilter, setEventFilter] = useState("all");
+  const [editModalOpen, setEditModalOpen] = useState(false);
+
   const handleEdit = () => {
-    // Navigate to edit page or open modal
-    console.log("Edit staff");
+    setEditModalOpen(true);
   };
 
   // Mock events data - replace with real data from API
@@ -49,6 +51,18 @@ const StaffsDetailsPage: React.FC = () => {
         subtitle="Membro da Equipe"
         onEdit={handleEdit}
       />
+
+      <Modal
+        open={editModalOpen}
+        onOpenChange={setEditModalOpen}
+        title="Editar Membro"
+        description="Formulário de edição de membro em breve."
+      >
+        {/* Future form goes here */}
+        <div className="text-sm text-gray-600">
+          Formulário de edição de membro.
+        </div>
+      </Modal>
 
       <InformationsDetail>
         <div className="flex items-start gap-6">

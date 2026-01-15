@@ -90,11 +90,14 @@ const UsersPage: React.FC = () => {
         onFilterChange={setFilter}
       />
 
-      <Modal open={modalOpen} onOpenChange={setModalOpen} title="Novo Usuário">
+      <Modal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        title="Novo Usuário"
+        description="Formulário de novo usuário em breve."
+      >
         {/* Future form goes here */}
-        <div className="text-sm text-gray-600">
-          Formulário de novo usuário em breve.
-        </div>
+        <div className="text-sm text-gray-600">Formulário de novo usuário.</div>
       </Modal>
 
       {/* Users List */}

@@ -8,6 +8,7 @@ import {
 import OverviewTab from "../components/tabs/project-details/OverviewTab";
 import EventsTab from "../components/tabs/EventsTab";
 import CompaniesTab from "../components/tabs/CompaniesTab";
+import { Modal } from "../components/ui/Modal";
 //import { type  } from "../types/index";
 
 const ProjectDetailsPage: React.FC = () => {
@@ -15,10 +16,10 @@ const ProjectDetailsPage: React.FC = () => {
   const [eventFilter, setEventFilter] = useState("all");
   const [companySearch, setCompanySearch] = useState("");
   const [companyFilter, setCompanyFilter] = useState("all");
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   const handleEdit = () => {
-    // Navigate to edit page or open modal
-    console.log("Edit project");
+    setEditModalOpen(true);
   };
 
   // Mock events data - replace with real data from API
@@ -102,6 +103,18 @@ const ProjectDetailsPage: React.FC = () => {
         subtitle="Aquele evento loucura padrão em 2026"
         onEdit={handleEdit}
       />
+
+      <Modal
+        open={editModalOpen}
+        onOpenChange={setEditModalOpen}
+        title="Editar Projeto"
+        description="Formulário de edição de projeto em breve."
+      >
+        {/* Future form goes here */}
+        <div className="text-sm text-gray-600">
+          Formulário de edição de projeto.
+        </div>
+      </Modal>
 
       <InformationsDetail>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

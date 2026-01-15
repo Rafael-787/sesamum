@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import ListToolbar from "../../shared/ListToolbar";
 import ListCard from "../../shared/ListCard";
+import { Modal } from "../../ui/Modal";
 import { User as UserIcon, Building2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -37,6 +38,7 @@ const StaffTab: React.FC<StaffTabProps> = ({
   companies,
 }) => {
   const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
 
   // Build filter map dynamically from companies
   const filterMap: Record<string, number[]> = {
@@ -76,12 +78,22 @@ const StaffTab: React.FC<StaffTabProps> = ({
         searchPlaceholder="Buscar por Nome ou CPF..."
         filterOptions={filterOptions}
         addLabel="Adicionar Equipe"
-        onAdd={() => console.log("Add staff")}
+        onAdd={() => setModalOpen(true)}
         searchValue={staffSearch}
         onSearchChange={setStaffSearch}
         filterValue={staffFilter}
         onFilterChange={setStaffFilter}
       />
+
+      <Modal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        title="Novo Membro"
+        description="Formulário de novo membro em breve."
+      >
+        {/* Future form goes here */}
+        <div className="text-sm text-gray-600">Formulário de novo membro.</div>
+      </Modal>
 
       <ListCard
         filteredElements={filteredStaff}

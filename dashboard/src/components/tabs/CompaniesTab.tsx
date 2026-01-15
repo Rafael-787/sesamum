@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import ListToolbar from "../shared/ListToolbar";
 import ListCard from "../shared/ListCard";
 import Badge from "../ui/Badge";
+import { Modal } from "../ui/Modal";
 import { User as UserIcon, Building2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -29,6 +30,7 @@ const CompaniesTab: React.FC<CompaniesTabProps> = ({
   companies,
 }) => {
   const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
 
   // Map UI filter to company role
   const filterMap: Record<string, string[]> = {
@@ -61,12 +63,22 @@ const CompaniesTab: React.FC<CompaniesTabProps> = ({
           { value: "service", label: "Serviço" },
         ]}
         addLabel="Adicionar Empresa"
-        onAdd={() => console.log("Add company")}
+        onAdd={() => setModalOpen(true)}
         searchValue={companySearch}
         onSearchChange={setCompanySearch}
         filterValue={companyFilter}
         onFilterChange={setCompanyFilter}
       />
+
+      <Modal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        title="Nova Empresa"
+        description="Formulário de nova empresa em breve."
+      >
+        {/* Future form goes here */}
+        <div className="text-sm text-gray-600">Formulário de nova empresa.</div>
+      </Modal>
 
       <ListCard
         filteredElements={filteredCompanies}

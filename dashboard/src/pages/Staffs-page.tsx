@@ -88,12 +88,12 @@ const StaffsPage: React.FC = () => {
 
   return (
     <PageContainer>
-      <PageHeader title="Equipe" subtitle="Gerencie membros da equipe." />
+      <PageHeader title="Staffs" subtitle="Gerencie membros da equipe." />
 
       <ListToolbar
         searchPlaceholder="Buscar por Nome ou CPF..."
         filterOptions={filterOptions}
-        addLabel="Adicionar Membro"
+        addLabel="Adicionar Staff"
         onAdd={() => setModalOpen(true)}
         searchValue={staffSearch}
         onSearchChange={setStaffSearch}
@@ -101,10 +101,14 @@ const StaffsPage: React.FC = () => {
         onFilterChange={setStaffFilter}
       />
 
-      <Modal open={modalOpen} onOpenChange={setModalOpen} title="Novo Membro">
-        <div className="text-sm text-gray-600">
-          Formulário de novo membro em breve.
-        </div>
+      <Modal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        title="Novo Membro"
+        description="Formulário de novo membro em breve."
+      >
+        {/* Future form goes here */}
+        <div className="text-sm text-gray-600">Formulário de novo membro.</div>
       </Modal>
 
       {/* Staff List */}

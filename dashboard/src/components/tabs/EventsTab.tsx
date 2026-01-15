@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import ListToolbar from "../shared/ListToolbar";
 import ListCard from "../shared/ListCard";
 import Badge from "../ui/Badge";
+import { Modal } from "../ui/Modal";
 import { Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -29,6 +30,7 @@ const EventsTab: React.FC<EventsTabProps> = ({
   events,
 }) => {
   const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
 
   // Map UI filter to event status
   const filterMap: Record<string, string[]> = {
@@ -60,12 +62,22 @@ const EventsTab: React.FC<EventsTabProps> = ({
           { value: "close", label: "Fechados" },
         ]}
         addLabel="Adicionar Evento"
-        onAdd={() => console.log("Add event")}
+        onAdd={() => setModalOpen(true)}
         searchValue={eventSearch}
         onSearchChange={setEventSearch}
         filterValue={eventFilter}
         onFilterChange={setEventFilter}
       />
+
+      <Modal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        title="Novo Evento"
+        description="Formulário de novo evento em breve."
+      >
+        {/* Future form goes here */}
+        <div className="text-sm text-gray-600">Formulário de novo evento.</div>
+      </Modal>
 
       <ListCard
         filteredElements={filteredEvents}

@@ -7,13 +7,15 @@ import {
 } from "../components/layout/DetailsPageLayout";
 import EventsTab from "../components/tabs/EventsTab";
 import Badge from "../components/ui/Badge";
+import { Modal } from "../components/ui/Modal";
 
 const CompaniesDetailsPage: React.FC = () => {
   const [eventSearch, setEventSearch] = useState("");
   const [eventFilter, setEventFilter] = useState("all");
+  const [editModalOpen, setEditModalOpen] = useState(false);
+
   const handleEdit = () => {
-    // Navigate to edit page or open modal
-    console.log("Edit company");
+    setEditModalOpen(true);
   };
 
   // Mock events data - replace with real data from API
@@ -48,6 +50,18 @@ const CompaniesDetailsPage: React.FC = () => {
         subtitle="Empresa"
         onEdit={handleEdit}
       />
+
+      <Modal
+        open={editModalOpen}
+        onOpenChange={setEditModalOpen}
+        title="Editar Empresa"
+        description="Formulário de edição de empresa em breve."
+      >
+        {/* Future form goes here */}
+        <div className="text-sm text-gray-600">
+          Formulário de edição de empresa.
+        </div>
+      </Modal>
 
       <InformationsDetail>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

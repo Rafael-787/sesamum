@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -9,7 +9,9 @@ import {
   LogOut,
   X,
   ShieldUser,
+  ChevronDown,
 } from "lucide-react";
+import * as Select from "@radix-ui/react-select";
 import { AvatarComponent } from "../ui/Avatar";
 
 const menuItems = [
@@ -31,6 +33,9 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [currentRole, setCurrentRole] = useState<
+    "admin" | "company" | "control"
+  >("admin");
 
   return (
     <>
@@ -86,6 +91,53 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           </nav>
           {/* User Profile / Logout */}
           <div className="p-4 border-t border-sidebar-border">
+            {/* Role Selector */}
+            <div className="mb-4">
+              <label className="text-xs text-sidebar-text-muted mb-1 block">
+                Testar como:
+              </label>
+              <Select.Root
+                value={currentRole}
+                onValueChange={(value) =>
+                  setCurrentRole(value as "admin" | "company" | "control")
+                }
+              >
+                <Select.Trigger className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-sidebar-hover-bg text-sidebar-text text-sm border border-sidebar-border hover:bg-opacity-80 transition-colors">
+                  <Select.Value />
+                  <Select.Icon>
+                    <ChevronDown
+                      size={16}
+                      className="text-sidebar-text-muted"
+                    />
+                  </Select.Icon>
+                </Select.Trigger>
+                <Select.Portal>
+                  <Select.Content className="overflow-hidden bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                    <Select.Viewport className="p-1">
+                      <Select.Item
+                        value="admin"
+                        className="relative flex items-center px-8 py-2 text-sm text-gray-900 rounded cursor-pointer hover:bg-gray-100 outline-none data-highlighted:bg-gray-100"
+                      >
+                        <Select.ItemText>Admin</Select.ItemText>
+                      </Select.Item>
+                      <Select.Item
+                        value="company"
+                        className="relative flex items-center px-8 py-2 text-sm text-gray-900 rounded cursor-pointer hover:bg-gray-100 outline-none data-highlighted:bg-gray-100"
+                      >
+                        <Select.ItemText>Company</Select.ItemText>
+                      </Select.Item>
+                      <Select.Item
+                        value="control"
+                        className="relative flex items-center px-8 py-2 text-sm text-gray-900 rounded cursor-pointer hover:bg-gray-100 outline-none data-highlighted:bg-gray-100"
+                      >
+                        <Select.ItemText>Control</Select.ItemText>
+                      </Select.Item>
+                    </Select.Viewport>
+                  </Select.Content>
+                </Select.Portal>
+              </Select.Root>
+            </div>
+
             <div className="flex items-center gap-3 px-4 py-3 mb-2">
               <button
                 className="hover:cursor-pointer"

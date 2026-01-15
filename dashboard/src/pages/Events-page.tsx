@@ -103,11 +103,14 @@ const EventsPage: React.FC = () => {
         onFilterChange={setFilter}
       />
 
-      <Modal open={modalOpen} onOpenChange={setModalOpen} title="Novo Evento">
+      <Modal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        title="Novo Evento"
+        description="Formulário de novo evento em breve."
+      >
         {/* Future form goes here */}
-        <div className="text-sm text-gray-600">
-          Formulário de novo evento em breve.
-        </div>
+        <div className="text-sm text-gray-600">Formulário de novo evento.</div>
       </Modal>
 
       {/* Events List */}
