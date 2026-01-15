@@ -8,6 +8,7 @@ import ProjectsPage from "./pages/Projects-page";
 import CompaniesPage from "./pages/Companies-page";
 import UsersPage from "./pages/Users-page";
 import EventsDetailsPage from "./pages/Events-details-page";
+import ProjectDetailsPage from "./pages/Projects-details-page";
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -48,10 +49,14 @@ const App: React.FC = () => {
                 <Routes>
                   <Route path="/" element={<DashboardPage />} />
                   <Route path="/projects" element={<ProjectsPage />} />
+                  <Route
+                    path="/projects/:id"
+                    element={<ProjectDetailsPage />}
+                  />
                   <Route path="/events" element={<EventsPage />} />
                   <Route path="/events/:id" element={<EventsDetailsPage />} />
                   <Route path="/companies" element={<CompaniesPage />} />
-                  <Route path="/users" element={<EventsDetailsPage />} />
+                  <Route path="/users" element={<UsersPage />} />
                 </Routes>
               </div>
             </main>
