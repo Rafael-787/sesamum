@@ -8,6 +8,7 @@ import {
   Building2,
   LogOut,
   X,
+  ShieldUser,
 } from "lucide-react";
 import { AvatarComponent } from "../ui/Avatar";
 
@@ -16,7 +17,8 @@ const menuItems = [
   { id: "projects", label: "Projetos", icon: Briefcase, path: "/projects" },
   { id: "events", label: "Eventos", icon: Calendar, path: "/events" },
   { id: "companies", label: "Empresas", icon: Building2, path: "/companies" },
-  { id: "users", label: "Usuários", icon: Users, path: "/users" },
+  { id: "staffs", label: "Staffs", icon: Users, path: "/staffs" },
+  { id: "users", label: "Usuários", icon: ShieldUser, path: "/users" },
 ];
 
 interface SidebarProps {
