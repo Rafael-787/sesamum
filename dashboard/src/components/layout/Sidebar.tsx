@@ -21,6 +21,8 @@ const menuItems = [
   { id: "users", label: "Usuários", icon: ShieldUser, path: "/users" },
 ];
 
+const userId = 1; // Replace with actual user ID from auth context or state
+
 interface SidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
@@ -85,7 +87,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           {/* User Profile / Logout */}
           <div className="p-4 border-t border-sidebar-border">
             <div className="flex items-center gap-3 px-4 py-3 mb-2">
-              <button className="hover:cursor-pointer">
+              <button
+                className="hover:cursor-pointer"
+                onClick={() => navigate(`/staffs/${userId}`)}
+              >
                 <AvatarComponent size={32} alt="Admin User" />
               </button>
               <div className="flex-1 overflow-hidden">

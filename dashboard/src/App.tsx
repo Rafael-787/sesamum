@@ -12,6 +12,7 @@ import ProjectDetailsPage from "./pages/Projects-details-page";
 import UsersDetailsPage from "./pages/Users-details-page";
 import StaffsPage from "./pages/Staffs-page";
 import StaffsDetailsPage from "./pages/Staffs-details-page";
+import CompaniesDetailsPage from "./pages/Companies-details-page";
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -59,7 +60,10 @@ const App: React.FC = () => {
                   <Route path="/events" element={<EventsPage />} />
                   <Route path="/events/:id" element={<EventsDetailsPage />} />
                   <Route path="/companies" element={<CompaniesPage />} />
-                  <Route path="/companies/:id" element={<CompaniesPage />} />
+                  <Route
+                    path="/companies/:id"
+                    element={<CompaniesDetailsPage />}
+                  />
                   <Route path="/staffs" element={<StaffsPage />} />
                   <Route path="/staffs/:id" element={<StaffsDetailsPage />} />
                   <Route path="/users" element={<UsersPage />} />
