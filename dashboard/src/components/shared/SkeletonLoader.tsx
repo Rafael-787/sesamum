@@ -119,3 +119,43 @@ export const SkeletonCalendar: React.FC<SkeletonCalendarProps> = ({
     </div>
   </div>
 );
+
+interface SkeletonListCardProps {
+  count?: number;
+  showIcon?: boolean;
+  className?: string;
+}
+
+export const SkeletonListCard: React.FC<SkeletonListCardProps> = ({
+  count = 3,
+  showIcon = true,
+  className = "",
+}) => (
+  <div className="grid gap-4">
+    {Array.from({ length: count }, (_, i) => (
+      <div
+        key={i}
+        className={`p-4 sm:p-6 bg-card-primary rounded-3xl shadow-sm border-2 border-card-primary ${className}`}
+      >
+        <div className="flex items-center gap-4">
+          {showIcon && (
+            <SkeletonLoader
+              width="3.5rem"
+              height="3.5rem"
+              borderRadius="0.5rem"
+            />
+          )}
+          <div className="flex-1 space-y-3">
+            <SkeletonLoader width="60%" height="1.25rem" />
+            <SkeletonLoader width="80%" height="1rem" />
+          </div>
+          <SkeletonLoader
+            width="2.5rem"
+            height="2.5rem"
+            borderRadius="0.5rem"
+          />
+        </div>
+      </div>
+    ))}
+  </div>
+);

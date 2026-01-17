@@ -16,6 +16,7 @@ const EventsPage: React.FC = () => {
   const [filter, setFilter] = useState("all");
   const [modalOpen, setModalOpen] = useState(false);
   const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   // Toast states
   const [successOpen, setSuccessOpen] = useState(false);
@@ -24,12 +25,15 @@ const EventsPage: React.FC = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
+        setLoading(true);
         setError(null);
         const response = await eventsService.getAll();
         setEvents(response.data);
       } catch (err) {
         setError("Erro ao carregar eventos");
         console.error("Error fetching events:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -97,6 +101,7 @@ const EventsPage: React.FC = () => {
 
       {/* Events List */}
       <ListCard
+        isLoading={loading}
         filteredElements={filteredEvents}
         notFoundIcon={
           <Calendar size={48} className="mx-auto text-slate-300 mb-4" />

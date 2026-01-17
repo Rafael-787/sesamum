@@ -94,6 +94,7 @@ const ProjectsPage: React.FC = () => {
       <div className="text-sm text-gray-600">
         {/* Projects List */}
         <ListCard
+          isLoading={loading}
           filteredElements={filteredProjects}
           notFoundIcon={
             <Briefcase size={48} className="mx-auto text-slate-300 mb-4" />

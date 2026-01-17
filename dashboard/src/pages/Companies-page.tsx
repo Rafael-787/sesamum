@@ -80,6 +80,7 @@ const CompaniesPage: React.FC = () => {
 
       {/* Companies List */}
       <ListCard
+        isLoading={loading}
         filteredElements={filteredCompanies}
         notFoundIcon={
           <Building2 size={48} className="mx-auto text-slate-300 mb-4" />

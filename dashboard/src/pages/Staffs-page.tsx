@@ -91,6 +91,7 @@ const StaffsPage: React.FC = () => {
 
       {/* Staff List */}
       <ListCard
+        isLoading={loading}
         filteredElements={filteredStaff}
         notFoundIcon={
           <UserIcon size={48} className="mx-auto text-slate-300 mb-4" />

@@ -1,5 +1,6 @@
 import React from "react";
 import { ChevronRight, Ban } from "lucide-react";
+import { SkeletonListCard } from "./SkeletonLoader";
 
 interface ListCardProps {
   onClick?: (event?: any) => void;
@@ -7,6 +8,8 @@ interface ListCardProps {
   filteredElements: any[]; // Accepts array of event objects
   notFoundIcon?: React.ReactNode;
   notFoundMessage?: string;
+  isLoading?: boolean;
+  skeletonCount?: number;
 }
 
 interface ListCardComponent extends React.FC<ListCardProps> {
@@ -20,7 +23,13 @@ const ListCard: ListCardComponent = ({
   filteredElements,
   notFoundIcon,
   notFoundMessage,
+  isLoading = false,
+  skeletonCount = 3,
 }) => {
+  if (isLoading) {
+    return <SkeletonListCard count={skeletonCount} />;
+  }
+
   return (
     <div className="grid gap-4">
       {filteredElements.length === 0 ? (
