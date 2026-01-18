@@ -12,6 +12,8 @@ import { staffsService, eventsService } from "../api/services";
 import type { Staff, Event } from "../types";
 import { formatDateTime } from "../lib/dateUtils";
 import { useRecentlyVisited } from "../hooks/useRecentlyVisited";
+import { Modal } from "../components/ui/Modal";
+import { StaffForm } from "../components/forms/StaffForm";
 
 // Mock company names (should come from companies API in production)
 const COMPANY_NAMES: Record<number, string> = {
@@ -31,6 +33,7 @@ const StaffsDetailsPage: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   // Fetch staff details and their events
   useEffect(() => {
@@ -71,6 +74,18 @@ const StaffsDetailsPage: React.FC = () => {
     fetchStaffData();
   }, [id]);
 
+  const handleEditSuccess = async () => {
+    setEditModalOpen(false);
+    // Reload staff data
+    if (!id) return;
+    try {
+      const staffResponse = await staffsService.getById(Number(id));
+      setStaff(staffResponse.data);
+    } catch (err) {
+      console.error("Error reloading staff:", err);
+    }
+  };
+
   if (loading) {
     return (
       <DetailsPageContainer>
@@ -93,7 +108,25 @@ const StaffsDetailsPage: React.FC = () => {
 
   return (
     <DetailsPageContainer>
-      <PageHeader title={staff.name} subtitle={staff.email} />
+      <PageHeader
+        title={staff.name}
+        subtitle={staff.email}
+        onEdit={() => setEditModalOpen(true)}
+      />
+
+      <Modal
+        open={editModalOpen}
+        onOpenChange={setEditModalOpen}
+        title="Editar Membro"
+        description="Atualize as informações do membro da equipe."
+      >
+        <StaffForm
+          mode="edit"
+          staff={staff}
+          onSuccess={handleEditSuccess}
+          onCancel={() => setEditModalOpen(false)}
+        />
+      </Modal>
 
       <InformationsDetail>
         <div className="flex items-center gap-6">

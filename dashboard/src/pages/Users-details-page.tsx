@@ -12,6 +12,7 @@ import { Modal } from "../components/ui/Modal";
 import { usersService, eventsService } from "../api/services";
 import type { User, Event } from "../types";
 import { useRecentlyVisited } from "../hooks/useRecentlyVisited";
+import { UserForm } from "../components/forms/UserForm";
 
 // Mock company names (should come from companies API in production)
 const COMPANY_NAMES: Record<number, string> = {
@@ -82,6 +83,21 @@ const UsersDetailsPage: React.FC = () => {
     setEditModalOpen(true);
   };
 
+  const handleEditSuccess = async () => {
+    setEditModalOpen(false);
+    // Refresh user data
+    if (!id) return;
+    try {
+      setLoading(true);
+      const userResponse = await usersService.getById(Number(id));
+      setUser(userResponse.data);
+    } catch (err) {
+      console.error("Error refreshing user:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <DetailsPageContainer>
@@ -124,12 +140,14 @@ const UsersDetailsPage: React.FC = () => {
         open={editModalOpen}
         onOpenChange={setEditModalOpen}
         title="Editar Usuário"
-        description="Formulário de edição de usuário em breve."
+        description="Atualize os dados do usuário."
       >
-        {/* Future form goes here */}
-        <div className="text-sm text-gray-600">
-          Formulário de edição de usuário.
-        </div>
+        <UserForm
+          mode="edit"
+          user={user}
+          onSuccess={handleEditSuccess}
+          onCancel={() => setEditModalOpen(false)}
+        />
       </Modal>
 
       <InformationsDetail>

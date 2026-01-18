@@ -7,6 +7,7 @@ import { Modal } from "../components/ui/Modal";
 import { Building2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { companiesService } from "../api/services";
+import { CompanyForm } from "../components/forms/CompanyForm";
 
 const CompaniesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -18,23 +19,32 @@ const CompaniesPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Fetch companies
-  useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await companiesService.getAll();
-        setCompanies(response.data);
-      } catch (err) {
-        setError("Erro ao carregar empresas");
-        console.error("Error fetching companies:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchCompanies = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await companiesService.getAll();
+      setCompanies(response.data);
+    } catch (err) {
+      setError("Erro ao carregar empresas");
+      console.error("Error fetching companies:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchCompanies();
   }, []);
+
+  const handleFormSuccess = () => {
+    setModalOpen(false);
+    fetchCompanies();
+  };
+
+  const handleFormCancel = () => {
+    setModalOpen(false);
+  };
 
   const filteredCompanies = companies.filter((company) => {
     const matchesSearch =
@@ -72,10 +82,13 @@ const CompaniesPage: React.FC = () => {
         open={modalOpen}
         onOpenChange={setModalOpen}
         title="Nova Empresa"
-        description="Formulário de nova empresa em breve."
+        description="Preencha os dados abaixo para criar uma nova empresa."
       >
-        {/* Future form goes here */}
-        <div className="text-sm text-gray-600">Formulário de nova empresa.</div>
+        <CompanyForm
+          mode="create"
+          onSuccess={handleFormSuccess}
+          onCancel={handleFormCancel}
+        />
       </Modal>
 
       {/* Companies List */}

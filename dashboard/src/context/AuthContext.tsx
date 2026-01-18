@@ -5,6 +5,7 @@ import React, {
   useEffect,
   type ReactNode,
 } from "react";
+import type { User } from "../types";
 
 /**
  * AuthContext
@@ -26,6 +27,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   accessToken: string | null;
   refreshToken: string | null;
+  user: User | null;
   setTokens: (access: string, refresh: string) => void;
   clearTokens: () => void;
 }
@@ -39,6 +41,16 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
+
+  // Mock user for development (in production, this would come from JWT or API)
+  const [user] = useState<User>({
+    id: 1,
+    name: "Admin User",
+    picture: "",
+    email: "admin@sesamum.com",
+    role: "admin",
+    company_id: 1,
+  });
 
   // Load tokens from localStorage on mount
   useEffect(() => {
@@ -87,6 +99,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isAuthenticated,
     accessToken,
     refreshToken,
+    user,
     setTokens,
     clearTokens,
   };

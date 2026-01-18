@@ -12,6 +12,7 @@ import { Modal } from "../components/ui/Modal";
 import { companiesService, eventsService } from "../api/services";
 import type { Company, Event } from "../types";
 import { useRecentlyVisited } from "../hooks/useRecentlyVisited";
+import { CompanyForm } from "../components/forms/CompanyForm";
 
 const CompaniesDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,41 +26,50 @@ const CompaniesDetailsPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   // Fetch company details and their events
+  const fetchCompanyData = async () => {
+    if (!id) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Fetch company details
+      const companyResponse = await companiesService.getById(Number(id));
+      setCompany(companyResponse.data);
+
+      // Track visit to recently visited
+      addRecentVisit({
+        id: Date.now(),
+        type: "company",
+        title: companyResponse.data.name,
+        description: `CNPJ: ${companyResponse.data.cnpj}`,
+        url: `/companies/${id}`,
+        entityId: companyResponse.data.id,
+      });
+
+      // Fetch events for this company
+      const eventsResponse = await eventsService.getByCompany(Number(id));
+      setEvents(eventsResponse.data);
+    } catch (err) {
+      setError("Erro ao carregar empresa");
+      console.error("Error fetching company data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchCompanyData = async () => {
-      if (!id) return;
-
-      try {
-        setLoading(true);
-        setError(null);
-
-        // Fetch company details
-        const companyResponse = await companiesService.getById(Number(id));
-        setCompany(companyResponse.data);
-
-        // Track visit to recently visited
-        addRecentVisit({
-          id: Date.now(),
-          type: "company",
-          title: companyResponse.data.name,
-          description: `CNPJ: ${companyResponse.data.cnpj}`,
-          url: `/companies/${id}`,
-          entityId: companyResponse.data.id,
-        });
-
-        // Fetch events for this company
-        const eventsResponse = await eventsService.getByCompany(Number(id));
-        setEvents(eventsResponse.data);
-      } catch (err) {
-        setError("Erro ao carregar empresa");
-        console.error("Error fetching company data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCompanyData();
   }, [id]);
+
+  const handleFormSuccess = () => {
+    setEditModalOpen(false);
+    fetchCompanyData();
+  };
+
+  const handleFormCancel = () => {
+    setEditModalOpen(false);
+  };
 
   const handleEdit = () => {
     setEditModalOpen(true);
@@ -93,12 +103,14 @@ const CompaniesDetailsPage: React.FC = () => {
         open={editModalOpen}
         onOpenChange={setEditModalOpen}
         title="Editar Empresa"
-        description="Formulário de edição de empresa em breve."
+        description="Atualize os dados da empresa abaixo."
       >
-        {/* Future form goes here */}
-        <div className="text-sm text-gray-600">
-          Formulário de edição de empresa.
-        </div>
+        <CompanyForm
+          mode="edit"
+          company={company}
+          onSuccess={handleFormSuccess}
+          onCancel={handleFormCancel}
+        />
       </Modal>
 
       <InformationsDetail>

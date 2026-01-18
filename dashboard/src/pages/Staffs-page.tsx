@@ -8,6 +8,7 @@ import { Building2, User as UserIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { staffsService } from "../api/services";
 import { formatDateTime } from "../lib/dateUtils";
+import { StaffForm } from "../components/forms/StaffForm";
 
 // Mock company names (in production, this would come from API)
 const COMPANY_NAMES: Record<number, string> = {
@@ -58,6 +59,17 @@ const StaffsPage: React.FC = () => {
     navigate(`/staffs/${staff.id}`);
   };
 
+  const handleFormSuccess = async () => {
+    setModalOpen(false);
+    // Reload staffs list
+    try {
+      const response = await staffsService.getAll();
+      setStaffs(response.data);
+    } catch (err) {
+      console.error("Error reloading staffs:", err);
+    }
+  };
+
   return (
     <PageContainer>
       <PageHeader title="Staffs" subtitle="Gerencie membros da equipe." />
@@ -83,10 +95,13 @@ const StaffsPage: React.FC = () => {
         open={modalOpen}
         onOpenChange={setModalOpen}
         title="Novo Membro"
-        description="Formulário de novo membro em breve."
+        description="Preencha as informações para cadastrar um novo membro da equipe."
       >
-        {/* Future form goes here */}
-        <div className="text-sm text-gray-600">Formulário de novo membro.</div>
+        <StaffForm
+          mode="create"
+          onSuccess={handleFormSuccess}
+          onCancel={() => setModalOpen(false)}
+        />
       </Modal>
 
       {/* Staff List */}

@@ -8,6 +8,7 @@ import { Modal } from "../components/ui/Modal";
 import { Building2, User as UserIcon, Shield, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { usersService } from "../api/services";
+import { UserForm } from "../components/forms/UserForm";
 
 const UsersPage: React.FC = () => {
   const navigate = useNavigate();
@@ -57,6 +58,20 @@ const UsersPage: React.FC = () => {
     navigate(`/users/${user.id}`);
   };
 
+  const handleFormSuccess = async () => {
+    setModalOpen(false);
+    // Refresh users list
+    try {
+      setLoading(true);
+      const response = await usersService.getAll();
+      setUsers(response.data);
+    } catch (err) {
+      console.error("Error refreshing users:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <PageContainer>
       <PageHeader title="Usuários" subtitle="Gerencie usuários do sistema." />
@@ -87,10 +102,13 @@ const UsersPage: React.FC = () => {
         open={modalOpen}
         onOpenChange={setModalOpen}
         title="Novo Usuário"
-        description="Formulário de novo usuário em breve."
+        description="Preencha os dados para criar um novo usuário."
       >
-        {/* Future form goes here */}
-        <div className="text-sm text-gray-600">Formulário de novo usuário.</div>
+        <UserForm
+          mode="create"
+          onSuccess={handleFormSuccess}
+          onCancel={() => setModalOpen(false)}
+        />
       </Modal>
 
       {/* Users List */}

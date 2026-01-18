@@ -87,15 +87,18 @@ export const userHandlers = [
     const newUserData = (await request.json()) as Omit<User, "id">;
 
     // Validation
-    if (!newUserData.name || !newUserData.email || !newUserData.role) {
+    if (!newUserData.name || !newUserData.role) {
       return HttpResponse.json(
-        { detail: "Name, email, and role are required" },
+        { detail: "Name and role are required" },
         { status: 400 }
       );
     }
 
-    // Check for duplicate email
-    if (mockUsers.some((u) => u.email === newUserData.email)) {
+    // Check for duplicate email (only if email is provided)
+    if (
+      newUserData.email &&
+      mockUsers.some((u) => u.email === newUserData.email)
+    ) {
       return HttpResponse.json(
         { detail: "Email already exists" },
         { status: 400 }
