@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Sidebar from "./components/layout/Sidebar";
+import Sidebar from "@/shared/components/layout/Sidebar";
 import { Menu } from "lucide-react";
-import DashboardPage from "./pages/Dashboard-page";
-import EventsPage from "./pages/Events-page";
-import ProjectsPage from "./pages/Projects-page";
-import CompaniesPage from "./pages/Companies-page";
-import UsersPage from "./pages/Users-page";
-import EventsDetailsPage from "./pages/Events-details-page";
-import ProjectDetailsPage from "./pages/Projects-details-page";
-import UsersDetailsPage from "./pages/Users-details-page";
-import StaffsPage from "./pages/Staffs-page";
-import StaffsDetailsPage from "./pages/Staffs-details-page";
-import CompaniesDetailsPage from "./pages/Companies-details-page";
+import DashboardPage from "@/features/dashboard/pages/Dashboard-page";
+import EventsPage from "@/features/events/pages/Events-page";
+import ProjectsPage from "@/features/projects/pages/Projects-page";
+import CompaniesPage from "@/features/companies/pages/Companies-page";
+import UsersPage from "@/features/users/pages/Users-page";
+import EventsDetailsPage from "@/features/events/pages/Events-details-page";
+import ProjectDetailsPage from "@/features/projects/pages/Projects-details-page";
+import UsersDetailsPage from "@/features/users/pages/Users-details-page";
+import StaffsPage from "@/features/staffs/pages/Staffs-page";
+import StaffsDetailsPage from "@/features/staffs/pages/Staffs-details-page";
+import CompaniesDetailsPage from "@/features/companies/pages/Companies-details-page";
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
