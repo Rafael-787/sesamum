@@ -25,10 +25,11 @@ export const eventHandlers = [
   http.get(`${API_BASE_URL}/api/v1/events/`, async ({ request }) => {
     await delay(1000);
 
-    // Parse query parameters for filtering (future enhancement)
+    // Parse query parameters for filtering
     const url = new URL(request.url);
     const status = url.searchParams.get("status");
     const projectId = url.searchParams.get("project_id");
+    const search = url.searchParams.get("search");
 
     let filteredEvents = [...mockEvents];
 
@@ -41,6 +42,12 @@ export const eventHandlers = [
     if (projectId) {
       filteredEvents = filteredEvents.filter(
         (event) => event.project_id === Number(projectId)
+      );
+    }
+    if (search) {
+      const searchLower = search.toLowerCase();
+      filteredEvents = filteredEvents.filter((event) =>
+        event.name.toLowerCase().includes(searchLower)
       );
     }
 

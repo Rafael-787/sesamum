@@ -20,9 +20,9 @@ export const eventsService = {
    * const events = response.data;
    *
    * // With filters
-   * const response = await eventsService.getAll({ status: 'open', project_id: 1 });
+   * const response = await eventsService.getAll({ status: 'open', project_id: 1, search: 'concert' });
    */
-  getAll: (params?: { status?: string; project_id?: number }) => {
+  getAll: (params?: { status?: string; project_id?: number; search?: string }) => {
     return apiClient.get<Event[]>(ENDPOINTS.EVENTS.LIST, { params });
   },
 

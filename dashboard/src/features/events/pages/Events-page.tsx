@@ -36,12 +36,14 @@ const EventsPage: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const params: { status?: string; project_id?: number } = {};
+      const params: { status?: string; project_id?: number; search?: string } = {};
 
       if (filter && filter !== "all") {
         params.status = filter;
       }
-      // Note: Events API doesn't have search param yet, but prepared for future
+      if (debouncedSearch) {
+        params.search = debouncedSearch;
+      }
 
       const response = await eventsService.getAll(params);
       setEvents(response.data);
@@ -55,19 +57,11 @@ const EventsPage: React.FC = () => {
 
   useEffect(() => {
     fetchEvents();
-  }, [filter]);
+  }, [filter, debouncedSearch]);
 
   React.useEffect(() => {
     setSuccessOpen(true);
   }, []);
-
-  // Client-side search for events (since API doesn't support search yet)
-  const filteredEvents = events.filter((event) => {
-    const matchesSearch = debouncedSearch
-      ? event.name.toLowerCase().includes(debouncedSearch.toLowerCase())
-      : true;
-    return matchesSearch;
-  });
 
   const handleEventClick = (event: Event) => {
     navigate(`/events/${event.id}`);
@@ -131,7 +125,7 @@ const EventsPage: React.FC = () => {
       {/* Events List */}
       <ListCard
         isLoading={loading}
-        filteredElements={filteredEvents}
+        filteredElements={events}
         notFoundIcon={
           <Calendar size={48} className="mx-auto text-slate-300 mb-4" />
         }

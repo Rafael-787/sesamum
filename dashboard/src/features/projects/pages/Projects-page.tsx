@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { projectsService } from "../api/projects.service";
 import { ProjectForm } from "../components/ProjectForm";
 import { usePermissions } from "@/shared/hooks/usePermissions";
+import { useDebounce } from "@/shared/hooks/useDebounce";
 
 const ProjectsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -25,16 +26,30 @@ const ProjectsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch projects
+  const debouncedSearch = useDebounce(search, 500);
+
+  // Fetch projects with server-side filtering
   useEffect(() => {
     fetchProjects();
-  }, []);
+  }, [debouncedSearch, filter]);
 
   const fetchProjects = async () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await projectsService.getAll();
+
+      // Build query parameters for server-side filtering
+      const params: { search?: string; status?: string } = {};
+
+      if (debouncedSearch) {
+        params.search = debouncedSearch;
+      }
+
+      if (filter !== "all") {
+        params.status = filter;
+      }
+
+      const response = await projectsService.getAll(params);
       setProjects(response.data);
     } catch (err) {
       setError("Erro ao carregar projetos");
@@ -43,21 +58,6 @@ const ProjectsPage: React.FC = () => {
       setLoading(false);
     }
   };
-
-  // Map UI filter to project status
-  const filterMap: Record<string, string[]> = {
-    all: ["open", "close"],
-    open: ["open"],
-    close: ["close"],
-  };
-
-  const filteredProjects = projects.filter((project) => {
-    const matchesSearch = project.name
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    const matchesFilter = filterMap[filter].includes(project.status);
-    return matchesSearch && matchesFilter;
-  });
 
   const handleProjectClick = (project: Project) => {
     navigate(`/projects/${project.id}`);
