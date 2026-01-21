@@ -36,7 +36,8 @@ const EventsPage: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const params: { status?: string; project_id?: number; search?: string } = {};
+      const params: { status?: string; project_id?: number; search?: string } =
+        {};
 
       if (filter && filter !== "all") {
         params.status = filter;

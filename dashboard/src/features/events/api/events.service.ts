@@ -22,7 +22,11 @@ export const eventsService = {
    * // With filters
    * const response = await eventsService.getAll({ status: 'open', project_id: 1, search: 'concert' });
    */
-  getAll: (params?: { status?: string; project_id?: number; search?: string }) => {
+  getAll: (params?: {
+    status?: string;
+    project_id?: number;
+    search?: string;
+  }) => {
     return apiClient.get<Event[]>(ENDPOINTS.EVENTS.LIST, { params });
   },
 

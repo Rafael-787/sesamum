@@ -10,6 +10,7 @@ import type { Staff } from "@/features/staffs/types";
 import { staffsService } from "@/features/staffs/api/staffs.service";
 import { eventStaffService } from "../../api/eventStaff.service";
 import { useDebounce } from "@/shared/hooks/useDebounce";
+import { useAuth } from "@/shared";
 
 interface AddExistingStaffProps {
   eventId: number;
@@ -30,10 +31,12 @@ const AddExistingStaff: React.FC<AddExistingStaffProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string>("");
-  const [companyFilter, setCompanyFilter] = useState<string>("all");
 
   // Debounce search term
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  const { user } = useAuth();
+  const userId = user?.id;
 
   // Fetch staff with server-side filtering
   useEffect(() => {
@@ -41,12 +44,9 @@ const AddExistingStaff: React.FC<AddExistingStaffProps> = ({
       setIsLoading(true);
       setError("");
       try {
-        const params: { search?: string; company_id?: number } = {};
+        const params: { search?: string } = {};
         if (debouncedSearchTerm) {
           params.search = debouncedSearchTerm;
-        }
-        if (companyFilter !== "all") {
-          params.company_id = Number(companyFilter);
         }
         const response = await staffsService.getAll(params);
         setAllStaff(response.data);
@@ -59,7 +59,7 @@ const AddExistingStaff: React.FC<AddExistingStaffProps> = ({
     };
 
     fetchStaff();
-  }, [debouncedSearchTerm, companyFilter]);
+  }, [debouncedSearchTerm]);
 
   const handleToggleStaff = (staffId: number) => {
     const newSelected = new Set(selectedStaffIds);
@@ -97,6 +97,8 @@ const AddExistingStaff: React.FC<AddExistingStaffProps> = ({
         eventStaffService.create({
           staff_cpf: staff.cpf,
           event_id: eventId,
+          staff_id: staff.id,
+          created_by: userId,
         }),
       );
 
@@ -116,14 +118,6 @@ const AddExistingStaff: React.FC<AddExistingStaffProps> = ({
     }
   };
 
-  // Get unique companies for filter
-  const companies = Array.from(new Set(allStaff.map((s) => s.company_id))).map(
-    (id) => ({
-      id,
-      name: `Empresa ${id}`, // TODO: Replace with actual company names
-    }),
-  );
-
   return (
     <div className="space-y-4">
       {error && (
@@ -133,33 +127,19 @@ const AddExistingStaff: React.FC<AddExistingStaffProps> = ({
         </div>
       )}
 
-      {/* Search and Filter Bar */}
-      <div className="flex gap-3">
-        <div className="flex-1 relative">
-          <Search
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-            size={18}
-          />
-          <input
-            type="text"
-            placeholder="Buscar por nome, CPF ou email..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-input-bg border border-input-border text-input-text"
-          />
-        </div>
-        <select
-          value={companyFilter}
-          onChange={(e) => setCompanyFilter(e.target.value)}
-          className="px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-input-bg border border-input-border text-input-text"
-        >
-          <option value="all">Todas Empresas</option>
-          {companies.map((company) => (
-            <option key={company.id} value={company.id.toString()}>
-              {company.name}
-            </option>
-          ))}
-        </select>
+      {/* Search Bar */}
+      <div className="relative">
+        <Search
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          size={18}
+        />
+        <input
+          type="text"
+          placeholder="Buscar por nome, CPF ou email..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-input-bg border border-input-border text-input-text"
+        />
       </div>
 
       {/* Select All Checkbox */}
@@ -196,7 +176,7 @@ const AddExistingStaff: React.FC<AddExistingStaffProps> = ({
           <div className="p-8 text-center">
             <User size={48} className="mx-auto text-slate-300 mb-3" />
             <p className="text-gray-500 text-sm">
-              {searchTerm || companyFilter !== "all"
+              {searchTerm
                 ? "Nenhum staff encontrado com os filtros aplicados"
                 : "Nenhum staff disponível"}
             </p>

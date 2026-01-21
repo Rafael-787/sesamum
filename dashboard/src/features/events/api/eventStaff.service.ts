@@ -6,7 +6,7 @@
 
 import { apiClient } from "@/shared/api/client";
 import { ENDPOINTS } from "@/shared/api/endpoints";
-import type { EventStaff } from "../types";
+import type { EventStaff, CreateEventStaffPayload } from "../types";
 
 interface EventStaffParams {
   staff_cpf?: string;
@@ -33,7 +33,7 @@ export const eventStaffService = {
   /**
    * Create a new event-staff relationship
    */
-  create: async (data: Omit<EventStaff, "id">) => {
+  create: async (data: CreateEventStaffPayload) => {
     return apiClient.post<EventStaff>(ENDPOINTS.EVENT_STAFF.CREATE, data);
   },
 

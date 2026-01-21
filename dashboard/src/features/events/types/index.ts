@@ -27,13 +27,22 @@ export interface EventCompany {
 export interface EventStaff {
   id: string; // Nano UUID (e.g., "es_V1StGXR8_Z5jdHi6B")
   event_id: number;
-  staff_id: number;
+  staff_id?: number; // Populated by backend from staff_cpf
   staff_cpf: string; // Redundant field for fast lookup
-  registration_check_id: number | null; // FK to checks table - NULL means not yet registered
-  created_at: string;
-  created_by: number; // User ID who created the assignment
+  registration_check_id?: number | null; // FK to checks table - NULL means not yet registered
+  created_at?: string; // Server-generated
+  created_by?: number; // User ID who created the assignment - Server-generated
   lastCheck?: Check; // Optional: last check for UI display
 }
+
+/**
+ * Payload for creating a new EventStaff relationship
+ * Only requires event_id and staff_cpf; other fields are server-generated
+ */
+export type CreateEventStaffPayload = Pick<
+  EventStaff,
+  "event_id" | "staff_cpf" | "created_by" | "staff_id"
+>;
 
 export interface EventUser {
   id: number;

@@ -6,7 +6,6 @@ import { Modal } from "@/shared/components/ui/Modal";
 import { User as UserIcon, Building2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AddExistingCompany from "./AddExistingCompany";
-
 interface Company {
   id: number;
   name: string;
@@ -82,6 +81,8 @@ const CompaniesTab: React.FC<CompaniesTabProps> = ({
         onSearchChange={setCompanySearch}
         filterValue={companyFilter}
         onFilterChange={setCompanyFilter}
+        onAdd={() => setModalOpen(true)}
+        addLabel="Adicionar Empresa"
       />
 
       <ListCard
@@ -119,6 +120,21 @@ const CompaniesTab: React.FC<CompaniesTabProps> = ({
           </>
         )}
       </ListCard>
+
+      <Modal
+        open={modalOpen}
+        onOpenChange={handleModalClose}
+        title="Adicionar Empresa ao Evento"
+        description="Selecione uma empresa existente para adicionar ao evento"
+      >
+        {eventId && (
+          <AddExistingCompany
+            eventId={eventId}
+            onSuccess={handleCompanySuccess}
+            onCancel={handleModalClose}
+          />
+        )}
+      </Modal>
     </div>
   );
 };
