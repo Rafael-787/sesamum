@@ -7,7 +7,7 @@ import ListToolbar from "@/shared/components/list/ListToolbar";
 import ListCard from "@/shared/components/list/ListCard";
 import { type Event } from "../types/index";
 import { Modal } from "@/shared/components/ui/Modal";
-import { Toast } from "@/shared/components/ui/Toast";
+
 import { Calendar, Building2, Users, MapPin } from "lucide-react";
 import Badge from "@/shared/components/ui/Badge";
 import { useNavigate } from "react-router-dom";
@@ -25,8 +25,6 @@ const EventsPage: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  // Toast states
-  const [successOpen, setSuccessOpen] = useState(false);
 
   // Debounce search input
   const debouncedSearch = useDebounce(search, 500);
@@ -60,10 +58,6 @@ const EventsPage: React.FC = () => {
     fetchEvents();
   }, [filter, debouncedSearch]);
 
-  React.useEffect(() => {
-    setSuccessOpen(true);
-  }, []);
-
   const handleEventClick = (event: Event) => {
     navigate(`/events/${event.id}`);
   };
@@ -79,14 +73,6 @@ const EventsPage: React.FC = () => {
 
   return (
     <PageContainer>
-      {/* Toasts on page entry */}
-      <Toast
-        open={successOpen}
-        onOpenChange={setSuccessOpen}
-        type="default"
-        message="Bem-vindo ao painel! (Sucesso)"
-        duration={2500}
-      />
       <PageHeader title="Eventos" subtitle="Gerencie eventos do sistema." />
 
       {error && (

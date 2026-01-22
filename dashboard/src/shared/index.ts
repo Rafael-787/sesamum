@@ -10,6 +10,12 @@ export {
   DetailsTabsContainer,
 } from "./components/layout/DetailsPageLayout";
 
+// Routing
+export { PrivateRoute } from "./components/routing/PrivateRoute";
+
+// Pages
+export { default as Unauthorized } from "./pages/Unauthorized";
+
 // UI Primitives
 export { AvatarComponent } from "./components/ui/Avatar";
 export { default as Badge } from "./components/ui/Badge";
@@ -19,6 +25,7 @@ export { default as CardTitle } from "./components/ui/Card";
 export { default as CardContent } from "./components/ui/Card";
 export { default as Input } from "./components/ui/Input";
 export { default as Autocomplete } from "./components/ui/Autocomplete";
+export { default as LoadingPage } from "./components/layout/LoadingPage";
 export { Modal } from "./components/ui/Modal";
 export { Toast } from "./components/ui/Toast";
 
