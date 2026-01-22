@@ -23,9 +23,6 @@ const ListToolbar: React.FC<ListToolbarProps> = ({
   filterOptions = [],
   filterValue,
   onFilterChange,
-  secondaryFilterOptions = [],
-  secondaryFilterValue,
-  onSecondaryFilterChange,
   searchValue,
   onSearchChange,
   onAdd,
@@ -87,7 +84,7 @@ const ListToolbar: React.FC<ListToolbarProps> = ({
     )}
     {onAdd && (
       <button
-        className="flex items-center gap-2 font-medium text-sm transition-colors px-4 py-2 bg-primary text-button-text rounded-lg shadow-sm hover:bg-button-bg-hover cursor-pointer"
+        className="flex items-center gap-2 font-medium text-sm transition-colors px-4 py-2 bg-primary text-button-text rounded-lg shadow-sm hover:bg-button-bg-hover hover:cursor-pointer"
         onClick={onAdd}
       >
         <Plus size={18} />

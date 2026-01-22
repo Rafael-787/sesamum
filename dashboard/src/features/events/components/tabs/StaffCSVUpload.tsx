@@ -194,7 +194,7 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
           <button
             type="button"
             onClick={downloadTemplate}
-            className="text-sm text-primary hover:underline flex items-center gap-1"
+            className="hover:cursor-pointer text-sm text-primary hover:underline flex items-center gap-1"
           >
             <FileText size={14} />
             Baixar modelo CSV
@@ -223,7 +223,7 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
                 </div>
                 <button
                   onClick={handleRemoveFile}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="hover:cursor-pointer text-gray-400 hover:text-gray-600"
                 >
                   <X size={18} />
                 </button>
@@ -283,7 +283,7 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
           <button
             type="button"
             onClick={handleRemoveFile}
-            className="text-sm text-gray-600 hover:text-gray-800 flex items-center gap-1"
+            className="hover:cursor-pointer text-sm text-gray-600 hover:text-gray-800 flex items-center gap-1"
           >
             <X size={14} />
             Selecionar outro arquivo
@@ -295,14 +295,14 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
         <button
           onClick={onCancel}
           disabled={isLoading}
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50"
+          className="hover:cursor-pointer px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50"
         >
           Cancelar
         </button>
         <button
           onClick={handleSubmit}
           disabled={isLoading || parsedData.length === 0 || errors.length > 0}
-          className="px-4 py-2 text-sm font-medium text-button-text bg-primary rounded-lg hover:bg-button-bg-hover disabled:opacity-50 disabled:cursor-not-allowed"
+          className="hover:cursor-pointer px-4 py-2 text-sm font-medium text-button-text bg-primary rounded-lg hover:bg-button-bg-hover disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isLoading
             ? "Importando..."

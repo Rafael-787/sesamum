@@ -142,7 +142,7 @@ export function Autocomplete<T>({
                     <button
                       key={String(optionValue)}
                       type="button"
-                      className="relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-slate-100 focus:bg-slate-100"
+                      className="relative flex w-full hover:cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-slate-100 focus:bg-slate-100"
                       onClick={() => handleSelect(option)}
                     >
                       <span>{optionLabel}</span>

@@ -201,14 +201,14 @@ const UsersPage: React.FC = () => {
         return (
           <div className="flex flex-col justify-center gap-4">
             <button
-              className="flex items-center justify-center w-full gap-2 font-medium text-sm transition-colors px-4 py-2 bg-primary text-button-text rounded-lg shadow-sm hover:bg-button-bg-hover cursor-pointer"
+              className="hover:cursor-pointer flex items-center justify-center w-full gap-2 font-medium text-sm transition-colors px-4 py-2 bg-primary text-button-text rounded-lg shadow-sm hover:bg-button-bg-hover"
               onClick={() => setModalView("new")}
             >
               <UserIcon size={18} />
               <span>Criar usuário</span>
             </button>
             <button
-              className="flex items-center justify-center w-full gap-2 font-medium text-sm transition-colors px-4 py-2 bg-primary text-button-text rounded-lg shadow-sm hover:bg-button-bg-hover cursor-pointer"
+              className="hover:cursor-pointer flex items-center justify-center w-full gap-2 font-medium text-sm transition-colors px-4 py-2 bg-primary text-button-text rounded-lg shadow-sm hover:bg-button-bg-hover"
               onClick={() => setModalView("invite")}
             >
               <Mail size={18} />

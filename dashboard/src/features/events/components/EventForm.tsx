@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IMaskInput } from "react-imask";
@@ -37,14 +37,14 @@ export function EventForm({
       name: event?.name || "",
       description: event?.description || "",
       location: event?.location || "",
-      status: event?.status || "open",
+      status: event?.status === "pending" ? "open" : event?.status || "open",
       project_id: projectId || event?.project_id || undefined,
       date_begin: event?.date_begin
         ? formatDateToDDMMYYYY(event.date_begin)
         : "",
       date_end: event?.date_end ? formatDateToDDMMYYYY(event.date_end) : "",
     },
-  });
+  } as const);
 
   const onSubmit = async (data: EventFormData) => {
     try {

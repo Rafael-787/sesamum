@@ -97,6 +97,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     setDevRole(role);
   };
 
+  const handleLogout = () => {
+    // Implement logout logic here
+    console.log("Logging out...");
+    localStorage.removeItem("acess_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("dev_role");
+    navigate("/login");
+  };
+
   const clearDevMode = () => {
     setDevRole(null);
   };
@@ -121,7 +130,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             </div>
             <button
               onClick={toggleSidebar}
-              className="md:hidden text-sidebar-text-muted"
+              className="hover:cursor-pointer md:hidden text-sidebar-text-muted"
             >
               <X size={24} />
             </button>
@@ -139,7 +148,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                   }}
                   className={`
                     w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium
-                    transition-all duration-200 cursor-pointer
+                    transition-all duration-200 hover:cursor-pointer
                     ${
                       isActive
                         ? "bg-primary text-white shadow-md"
@@ -163,7 +172,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 </p>
                 <button
                   onClick={clearDevMode}
-                  className="text-xs text-yellow-500 underline hover:text-yellow-400 mt-1"
+                  className="hover:cursor-pointer text-xs text-yellow-500 underline hover:text-yellow-400 mt-1"
                 >
                   Voltar ao modo normal
                 </button>
@@ -179,7 +188,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 value={devRole || user?.role || "admin"}
                 onValueChange={handleRoleChange}
               >
-                <Select.Trigger className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-sidebar-hover-bg text-sidebar-text text-sm border border-sidebar-border hover:bg-opacity-80 transition-colors">
+                <Select.Trigger className="w-full flex items-center justify-between px-3 py-2 rounded-lg bg-sidebar-hover-bg text-sidebar-text text-sm border border-sidebar-border hover:bg-opacity-80 transition-colors hover:cursor-pointer">
                   <Select.Value />
                   <Select.Icon>
                     <ChevronDown
@@ -195,7 +204,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                         <Select.Item
                           key={mode}
                           value={mode}
-                          className="relative flex items-center px-8 py-2 text-sm text-gray-900 rounded cursor-pointer hover:bg-gray-100 outline-none data-highlighted:bg-gray-100"
+                          className="relative flex items-center px-8 py-2 text-sm text-gray-900 rounded hover:cursor-pointer hover:bg-gray-100 outline-none data-highlighted:bg-gray-100"
                         >
                           <Select.ItemText>{mode}</Select.ItemText>
                         </Select.Item>
@@ -220,7 +229,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 </p>
               </div>
             </div>
-            <button className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-red-500 transition-colors hover:cursor-pointer hover:bg-red-50">
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-4 py-2 rounded-lg text-sm text-red-500 transition-colors hover:cursor-pointer hover:bg-red-50"
+            >
               <LogOut size={18} />
               Sair
             </button>

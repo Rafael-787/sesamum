@@ -182,14 +182,14 @@ const CreateAndAddStaff: React.FC<CreateAndAddStaffProps> = ({
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="hover:cursor-pointer px-4 py-2 rounded-lg text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={isSubmitting}
         >
           Cancelar
         </button>
         <button
           type="submit"
-          className="px-4 py-2 rounded-lg text-sm font-medium text-button-text bg-primary hover:bg-button-bg-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="hover:cursor-pointer px-4 py-2 rounded-lg text-sm font-medium text-button-text bg-primary hover:bg-button-bg-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Criando..." : "Criar e Adicionar"}

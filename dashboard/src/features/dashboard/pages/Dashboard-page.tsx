@@ -9,11 +9,8 @@ import { EventCalendar } from "../components/EventCalendar";
 import { RecentActivityList } from "../components/RecentActivity";
 import { useRealTimeData } from "@/shared/hooks/useRealTimeData";
 import { useRecentlyVisited } from "@/shared/hooks/useRecentlyVisited";
-import {
-  type Event,
-  type DashboardMetrics,
-  type RecentActivity,
-} from "../types";
+import { type DashboardMetrics, type RecentActivity } from "../types";
+import type { Event } from "@/features/events";
 import { formatDateTime } from "@/shared/lib/dateUtils";
 import { dashboardService } from "../api/dashboard.service";
 import { eventsService } from "@/features/events/api/events.service";
@@ -97,7 +94,7 @@ const DashboardPage: React.FC = () => {
     <button
       onClick={handleRefresh}
       disabled={metricsLoading || eventsLoading}
-      className="flex text-title text-sm items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+      className="hover:cursor-pointer flex text-title text-sm items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
     >
       <RefreshCw
         size={16}

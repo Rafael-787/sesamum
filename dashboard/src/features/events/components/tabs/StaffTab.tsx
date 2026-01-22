@@ -127,21 +127,21 @@ const StaffTab: React.FC<StaffTabProps> = ({
         return (
           <div className="flex flex-col justify-center gap-4">
             <button
-              className="flex items-center justify-center w-full gap-2 font-medium text-sm transition-colors px-4 py-2 bg-primary text-button-text rounded-lg shadow-sm hover:bg-button-bg-hover cursor-pointer"
+              className="hover:cursor-pointer flex items-center justify-center w-full gap-2 font-medium text-sm transition-colors px-4 py-2 bg-primary text-button-text rounded-lg shadow-sm hover:bg-button-bg-hover cursor-pointer"
               onClick={() => setModalView("csv")}
             >
               <CloudUpload size={18} />
               <span>Arquivo .csv</span>
             </button>
             <button
-              className="flex items-center justify-center w-full gap-2 font-medium text-sm transition-colors px-4 py-2 bg-primary text-button-text rounded-lg shadow-sm hover:bg-button-bg-hover cursor-pointer"
+              className="hover:cursor-pointer flex items-center justify-center w-full gap-2 font-medium text-sm transition-colors px-4 py-2 bg-primary text-button-text rounded-lg shadow-sm hover:bg-button-bg-hover cursor-pointer"
               onClick={() => setModalView("existing")}
             >
               <UserIcon size={18} />
               <span>Staff existente</span>
             </button>
             <button
-              className="flex items-center justify-center w-full gap-2 font-medium text-sm transition-colors px-4 py-2 bg-primary text-button-text rounded-lg shadow-sm hover:bg-button-bg-hover cursor-pointer"
+              className="hover:cursor-pointer flex items-center justify-center w-full gap-2 font-medium text-sm transition-colors px-4 py-2 bg-primary text-button-text rounded-lg shadow-sm hover:bg-button-bg-hover cursor-pointer"
               onClick={() => setModalView("new")}
             >
               <Plus size={18} />

@@ -243,14 +243,14 @@ const AddExistingCompany: React.FC<AddExistingCompanyProps> = ({
         <button
           onClick={onCancel}
           disabled={isSubmitting}
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50"
+          className="hover:cursor-pointer px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50"
         >
           Cancelar
         </button>
         <button
           onClick={handleSubmit}
           disabled={isSubmitting || selectedCompanyIds.length === 0}
-          className="px-4 py-2 text-sm font-medium text-button-text bg-primary rounded-lg hover:bg-button-bg-hover disabled:opacity-50 disabled:cursor-not-allowed"
+          className="hover:cursor-pointer px-4 py-2 text-sm font-medium text-button-text bg-primary rounded-lg hover:bg-button-bg-hover disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting
             ? "Adicionando..."
