@@ -15,6 +15,7 @@ export { PrivateRoute } from "./components/routing/PrivateRoute";
 
 // Pages
 export { default as Unauthorized } from "./components/layout/Unauthorized";
+export { default as NotFound } from "./components/layout/NotFound";
 
 // UI Primitives
 export { AvatarComponent } from "./components/ui/Avatar";
