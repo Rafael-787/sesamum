@@ -20,7 +20,7 @@ export default function SignUpPage() {
   const [invite, setInvite] = useState<UserInvite | null>(null);
   const [company, setCompany] = useState<Company | null>(null);
 
-  const inviteToken = searchParams.get("invite_token");
+  const inviteToken = searchParams.get("invite");
 
   // Validate invite on mount
   useEffect(() => {

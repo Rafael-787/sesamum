@@ -3,7 +3,7 @@ import { Modal } from "@/shared/components/ui/Modal";
 import Badge from "@/shared/components/ui/Badge";
 import { Toast } from "@/shared/components/ui/Toast";
 import type { UserInvite } from "@/shared/types";
-import { Building2, Mail, Calendar, Clock } from "lucide-react";
+import { Building2, Mail, Calendar, Clock, Copy, Check } from "lucide-react";
 import { userInvitesService } from "../api/userInvites.service";
 import { companiesService } from "@/features/companies/api/companies.service";
 
@@ -25,6 +25,7 @@ export const InviteDetailsModal: React.FC<InviteDetailsModalProps> = ({
   const [deleting, setDeleting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
   const [toast, setToast] = useState<{
     open: boolean;
     type: "success" | "error";
@@ -116,6 +117,34 @@ export const InviteDetailsModal: React.FC<InviteDetailsModalProps> = ({
     });
   };
 
+  const handleCopyInviteUrl = async () => {
+    if (!invite) return;
+
+    const inviteUrl = `${window.location.origin}/signup?invite=${invite.id}`;
+
+    try {
+      await navigator.clipboard.writeText(inviteUrl);
+      setCopied(true);
+      setToast({
+        open: true,
+        type: "success",
+        message: "Link copiado para a área de transferência",
+      });
+
+      // Reset copied state after 2 seconds
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    } catch (err) {
+      console.error("Error copying to clipboard:", err);
+      setToast({
+        open: true,
+        type: "error",
+        message: "Erro ao copiar link",
+      });
+    }
+  };
+
   if (!invite) return null;
 
   return (
@@ -133,6 +162,51 @@ export const InviteDetailsModal: React.FC<InviteDetailsModalProps> = ({
               <p className="text-red-700 text-sm font-medium">{error}</p>
             </div>
           )}
+
+          {/* Copy Invite URL */}
+          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex-col space-y-4 items-center justify-between gap-3">
+              <div className="flex-1">
+                <p className="text-xs text-text font-medium mb-1">
+                  Link de Cadastro
+                </p>
+                <p className="text-sm text-blue-600 font-mono break-all">
+                  {`${window.location.origin}/signup?invite=${invite.id}`}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <button
+              onClick={handleCopyInviteUrl}
+              className="flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+            >
+              {copied ? (
+                <>
+                  <Check size={16} />
+                  Copiado!
+                </>
+              ) : (
+                <>
+                  <Copy size={16} />
+                  Copiar
+                </>
+              )}
+            </button>
+          </div>
+          {/* Role & Status */}
+          <div className="flex items-start gap-3">
+            <div className="flex-1 flex gap-4">
+              <div>
+                <p className="text-xs text-subtitle font-medium mb-2">Função</p>
+                <Badge variant={invite.role} />
+              </div>
+              <div>
+                <p className="text-xs text-subtitle font-medium mb-2">Status</p>
+                <Badge variant={invite.status} />
+              </div>
+            </div>
+          </div>
 
           {/* Invite Details */}
           <div className="space-y-4">
@@ -160,51 +234,34 @@ export const InviteDetailsModal: React.FC<InviteDetailsModalProps> = ({
               </div>
             </div>
 
-            {/* Role & Status */}
-            <div className="flex items-start gap-3">
-              <div className="flex-1 flex gap-4">
-                <div>
-                  <p className="text-xs text-subtitle font-medium mb-2">
-                    Função
+            <div className="flex gap-8">
+              {/* Created At */}
+              <div className="flex items-start gap-3">
+                <Calendar size={20} className="text-subtitle mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-xs text-subtitle font-medium mb-1">
+                    Criado em
                   </p>
-                  <Badge variant={invite.role} />
-                </div>
-                <div>
-                  <p className="text-xs text-subtitle font-medium mb-2">
-                    Status
+                  <p className="text-sm text-title">
+                    {formatDate(invite.created_at)}
                   </p>
-                  <Badge variant={invite.status} />
                 </div>
               </div>
-            </div>
 
-            {/* Created At */}
-            <div className="flex items-start gap-3">
-              <Calendar size={20} className="text-subtitle mt-0.5" />
-              <div className="flex-1">
-                <p className="text-xs text-subtitle font-medium mb-1">
-                  Criado em
-                </p>
-                <p className="text-sm text-title">
-                  {formatDate(invite.created_at)}
-                </p>
-              </div>
-            </div>
-
-            {/* Expires At */}
-            <div className="flex items-start gap-3">
-              <Clock size={20} className="text-subtitle mt-0.5" />
-              <div className="flex-1">
-                <p className="text-xs text-subtitle font-medium mb-1">
-                  Expira em
-                </p>
-                <p className="text-sm text-title">
-                  {formatDate(invite.expires_at)}
-                </p>
+              {/* Expires At */}
+              <div className="flex items-start gap-3">
+                <Clock size={20} className="text-subtitle mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-xs text-subtitle font-medium mb-1">
+                    Expira em
+                  </p>
+                  <p className="text-sm text-title">
+                    {formatDate(invite.expires_at)}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-
           {/* Delete Confirmation */}
           {showConfirmation ? (
             <div className="space-y-4 p-4 bg-red-50 border border-red-200 rounded-lg">
