@@ -25,6 +25,7 @@ const CompaniesDetailsPage: React.FC = () => {
   const navigate = useNavigate();
   const { addRecentVisit } = useRecentlyVisited();
   const { user } = useAuth();
+  const { can } = usePermissions(); // Move hook to top before any conditional returns
   const [eventSearch, setEventSearch] = useState("");
   const [eventFilter, setEventFilter] = useState("all");
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -156,7 +157,6 @@ const CompaniesDetailsPage: React.FC = () => {
   }
 
   // Check permissions
-  const { can } = usePermissions();
   const canEdit = can("update", "company");
   const canDelete = can("delete", "company");
 

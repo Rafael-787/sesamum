@@ -35,6 +35,7 @@ const UsersDetailsPage: React.FC = () => {
   const navigate = useNavigate();
   const { addRecentVisit } = useRecentlyVisited();
   const { user: currentUser } = useAuth();
+  const { can } = usePermissions(); // Move hook to top before any conditional returns
   const [eventSearch, setEventSearch] = useState("");
   const [eventFilter, setEventFilter] = useState("all");
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -189,7 +190,6 @@ const UsersDetailsPage: React.FC = () => {
   };
 
   // Check permissions (only admin role)
-  const { can } = usePermissions();
   const canEdit = can("update", "user");
   const canDelete = can("delete", "user");
 

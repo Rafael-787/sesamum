@@ -35,6 +35,7 @@ const StaffsDetailsPage: React.FC = () => {
   const navigate = useNavigate();
   const { addRecentVisit } = useRecentlyVisited();
   const { user } = useAuth();
+  const { can } = usePermissions(); // Move hook to top before any conditional returns
   const [eventSearch, setEventSearch] = useState("");
   const [eventFilter, setEventFilter] = useState("all");
   const [staff, setStaff] = useState<Staff | null>(null);
@@ -167,7 +168,6 @@ const StaffsDetailsPage: React.FC = () => {
   }
 
   // Check permissions (admin or company role with matching company_id)
-  const { can } = usePermissions();
   const canEdit = can("update", "staff", { company_id: staff.company_id });
   const canDelete = can("delete", "staff", { company_id: staff.company_id });
 
