@@ -76,5 +76,11 @@ export const usePermissions = () => {
    */
   const isControl = (): boolean => user?.role === "control";
 
-  return { can, isAdmin, isCompany, isControl, user };
+  /**
+   * Check if the current user is in dev mode.
+   * Note: 'dev' is a development-only role for testing purposes.
+   */
+  const isDev = (): boolean => user?.role === "admin"; // dev role is treated as admin
+
+  return { can, isAdmin, isCompany, isControl, isDev, user };
 };

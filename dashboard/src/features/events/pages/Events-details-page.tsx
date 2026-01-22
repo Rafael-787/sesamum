@@ -8,7 +8,7 @@ import {
 } from "@/shared/components/layout/DetailsPageLayout";
 import OverviewTab from "../components/tabs/OverviewTab";
 import StaffTab from "../components/tabs/StaffTab";
-import CompaniesTab from "../components/tabs/CompaniesTab";
+import CompaniesTab from "@/shared/components/tabs/CompaniesTab";
 import { eventsService } from "../api/events.service";
 import { companiesService } from "@/features/companies/api/companies.service";
 import { staffsService } from "@/features/staffs/api/staffs.service";
@@ -21,14 +21,16 @@ import { Modal } from "@/shared/components/ui/Modal";
 import { EventForm } from "../components/EventForm";
 import { ConfirmDialog } from "@/shared/components/ui/ConfirmDialog";
 import { Toast } from "@/shared/components/ui/Toast";
-import { useAuth } from "@/shared/context/AuthContext";
 import { usePermissions } from "@/shared/hooks/usePermissions";
 
 const EventDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addRecentVisit } = useRecentlyVisited();
-  const { user } = useAuth();
+
+  // Check permissions (must be called before any conditional returns)
+  const { can, isAdmin, isControl } = usePermissions();
+
   const [staffSearch, setStaffSearch] = useState("");
   const [staffFilter, setStaffFilter] = useState("all");
   const [companySearch, setCompanySearch] = useState("");
@@ -207,8 +209,6 @@ const EventDetailsPage: React.FC = () => {
     );
   }
 
-  // Check permissions
-  const { can } = usePermissions();
   const canEdit = can("update", "event");
   const canDelete = can("delete", "event");
 
@@ -298,20 +298,24 @@ const EventDetailsPage: React.FC = () => {
               />
             ),
           },
-          {
-            title: "Empresas",
-            content: (
-              <CompaniesTab
-                eventId={Number(id)}
-                companySearch={companySearch}
-                setCompanySearch={setCompanySearch}
-                companyFilter={companyFilter}
-                setCompanyFilter={setCompanyFilter}
-                companies={companies}
-                onCompanyAdded={handleCompanyAdded}
-              />
-            ),
-          },
+          ...(event.company_role === "production" || isAdmin() || isControl()
+            ? [
+                {
+                  title: "Empresas",
+                  content: (
+                    <CompaniesTab
+                      eventId={Number(id)}
+                      companySearch={companySearch}
+                      setCompanySearch={setCompanySearch}
+                      companyFilter={companyFilter}
+                      setCompanyFilter={setCompanyFilter}
+                      companies={companies}
+                      onCompanyAdded={handleCompanyAdded}
+                    />
+                  ),
+                },
+              ]
+            : []),
         ]}
         defaultTab="Visão Geral"
       />

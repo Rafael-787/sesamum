@@ -11,6 +11,7 @@ export interface Event {
   location?: string;
   staffs_qnt?: number;
   companies?: EventCompany[];
+  company_role?: "production" | "service";
 }
 
 export interface EventCompany {

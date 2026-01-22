@@ -24,11 +24,11 @@ interface AuthContextType {
   accessToken: string | null;
   refreshToken: string | null;
   user: User | null;
-  devRole: "admin" | "company" | "control" | null;
+  devRole: "admin" | "company" | "control" | "dev" | null;
   isDevMode: boolean;
   setTokens: (access: string, refresh: string) => void;
   clearTokens: () => void;
-  setDevRole: (role: "admin" | "company" | "control" | null) => void;
+  setDevRole: (role: "admin" | "company" | "control" | "dev" | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -41,7 +41,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [refreshToken, setRefreshToken] = useState<string | null>(null);
   const [devRole, setDevRoleState] = useState<
-    "admin" | "company" | "control" | null
+    "admin" | "company" | "control" | "dev" | null
   >(null);
 
   // Base user for development (in production, this would come from JWT or API)
@@ -55,7 +55,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   // Return user with dev role override if in dev mode
-  const user: User | null = devRole ? { ...baseUser, role: devRole } : baseUser;
+  // Note: 'dev' role shows all menus but keeps admin permissions
+  const user: User | null = devRole
+    ? { ...baseUser, role: devRole === "dev" ? "admin" : devRole }
+    : baseUser;
 
   const isDevMode = devRole !== null;
 
@@ -67,6 +70,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       | "admin"
       | "company"
       | "control"
+      | "dev"
       | null;
 
     if (storedAccessToken) {
@@ -79,6 +83,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     if (storedDevRole) {
       setDevRoleState(storedDevRole);
+    } else {
+      // Default to 'dev' role for development mode
+      setDevRoleState("dev");
+      localStorage.setItem("dev_role", "dev");
     }
   }, []);
 
@@ -109,7 +117,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem("refresh_token");
   };
 
-  const setDevRole = (role: "admin" | "company" | "control" | null) => {
+  const setDevRole = (role: "admin" | "company" | "control" | "dev" | null) => {
     setDevRoleState(role);
     if (role) {
       localStorage.setItem("dev_role", role);

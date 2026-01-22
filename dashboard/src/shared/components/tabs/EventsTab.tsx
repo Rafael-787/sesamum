@@ -6,6 +6,7 @@ import { Modal } from "../ui/Modal";
 import { Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { EventForm } from "@/features/events/components/EventForm";
+import { useAuth } from "@/shared/context/AuthContext";
 
 interface Event {
   id: number;
@@ -38,6 +39,9 @@ const EventsTab: React.FC<EventsTabProps> = ({
 }) => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
+
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
 
   // Map UI filter to event status
   const filterMap: Record<string, string[]> = {
@@ -79,10 +83,11 @@ const EventsTab: React.FC<EventsTabProps> = ({
           { value: "open", label: "Ativos" },
           { value: "close", label: "Concluídos" },
         ]}
-        {...(addButton && {
-          addLabel: "Adicionar Evento",
-          onAdd: () => setModalOpen(true),
-        })}
+        {...(addButton &&
+          isAdmin && {
+            addLabel: "Adicionar Evento",
+            onAdd: () => setModalOpen(true),
+          })}
         searchValue={eventSearch}
         onSearchChange={setEventSearch}
         filterValue={eventFilter}

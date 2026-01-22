@@ -8,7 +8,7 @@ import {
 } from "@/shared/components/layout/DetailsPageLayout";
 import OverviewTab from "../components/tabs/OverviewTab";
 import EventsTab from "@/shared/components/tabs/EventsTab";
-import CompaniesTab from "@/features/events/components/tabs/CompaniesTab";
+import CompaniesTab from "@/shared/components/tabs/CompaniesTab";
 import { projectsService } from "../api/projects.service";
 import { eventsService } from "@/features/events/api/events.service";
 import { eventCompaniesService } from "@/features/events/api/eventCompanies.service";
@@ -21,14 +21,16 @@ import { Modal } from "@/shared/components/ui/Modal";
 import { ProjectForm } from "../components/ProjectForm";
 import { ConfirmDialog } from "@/shared/components/ui/ConfirmDialog";
 import { Toast } from "@/shared/components/ui/Toast";
-import { useAuth } from "@/shared/context/AuthContext";
 import { usePermissions } from "@/shared/hooks/usePermissions";
 
 const ProjectDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addRecentVisit } = useRecentlyVisited();
-  const { user } = useAuth();
+
+  // Check permissions (must be called before any conditional returns)
+  const { can, isAdmin, isControl } = usePermissions();
+
   const [eventSearch, setEventSearch] = useState("");
   const [eventFilter, setEventFilter] = useState("all");
   const [companySearch, setCompanySearch] = useState("");
@@ -231,8 +233,6 @@ const ProjectDetailsPage: React.FC = () => {
     );
   }
 
-  // Check permissions
-  const { can } = usePermissions();
   const canEdit = can("update", "project");
   const canDelete = can("delete", "project");
 
@@ -334,18 +334,22 @@ const ProjectDetailsPage: React.FC = () => {
               />
             ),
           },
-          {
-            title: "Empresas",
-            content: (
-              <CompaniesTab
-                companySearch={companySearch}
-                setCompanySearch={setCompanySearch}
-                companyFilter={companyFilter}
-                setCompanyFilter={setCompanyFilter}
-                companies={companies}
-              />
-            ),
-          },
+          ...(project.company_role === "production" || isAdmin() || isControl()
+            ? [
+                {
+                  title: "Empresas",
+                  content: (
+                    <CompaniesTab
+                      companySearch={companySearch}
+                      setCompanySearch={setCompanySearch}
+                      companyFilter={companyFilter}
+                      setCompanyFilter={setCompanyFilter}
+                      companies={companies}
+                    />
+                  ),
+                },
+              ]
+            : []),
         ]}
         defaultTab="Visão Geral"
       />

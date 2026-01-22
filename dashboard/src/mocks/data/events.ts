@@ -1,4 +1,4 @@
-import type { Event } from "../../types";
+import type { Event } from "@/features/events";
 
 /**
  * Mock Events Data
@@ -18,6 +18,7 @@ export let mockEvents: Event[] = [
     type: "event",
     location: "Arena Principal",
     staffs_qnt: 45,
+    company_role: "production",
   },
   {
     id: 2,
@@ -29,6 +30,7 @@ export let mockEvents: Event[] = [
     type: "project",
     location: "Centro de Convenções",
     staffs_qnt: 32,
+    company_role: "service",
   },
   {
     id: 3,
@@ -40,6 +42,7 @@ export let mockEvents: Event[] = [
     type: "event",
     location: "Studio A",
     staffs_qnt: 15,
+    company_role: "production",
   },
   {
     id: 4,
@@ -51,6 +54,7 @@ export let mockEvents: Event[] = [
     type: "project",
     location: "Hotel Grand Plaza",
     staffs_qnt: 28,
+    company_role: "service",
   },
   {
     id: 5,
@@ -62,6 +66,7 @@ export let mockEvents: Event[] = [
     type: "event",
     location: "Expo Center Sul",
     staffs_qnt: 67,
+    company_role: "production",
   },
   {
     id: 6,
@@ -73,6 +78,7 @@ export let mockEvents: Event[] = [
     type: "project",
     location: "Teatro Municipal",
     staffs_qnt: 22,
+    company_role: "service",
   },
   {
     id: 7,
@@ -84,6 +90,7 @@ export let mockEvents: Event[] = [
     type: "event",
     location: "Auditório Central",
     staffs_qnt: 10,
+    company_role: "production",
   },
 ];
 

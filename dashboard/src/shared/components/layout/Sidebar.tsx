@@ -43,14 +43,14 @@ const allMenuItems = [
     label: "Empresas",
     icon: Building2,
     path: "/companies",
-    roles: ["admin"],
+    roles: ["admin", "control"],
   },
   {
     id: "staffs",
     label: "Staffs",
     icon: Users,
     path: "/staffs",
-    roles: ["admin", "company", "control"],
+    roles: ["company"],
   },
   {
     id: "users",
@@ -68,12 +68,12 @@ const allMenuItems = [
   },
 ];
 
-const viewsMode: Array<"admin" | "company" | "control"> = [
+const viewsMode: Array<"admin" | "company" | "control" | "dev"> = [
+  "dev",
   "admin",
   "company",
   "control",
 ];
-const userId = 1; // Replace with actual user ID from auth context or state
 
 interface SidebarProps {
   isOpen: boolean;
@@ -85,12 +85,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
   const { user, devRole, isDevMode, setDevRole } = useAuth();
 
-  // Filter menu items based on user role
+  // Filter menu items based on user role (or devRole in dev mode)
+  const effectiveRole = devRole || user?.role;
   const menuItems = allMenuItems.filter(
-    (item) => user?.role && item.roles.includes(user.role),
+    (item) =>
+      effectiveRole &&
+      (effectiveRole === "dev" || item.roles.includes(effectiveRole)),
   );
 
-  const handleRoleChange = (role: "admin" | "company" | "control") => {
+  const handleRoleChange = (role: "admin" | "company" | "control" | "dev") => {
     setDevRole(role);
   };
 
@@ -206,7 +209,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             <div className="flex items-center gap-3 px-4 py-3 mb-2">
               <button
                 className="hover:cursor-pointer"
-                onClick={() => navigate(`/staffs/${userId}`)}
+                onClick={() => navigate(`/staffs/${user?.id}`)}
               >
                 <AvatarComponent size={32} alt="Admin User" />
               </button>

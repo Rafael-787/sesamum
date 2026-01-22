@@ -5,7 +5,9 @@ import Badge from "@/shared/components/ui/Badge";
 import { Modal } from "@/shared/components/ui/Modal";
 import { User as UserIcon, Building2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import AddExistingCompany from "./AddExistingCompany";
+import AddExistingCompany from "@/features/events/components/tabs/AddExistingCompany";
+import { useAuth } from "@/shared/context/AuthContext";
+
 interface Company {
   id: number;
   name: string;
@@ -35,6 +37,9 @@ const CompaniesTab: React.FC<CompaniesTabProps> = ({
 }) => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
+
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
 
   // Map UI filter to company role
   const filterMap: Record<string, string[]> = {
@@ -81,7 +86,7 @@ const CompaniesTab: React.FC<CompaniesTabProps> = ({
         onSearchChange={setCompanySearch}
         filterValue={companyFilter}
         onFilterChange={setCompanyFilter}
-        onAdd={() => setModalOpen(true)}
+        {...(isAdmin && { onAdd: () => setModalOpen(true) })}
         addLabel="Adicionar Empresa"
       />
 
