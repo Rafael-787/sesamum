@@ -58,7 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const initAuth = async () => {
       setIsLoading(true);
-      const storedAccessToken = localStorage.getItem("token");
+      const storedAccessToken = localStorage.getItem("access_token");
       const storedDevRole = localStorage.getItem("dev_role") as
         | "admin"
         | "company"
@@ -120,7 +120,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const setTokens = (token: string) => {
     setAccessToken(token);
-    localStorage.setItem("token", token);
+    localStorage.setItem("access_token", token);
   };
 
   const clearTokens = () => {

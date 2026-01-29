@@ -7,7 +7,7 @@ import { userInvitesService } from "@/features/users/api/userInvites.service";
 import { companiesService } from "@/features/companies/api/companies.service";
 import type { UserInvite } from "@/shared/types";
 import type { Company } from "@/features/companies";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo_dark.svg";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
@@ -89,7 +89,7 @@ export default function SignUpPage() {
       const authResponse = await googleRegister(mockGoogleToken, inviteToken);
 
       // Store tokens via AuthContext
-      setTokens(authResponse.tokens.access, authResponse.tokens.refresh);
+      setTokens(authResponse.tokens.access);
 
       // Redirect to dashboard
       navigate("/");
@@ -124,7 +124,7 @@ export default function SignUpPage() {
       <Card>
         <div className="w-full max-w-md space-y-8">
           {/* Header */}
-          <div className="text-center">
+          <div className=" flex justify-center">
             <img src={logo} alt="Sesamum Logo" />
           </div>
 

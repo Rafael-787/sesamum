@@ -34,8 +34,6 @@ const App: React.FC = () => {
             >
               <Menu size={24} />
             </button>
-            {/* Logo or Title */}
-            <h1 className="font-bold text-lg text-sidebar-bg">Sesamum</h1>
           </div>
           {/* User Avatar Placeholder */}
           <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs">

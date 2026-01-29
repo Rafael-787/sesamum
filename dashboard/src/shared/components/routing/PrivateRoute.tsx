@@ -20,10 +20,11 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({
   children,
   allowedRoles,
 }) => {
-  const { isAuthenticated, user, devRole } = useAuth();
+  const { isAuthenticated, isLoading, user, devRole } = useAuth();
 
   // Redirect to login if not authenticated
-  if (!isAuthenticated) {
+  if (isLoading) return null;
+  if (!isAuthenticated && !isLoading) {
     return <Navigate to="/login" replace />;
   }
 
@@ -37,7 +38,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({
       effectiveRole === "dev" ||
       (effectiveRole && allowedRoles.includes(effectiveRole));
 
-    if (!hasPermission) {
+    if (!hasPermission && !isLoading) {
       return <Navigate to="/unauthorized" replace />;
     }
   }

@@ -4,6 +4,7 @@ import { Card } from "@/shared";
 import { useAuth } from "@/shared/context/AuthContext";
 import { googleLogin } from "../api/auth.service";
 import axios from "axios";
+import logo from "@/assets/logo_dark.svg";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -51,11 +52,8 @@ export default function LoginPage() {
       <Card>
         <div className="w-full max-w-md space-y-8">
           {/* Header */}
-          <div className="text-center">
-            <h1 className="text-4xl font-bold text-title mb-2">Sesamum</h1>
-            <p className="text-subtitle text-sm">
-              Sistema de Credenciamento de Eventos
-            </p>
+          <div className=" flex justify-center">
+            <img src={logo} alt="Sesamum Logo" />
           </div>
 
           {/* Error Banner */}

@@ -15,6 +15,7 @@ import {
 import * as Select from "@radix-ui/react-select";
 import { AvatarComponent } from "../ui/Avatar";
 import { useAuth } from "../../context/AuthContext";
+import logo from "@/assets/logo.svg";
 
 const allMenuItems = [
   {
@@ -120,9 +121,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           {/* Logo Area */}
           <div className="p-6 flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-bold bg-clip-text text-white">
-                LOGO
-              </h1>
+              <img src={logo} alt="Sesamum Logo" className="h-10" />
             </div>
             <button
               onClick={toggleSidebar}
