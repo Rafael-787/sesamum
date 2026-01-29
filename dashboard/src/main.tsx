@@ -37,10 +37,10 @@ async function enableMocking() {
 // Enable MSW before rendering the app
 enableMocking().then(() => {
   createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-      <AuthProvider>
+    <AuthProvider>
+      <StrictMode>
         <App />
-      </AuthProvider>
-    </StrictMode>,
+      </StrictMode>
+    </AuthProvider>,
   );
 });

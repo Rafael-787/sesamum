@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "@/shared";
 import { useAuth } from "@/shared/context/AuthContext";
 import { googleLogin } from "../api/auth.service";
+import axios from "axios";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { setTokens } = useAuth();
+  const { setTokens, isAuthenticated, user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -15,19 +16,26 @@ export default function LoginPage() {
       setIsLoading(true);
       setError(null);
 
-      // TODO: Integrate Google Sign-In library (@react-oauth/google)
-      // const googleResponse = await googleSignIn();
-      // const idToken = googleResponse.credential;
-
       // For now, simulate Google OAuth with mock token
       const mockGoogleToken = "google_token_admin@sesamum.com";
 
       // Call backend with Google token
-      const authResponse = await googleLogin(mockGoogleToken);
+      const auth = async () => {
+        const response = await axios.post(
+          "http://localhost:8000/api/v1/auth/google/login",
+          {
+            googleToken: mockGoogleToken,
+          },
+        );
+        return response.data;
+      };
 
+      const authResponse = await auth();
+      console.log(authResponse.token);
       // Store tokens via AuthContext
-      setTokens(authResponse.tokens.access, authResponse.tokens.refresh);
-
+      setTokens(authResponse.token);
+      console.log(user);
+      console.log(isAuthenticated);
       // Redirect to dashboard
       navigate("/");
     } catch (err) {

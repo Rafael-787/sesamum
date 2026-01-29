@@ -6,6 +6,11 @@ import React, {
   type ReactNode,
 } from "react";
 import type { User } from "@/features/users/types";
+import {
+  validateToken,
+  logout as apiLogout,
+} from "@/features/auth/api/auth.service";
+import { useNavigate } from "react-router-dom";
 
 /**
  * AuthContext
@@ -26,9 +31,11 @@ interface AuthContextType {
   user: User | null;
   devRole: "admin" | "company" | "control" | "dev" | null;
   isDevMode: boolean;
-  setTokens: (access: string, refresh: string) => void;
+  isLoading: boolean;
+  setTokens: (token: string) => void;
   clearTokens: () => void;
   setDevRole: (role: "admin" | "company" | "control" | "dev" | null) => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -43,52 +50,60 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [devRole, setDevRoleState] = useState<
     "admin" | "company" | "control" | "dev" | null
   >(null);
-
-  // Base user for development (in production, this would come from JWT or API)
-  const baseUser: User = {
-    id: 1,
-    name: "Admin User",
-    picture: "",
-    email: "admin@sesamum.com",
-    role: "admin",
-    company_id: 1,
-  };
-
-  // Return user with dev role override if in dev mode
-  // Note: 'dev' role shows all menus but keeps admin permissions
-  const user: User | null = devRole
-    ? { ...baseUser, role: devRole === "dev" ? "admin" : devRole }
-    : baseUser;
-
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const isDevMode = devRole !== null;
 
-  // Load tokens and dev role from localStorage on mount
+  // Hybrid validation: decode JWT, then confirm with /me
   useEffect(() => {
-    const storedAccessToken = localStorage.getItem("access_token");
-    const storedRefreshToken = localStorage.getItem("refresh_token");
-    const storedDevRole = localStorage.getItem("dev_role") as
-      | "admin"
-      | "company"
-      | "control"
-      | "dev"
-      | null;
+    const initAuth = async () => {
+      setIsLoading(true);
+      const storedAccessToken = localStorage.getItem("token");
+      const storedDevRole = localStorage.getItem("dev_role") as
+        | "admin"
+        | "company"
+        | "control"
+        | "dev"
+        | null;
 
-    if (storedAccessToken) {
+      if (storedDevRole) {
+        setDevRoleState(storedDevRole);
+      }
+
+      if (!storedAccessToken) {
+        clearTokens();
+        setIsLoading(false);
+        return;
+      }
+
       setAccessToken(storedAccessToken);
-    }
 
-    if (storedRefreshToken) {
-      setRefreshToken(storedRefreshToken);
-    }
-
-    if (storedDevRole) {
-      setDevRoleState(storedDevRole);
-    } else {
-      // Default to 'dev' role for development mode
-      setDevRoleState("dev");
-      localStorage.setItem("dev_role", "dev");
-    }
-  }, []);
+      // Confirm with backend /me endpoint
+      try {
+        const me = await validateToken(storedAccessToken);
+        let role: "admin" | "company" | "control" = "admin";
+        if (devRole && devRole !== "dev") {
+          role = devRole;
+        } else if (["admin", "company", "control"].includes(me.role)) {
+          role = me.role as "admin" | "company" | "control";
+        }
+        setUser({
+          id: me.user_id,
+          name: "", // Optionally fetch from /me if available
+          picture: "",
+          email: me.email,
+          role,
+          company_id: me.company_id || 1,
+        });
+      } catch {
+        clearTokens();
+        setUser(null);
+      }
+      setIsLoading(false);
+    };
+    initAuth();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessToken]);
 
   // Listen for logout events from API client
   useEffect(() => {
@@ -103,18 +118,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
   }, []);
 
-  const setTokens = (access: string, refresh: string) => {
-    setAccessToken(access);
-    setRefreshToken(refresh);
-    localStorage.setItem("access_token", access);
-    localStorage.setItem("refresh_token", refresh);
+  const setTokens = (token: string) => {
+    setAccessToken(token);
+    localStorage.setItem("token", token);
   };
 
   const clearTokens = () => {
     setAccessToken(null);
     setRefreshToken(null);
+    setUser(null);
     localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("dev_role");
+  };
+
+  // Hybrid logout: call backend, clear tokens, navigate
+  const logout = async () => {
+    const refresh = localStorage.getItem("refresh_token");
+    try {
+      if (refresh) await apiLogout(refresh);
+    } catch {}
+    clearTokens();
+    //navigate("/login");
   };
 
   const setDevRole = (role: "admin" | "company" | "control" | "dev" | null) => {
@@ -126,7 +150,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const isAuthenticated = Boolean(accessToken);
+  const isAuthenticated = Boolean(accessToken && user);
 
   const value: AuthContextType = {
     isAuthenticated,
@@ -135,9 +159,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     user,
     devRole,
     isDevMode,
+    isLoading,
     setTokens,
     clearTokens,
     setDevRole,
+    logout,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

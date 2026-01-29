@@ -68,37 +68,13 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      try {
-        // Attempt to refresh the token
-        const refreshToken = localStorage.getItem("refresh_token");
+      // Refresh failed, clear tokens and redirect to login
+      localStorage.removeItem("access_token");
 
-        if (refreshToken) {
-          const response = await axios.post(
-            `${API_BASE_URL}/api/v1/auth/refresh/`,
-            {
-              refresh: refreshToken,
-            },
-          );
+      // Dispatch custom event for AuthContext to handle
+      window.dispatchEvent(new CustomEvent("auth:logout"));
 
-          const { access } = response.data;
-
-          // Update stored token
-          localStorage.setItem("access_token", access);
-
-          // Retry the original request with new token
-          originalRequest.headers.Authorization = `Bearer ${access}`;
-          return apiClient(originalRequest);
-        }
-      } catch (refreshError) {
-        // Refresh failed, clear tokens and redirect to login
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
-
-        // Dispatch custom event for AuthContext to handle
-        window.dispatchEvent(new CustomEvent("auth:logout"));
-
-        return Promise.reject(refreshError);
-      }
+      return Promise.reject(error.response);
     }
 
     // Handle other errors
