@@ -22,7 +22,7 @@ export let mockEvents: Event[] = [
   },
   {
     id: 2,
-    name: "Conferência Tech Brasil",
+    name: "Conferência Tech Brasil (Service)",
     date_begin: "2025-12-28T09:00:00Z",
     date_end: "2025-12-30T18:00:00Z",
     status: "open",
@@ -46,7 +46,7 @@ export let mockEvents: Event[] = [
   },
   {
     id: 4,
-    name: "Evento Corporativo - Ano Novo",
+    name: "Evento Corporativo - Ano Novo (service)",
     date_begin: "2026-01-10T19:00:00Z",
     date_end: "2026-01-13T23:30:00Z",
     status: "open",
@@ -70,7 +70,7 @@ export let mockEvents: Event[] = [
   },
   {
     id: 6,
-    name: "Show Beneficente",
+    name: "Show Beneficente (service)",
     date_begin: "2025-12-20T20:00:00Z",
     date_end: "2025-12-23T23:00:00Z",
     status: "close",

@@ -30,7 +30,7 @@ export let mockProjects: Project[] = [
   },
   {
     id: 3,
-    name: "Tech Conference 2025",
+    name: "Tech Conference 2025 (service)",
     status: "close",
     company_id: 2,
     date_begin: "2025-11-01T00:00:00Z",
@@ -50,7 +50,7 @@ export let mockProjects: Project[] = [
   },
   {
     id: 5,
-    name: "Maratona São Paulo",
+    name: "Maratona São Paulo (service)",
     status: "open",
     company_id: 3,
     date_begin: "2026-04-20T00:00:00Z",
@@ -70,7 +70,7 @@ export let mockProjects: Project[] = [
   },
   {
     id: 7,
-    name: "Semana da Inovação",
+    name: "Semana da Inovação (service)",
     status: "pending",
     company_id: 2,
     date_begin: "2026-05-10T00:00:00Z",
