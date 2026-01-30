@@ -1,11 +1,13 @@
-from models import Company
 from rest_framework import viewsets
+from rest_framework.response import Response
 
-from ..permissions import IsAdmin
+from ..mixins import CreatedByMixin
+from ..models import Company
+from ..permissions import IsControlOrAdmin
 from ..serializers import CompanySerializer
 
 
-class CompanySetView(viewsets.ModelViewSet):
+class CompanySetView(CreatedByMixin, viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
-    permission_classes = [IsAdmin]
+    permission_classes = [IsControlOrAdmin]

@@ -46,7 +46,7 @@ class StaffSerializer(serializers.ModelSerializer):
 
         if queryset.exists():
             raise serializers.ValidationError(
-                "Esse CPF já está cadastrado nessa empresa."
+                {"cpf": "Esse CPF já está cadastrado nessa empresa."}
             )
 
         # Injetamos a empresa nos atributos para o perform_create

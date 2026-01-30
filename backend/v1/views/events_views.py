@@ -2,13 +2,14 @@ from rest_framework import generics, status, views, viewsets
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
+from ..mixins import CreatedByMixin
 from ..models import Event, EventsStaff, Staff
 from ..permissions import IsAdmin, IsCompanyOrAdmin, IsControlOrAdmin
 from ..serializers import EventSerializer
 from ..utils import sanitize_digits
 
 
-class EventViewSet(viewsets.ModelViewSet):
+class EventViewSet(CreatedByMixin, viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     # permission_classes = [IsCompanyOrAdmin]
@@ -34,14 +35,6 @@ class EventViewSet(viewsets.ModelViewSet):
 
         serializer = EventSerializer(event)
         return Response(serializer.data)
-
-    def create(self, request):
-        """Cria um novo Evento"""
-        serializer = EventSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(created_by=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get_permissions(self):
         # Métodos de escrita (POST, PUT, PATCH, DELETE) exigem IsAdmin
