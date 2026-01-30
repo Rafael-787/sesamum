@@ -1,5 +1,6 @@
 from .auth_views import GoogleLoginView, RegisterWithInviteView
 from .check_views import CheckViewSet
+from .companies_views import CompanySetView
 from .dashboard_views import DashboardMetricsView
-from .events_views import EventOverviewView, EventStaffBulkView
+from .events_views import EventOverviewView, EventStaffBulkView, EventViewSet
 from .staff_views import StaffViewSet

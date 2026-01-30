@@ -13,6 +13,13 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ["role", "company", "created_at", "email"]
 
 
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Event
+        fields = ["id", "name", "date_begin", "date_end", "location", "description"]
+        read_only_fields = ["created_by", "created_at"]
+
+
 class InviteSerializer(serializers.ModelSerializer):
     status = serializers.ReadOnlyField()
     invite_url = serializers.SerializerMethodField()

@@ -20,9 +20,11 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from v1.views import (
     CheckViewSet,
+    CompanySetView,
     DashboardMetricsView,
     EventOverviewView,
     EventStaffBulkView,
+    EventViewSet,
     GoogleLoginView,
     RegisterWithInviteView,
     StaffViewSet,
@@ -31,6 +33,8 @@ from v1.views import (
 router = DefaultRouter()
 router.register(r"staffs", StaffViewSet, basename="staff")
 router.register(r"checks", CheckViewSet, basename="check")
+router.register(r"events", EventViewSet, basename="event")
+router.register(r"companies", CompanySetView, basename="company")
 # Adicione ViewSets de Company, Project, Event conforme necessário para CRUD básico
 
 urlpatterns = [
