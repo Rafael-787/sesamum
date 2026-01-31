@@ -28,6 +28,7 @@ from v1.views import (
     GoogleLoginView,
     RegisterWithInviteView,
     StaffViewSet,
+    UserSetView,
 )
 
 router = DefaultRouter()
@@ -35,6 +36,7 @@ router.register(r"staffs", StaffViewSet, basename="staff")
 router.register(r"checks", CheckViewSet, basename="check")
 router.register(r"events", EventViewSet, basename="event")
 router.register(r"companies", CompanySetView, basename="company")
+router.register(r"users", UserSetView, basename="user")
 # Adicione ViewSets de Company, Project, Event conforme necessário para CRUD básico
 
 urlpatterns = [
