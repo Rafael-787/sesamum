@@ -2,17 +2,16 @@ from rest_framework import generics, status, views, viewsets
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
-from ..mixins import CreatedByMixin
+from ..mixins import AdminWriteCompanyReadMixin, CreatedByMixin
 from ..models import Event, EventsStaff, Staff
 from ..permissions import IsAdmin, IsCompanyOrAdmin, IsControlOrAdmin
 from ..serializers import EventSerializer
 from ..utils import sanitize_digits
 
 
-class EventViewSet(CreatedByMixin, viewsets.ModelViewSet):
+class EventViewSet(CreatedByMixin, AdminWriteCompanyReadMixin, viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    # permission_classes = [IsCompanyOrAdmin]
 
     def list(self, request):
         """Lista de Eventos"""
@@ -35,13 +34,6 @@ class EventViewSet(CreatedByMixin, viewsets.ModelViewSet):
 
         serializer = EventSerializer(event)
         return Response(serializer.data)
-
-    def get_permissions(self):
-        # Métodos de escrita (POST, PUT, PATCH, DELETE) exigem IsAdmin
-        if self.action in ["create", "update", "partial_update", "destroy"]:
-            return [IsAdmin()]
-        # Métodos de leitura (GET) permitem usuários da empresa ou admin
-        return [(IsCompanyOrAdmin | IsControlOrAdmin)()]
 
 
 class EventStaffBulkView(views.APIView):

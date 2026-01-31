@@ -26,6 +26,7 @@ from v1.views import (
     EventStaffBulkView,
     EventViewSet,
     GoogleLoginView,
+    ProjectViewSet,
     RegisterWithInviteView,
     StaffViewSet,
     UserSetView,
@@ -37,6 +38,7 @@ router.register(r"checks", CheckViewSet, basename="check")
 router.register(r"events", EventViewSet, basename="event")
 router.register(r"companies", CompanySetView, basename="company")
 router.register(r"users", UserSetView, basename="user")
+router.register(r"projects", ProjectViewSet, basename="project")
 # Adicione ViewSets de Company, Project, Event conforme necessário para CRUD básico
 
 urlpatterns = [
