@@ -20,15 +20,12 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+FRONTEND_URL = os.getenv("FRONTEND_URL")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-_@wgkzo1e1u)mf5df!nqkyp8wx+3c+hp0&ssv7rp7-$zvbs_d*"
-
-# JWT para desenvolvimento 1 ano exp
-# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJlbWFpbCI6ImNhcnZhbGhvZmVycmVpcmFyYWZhZWxAZ21haWwuY29tIiwicm9sZSI6ImFkbWluIiwiY29tcGFueV9pZCI6IiIsInRva2VuX3R5cGUiOiJhY2Nlc3MiLCJleHAiOjE4MDEzMjk2NDYsImlhdCI6MTczODIzOTYwMCwianRpIjoidW5pcXVlLXRva2VuLWlkZW50aWZpZXIifQ.c8rSGHXguKlI3FVWc2qOoDUIomf0STNKGt7OIXy_sHE
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

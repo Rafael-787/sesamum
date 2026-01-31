@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -122,11 +124,17 @@ class UserInvite(models.Model):
         blank=True,
         related_name="invite_used",
     )
-    created_at = models.DateTimeField(db_default=Now())
-    expires_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField(blank=True, null=True)
     created_by = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, related_name="invites_created"
     )
+
+    def save(self, *args, **kwargs):
+        if not self.expires_at:
+            # Cálculo automático para expired_at, 48h
+            self.expires_at = timezone.now() + timedelta(hours=48)
+        super().save(*args, **kwargs)
 
     @property
     def status(self):
