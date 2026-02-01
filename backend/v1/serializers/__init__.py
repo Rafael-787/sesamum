@@ -1,11 +1,8 @@
 from .check_serializer import CheckSerializer
 from .company_serializer import CompanySerializer
-from .event_serializer import (
-    EventsCompanySerializer,
-    EventSerializer,
-    EventsStaffControlSerializer,
-    EventsStaffSerializer,
-)
+from .event_serializer import EventSerializer
+from .eventsCompany_serializer import EventsCompanySerializer
+from .eventsStaff_serializer import EventsStaffControlSerializer, EventsStaffSerializer
 from .invite_serializer import InviteSerializer
 from .project_serializer import ProjectSerializer
 from .staff_serializer import StaffSerializer

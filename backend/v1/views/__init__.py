@@ -4,11 +4,10 @@ from .companies_views import CompanySetView
 from .dashboard_views import DashboardMetricsView
 from .events_views import (
     EventOverviewView,
-    EventsCompanyView,
-    EventsStaffView,
-    EventStaffBulkView,
     EventViewSet,
 )
+from .eventsCompany_views import EventsCompanyView
+from .eventsStaff_views import EventsStaffView, EventStaffBulkView
 from .invites_views import InviteViewSet
 from .projects_views import ProjectViewSet
 from .staff_views import StaffViewSet
