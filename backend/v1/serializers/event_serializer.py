@@ -6,6 +6,7 @@ from ..models import (
     Check,
     Company,
     Event,
+    EventsCompany,
     EventsStaff,
     Project,
     Staff,
@@ -36,6 +37,15 @@ class EventSerializer(serializers.ModelSerializer):
             "status",
         ]
         read_only_fields = ["created_by", "created_at"]
+
+
+class EventsCompanySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventsCompany
+        fields = ["role", "staff_limit"]
+
+    def create(self, validated_data):
+        return EventsCompany.objects.create(**validated_data)
 
 
 class EventsStaffControlSerializer(serializers.ModelSerializer):

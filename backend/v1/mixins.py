@@ -3,7 +3,7 @@ from .permissions import IsAdmin, IsCompanyOrAdmin, IsControlOrAdmin
 
 class AdminWriteCompanyReadMixin:
     """
-    Mixin para garantir que apenas Admins escrevam,
+    Mixin para garantir que apenas Admins escrevam e alterem,
     mas usuários da empresa ou controle possam ler.
     """
 
@@ -17,5 +17,7 @@ class AdminWriteCompanyReadMixin:
 
 
 class CreatedByMixin:
+    """Adiciona o id do usuário extraído do JWT como criador (created_by)"""
+
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)

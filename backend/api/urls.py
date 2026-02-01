@@ -6,6 +6,7 @@ from v1.views import (
     CompanySetView,
     DashboardMetricsView,
     EventOverviewView,
+    EventsCompanyView,
     EventStaffBulkView,
     EventViewSet,
     GoogleLoginView,
@@ -47,6 +48,11 @@ urlpatterns = [
     ),
     path(
         "events/<int:pk>/overview/", EventOverviewView.as_view(), name="event-overview"
+    ),
+    path(
+        "events/<int:event_id>/company/<int:company_id>/",
+        EventsCompanyView.as_view(),
+        name="event-companies",
     ),
     # Router
     path("", include(router.urls)),

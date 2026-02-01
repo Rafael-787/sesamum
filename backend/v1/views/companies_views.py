@@ -1,4 +1,5 @@
-from rest_framework import viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, viewsets
 
 from ..mixins import AdminWriteCompanyReadMixin, CreatedByMixin
 from ..models import Company
@@ -10,3 +11,5 @@ class CompanySetView(CreatedByMixin, AdminWriteCompanyReadMixin, viewsets.ModelV
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
     permission_classes = [IsControlOrAdmin]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    search_fields = ["name", "cnpj"]
