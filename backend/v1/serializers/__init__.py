@@ -4,6 +4,7 @@ from .event_serializer import (
     EventsCompanySerializer,
     EventSerializer,
     EventsStaffControlSerializer,
+    EventsStaffSerializer,
 )
 from .invite_serializer import InviteSerializer
 from .project_serializer import ProjectSerializer

@@ -5,6 +5,7 @@ from .dashboard_views import DashboardMetricsView
 from .events_views import (
     EventOverviewView,
     EventsCompanyView,
+    EventsStaffView,
     EventStaffBulkView,
     EventViewSet,
 )

@@ -8,7 +8,11 @@ from rest_framework.response import Response
 from ..mixins import AdminWriteCompanyReadMixin, CreatedByMixin
 from ..models import Event, EventsCompany, EventsStaff, Staff
 from ..permissions import IsAdmin, IsCompanyOrAdmin
-from ..serializers import EventsCompanySerializer, EventSerializer
+from ..serializers import (
+    EventsCompanySerializer,
+    EventSerializer,
+    EventsStaffSerializer,
+)
 from ..utils import sanitize_digits
 
 
@@ -85,6 +89,51 @@ class EventsCompanyView(views.APIView):
     def delete(self, request, event_id, company_id):
         # Aproveitando o padrão para deletar a relação
         relacao = self.get_object(event_id, company_id)
+        relacao.delete()
+        return Response(
+            status=status.HTTP_204_NO_CONTENT,
+        )
+
+
+class EventsStaffView(views.APIView):
+    queryset = EventsStaff.objects.all()
+    serializer_class = EventsStaffSerializer
+    permission_classes = [IsCompanyOrAdmin]
+
+    def get_object(self, event_id, staff_id):
+        return get_object_or_404(EventsStaff, event_id=event_id, staff_id=staff_id)
+
+    def post(self, request, event_id, staff_id):
+        serializer = EventsStaffSerializer(data=request.data)
+
+        staff_cpf = get_object_or_404(Staff, pk=staff_id).cpf
+
+        if EventsStaff.objects.filter(event_id=event_id, staff_id=staff_id).exists():
+            return Response({"detail": "Staff já atribuído a esse evento."}, status=400)
+        elif EventsStaff.objects.filter(
+            event_id=event_id, staff_cpf=staff_cpf
+        ).exists():
+            return Response(
+                {"detail": "Staff atribuído ao evento por outra empresa."}, status=400
+            )
+
+        if serializer.is_valid():
+            serializer.save(
+                event_id=event_id,
+                staff_id=staff_id,
+                staff_cpf=staff_cpf,
+                created_by=request.user,
+            )
+            return Response(
+                {"detail": "Staff atribuído com sucesso."},
+                status=status.HTTP_201_CREATED,
+            )
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, event_id, staff_id):
+        # Aproveitando o padrão para deletar a relação
+        relacao = get_object_or_404(EventsStaff, event_id=event_id, staff_id=staff_id)
         relacao.delete()
         return Response(
             status=status.HTTP_204_NO_CONTENT,

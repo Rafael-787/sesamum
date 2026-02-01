@@ -48,6 +48,26 @@ class EventsCompanySerializer(serializers.ModelSerializer):
         return EventsCompany.objects.create(**validated_data)
 
 
+class EventsStaffSerializer(serializers.ModelSerializer):
+    event = serializers.PrimaryKeyRelatedField(
+        queryset=Event.objects.all(), required=False
+    )
+    staff = serializers.PrimaryKeyRelatedField(
+        queryset=Staff.objects.all(), required=False
+    )
+    created_by = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), required=False
+    )
+    staff_cpf = serializers.CharField(source="staff.cpf", read_only=True)
+
+    class Meta:
+        model = EventsStaff
+        fields = ["event", "staff", "staff_cpf", "created_by"]
+
+    def create(self, validated_data):
+        return EventsStaff.objects.create(**validated_data)
+
+
 class EventsStaffControlSerializer(serializers.ModelSerializer):
     """Serializer otimizado para a listagem operacional (Control)"""
 
