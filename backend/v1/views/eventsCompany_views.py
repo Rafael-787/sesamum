@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status, views
 from rest_framework.response import Response
 
-from ..models import EventsCompany
+from ..models import Company, Event, EventsCompany
 from ..permissions import IsAdmin
 from ..serializers import EventsCompanySerializer
 
@@ -18,6 +18,8 @@ class EventsCompanyView(views.APIView):
         )
 
     def post(self, request, event_id, company_id):
+        get_object_or_404(Event, id=event_id)
+        get_object_or_404(Company, id=company_id)
         serializer = EventsCompanySerializer(data=request.data)
 
         if EventsCompany.objects.filter(

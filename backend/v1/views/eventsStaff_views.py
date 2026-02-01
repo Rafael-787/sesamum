@@ -1,5 +1,7 @@
+from django.db.models import F, Q
 from django.shortcuts import get_object_or_404
 from rest_framework import status, views
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 
 from ..models import Event, EventsCompany, EventsStaff, Staff
@@ -20,21 +22,20 @@ class EventsStaffView(views.APIView):
         """
         Verifica se o staff é pertencente a empresa e se a empresa foi convocada para o evento.
         """
-
+        # Admin atribui sem nenhuma restrição (user.company é irrelevante para Admin)
         if request.user.role != "admin":
-            if not EventsCompany.objects.filter(
-                event=event_id, company=request.user.company
-            ).exists():
-                return Response(
-                    {"detail": "Empresa não atribuída a esse evento."}, status=403
-                )
+            # Se a empresa não for dona do projeto do qual o evento faz parte
+            if not Event.objects.filter(project__company=request.user.company).exists():
+                # Verifica se a empresa foi atribuída ao evento
+                if not EventsCompany.objects.filter(
+                    event=event_id, company=request.user.company
+                ).exists():
+                    raise PermissionDenied("Empresa não atribuída a esse evento.")
 
             if not Staff.objects.filter(
                 pk=staff_id, company=request.user.company
             ).exists():
-                return Response(
-                    {"detail": "Staff não existe nessa empresa."}, status=403
-                )
+                raise PermissionDenied("Staff não existe nessa empresa.")
 
     def post(self, request, event_id, staff_id):
         # verificação staff e event
