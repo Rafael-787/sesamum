@@ -2,13 +2,16 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 from v1.views import (
+    CheckSearchStaffView,
     CheckViewSet,
     CompanySetView,
     DashboardMetricsView,
+    EventCompaniesTabView,
     EventOverviewView,
     EventsCompanyView,
     EventsStaffView,
     EventStaffBulkView,
+    EventStaffsTabView,
     EventViewSet,
     GoogleLoginView,
     InviteViewSet,
@@ -43,22 +46,41 @@ urlpatterns = [
     ),
     # Events
     path(
-        "events/<int:event_id>/staff/bulk/",
-        EventStaffBulkView.as_view(),
-        name="event-staff-bulk",
+        "events/<int:pk>/overview/",
+        EventOverviewView.as_view(),
+        name="event-overview",
     ),
     path(
-        "events/<int:pk>/overview/", EventOverviewView.as_view(), name="event-overview"
+        "events/<int:event_id>/staffs/",
+        EventStaffsTabView.as_view({"get": "list"}),
+        name="event-staffs-tab",
     ),
     path(
+        "events/<int:event_id>/companies/",
+        EventCompaniesTabView.as_view({"get": "list"}),
+        name="event-staffs-tab",
+    ),
+    path(  # Atribuir empresa a evento
         "events/<int:event_id>/company/<int:company_id>/",
         EventsCompanyView.as_view(),
         name="event-companies",
     ),
-    path(
+    path(  # Atribuir staff a evento
         "events/<int:event_id>/staff/<int:staff_id>/",
         EventsStaffView.as_view(),
         name="event-staffs",
+    ),
+    path(  # Atribuir lote de staffs a evento
+        "events/<int:event_id>/staff/bulk/",
+        EventStaffBulkView.as_view(),
+        name="event-staff-bulk",
+    ),
+    # Project
+    # Checks
+    path(
+        "checks/<int:event_id>/events-staff/",
+        CheckSearchStaffView.as_view({"get": "list"}),
+        name="list-events-staffs",
     ),
     # Router
     path("", include(router.urls)),

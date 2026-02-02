@@ -57,3 +57,11 @@ class CheckSerializer(serializers.ModelSerializer):
                 events_staff.save()
 
         return check
+
+
+class CheckOverviewEventsTabSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Check
+        fields = ["action"]
+
+    pass
