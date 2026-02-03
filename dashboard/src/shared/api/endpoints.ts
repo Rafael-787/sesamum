@@ -75,6 +75,7 @@ export const ENDPOINTS = {
   USER_INVITES: {
     LIST: "/api/v1/invites/",
     CREATE: "/api/v1/invites/",
+    DETAIL: (id: string) => `/api/v1/invites/${id}/`,
     DELETE: (id: number) => `/api/v1/invites/${id}/`,
   },
 

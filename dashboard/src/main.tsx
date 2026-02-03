@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { AuthProvider } from "./shared/index.ts";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 /**
  * Main Application Entry Point
@@ -36,11 +37,16 @@ async function enableMocking() {
 
 // Enable MSW before rendering the app
 enableMocking().then(() => {
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
+
   createRoot(document.getElementById("root")!).render(
-    <AuthProvider>
-      <StrictMode>
-        <App />
-      </StrictMode>
-    </AuthProvider>,
+    <GoogleOAuthProvider clientId={clientId}>
+      <AuthProvider>
+        <StrictMode>
+          <App />
+        </StrictMode>
+      </AuthProvider>
+      ,
+    </GoogleOAuthProvider>,
   );
 });

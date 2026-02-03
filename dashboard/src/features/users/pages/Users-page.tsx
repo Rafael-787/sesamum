@@ -50,17 +50,12 @@ const UsersPage: React.FC = () => {
 
       // When "convite" is selected, only fetch invites
       if (filter === "convite") {
-        const [pendingInvitesResponse, expiredInvitesResponse] =
-          await Promise.all([
-            userInvitesService.getAll({ status: "pending" }),
-            userInvitesService.getAll({ status: "expired" }),
-          ]);
+        const InvitesResponse = await Promise.all([
+          userInvitesService.getAll(),
+        ]);
 
         setUsers([]);
-        setInvites([
-          ...pendingInvitesResponse.data,
-          ...expiredInvitesResponse.data,
-        ]);
+        setInvites(InvitesResponse.data);
       } else if (filter !== "all") {
         // When a specific role is selected, only fetch users with that role (no invites)
         const params: { role?: string; search?: string } = {
@@ -82,18 +77,13 @@ const UsersPage: React.FC = () => {
           params.search = debouncedSearch;
         }
 
-        const [usersResponse, pendingInvitesResponse, expiredInvitesResponse] =
-          await Promise.all([
-            usersService.getAll(params),
-            userInvitesService.getAll({ status: "pending" }),
-            userInvitesService.getAll({ status: "expired" }),
-          ]);
+        const [usersResponse, pendingInvitesResponse] = await Promise.all([
+          usersService.getAll(params),
+          userInvitesService.getAll(),
+        ]);
 
         setUsers(usersResponse.data);
-        setInvites([
-          ...pendingInvitesResponse.data,
-          ...expiredInvitesResponse.data,
-        ]);
+        setInvites(pendingInvitesResponse.data);
       }
     } catch (err) {
       setError("Erro ao carregar usuários");

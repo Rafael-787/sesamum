@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins, viewsets
 
 from ..mixins import CreatedByMixin
@@ -14,6 +15,7 @@ class InviteViewSet(
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet,
 ):
-    queryset = UserInvite.objects.all()
+    # Retorna apenas os convites que não foram usados
+    queryset = UserInvite.objects.filter(used_by__isnull=True)
     serializer_class = InviteSerializer
     permission_classes = [IsAdmin]

@@ -52,13 +52,13 @@ class RegisterWithInviteView(views.APIView):
     def post(self, request):
         token = request.data.get("invite_token")  # O ID do UserInvite
         google_token = request.data.get("google_token")
-        name = request.data.get("name")
 
         try:
             idinfo = id_token.verify_oauth2_token(
                 google_token, google_requests.Request(), settings.GOOGLE_CLIENT_ID
             )
             email = idinfo["email"]
+            name = idinfo.get("name") or idinfo.get("given_name", "Usuário")
         except ValueError:
             return Response(
                 {"error": "Invalid Google Token"}, status=status.HTTP_400_BAD_REQUEST

@@ -19,14 +19,8 @@ export const userInvitesService = {
    * const response = await userInvitesService.getAll({ status: 'pending' });
    * const invites = response.data;
    */
-  getAll: (params?: {
-    status?: string;
-    company_id?: number;
-    role?: string;
-  }) => {
-    return apiClient.get<UserInvite[]>(ENDPOINTS.USER_INVITES.LIST, {
-      params,
-    });
+  getAll: () => {
+    return apiClient.get<UserInvite[]>(ENDPOINTS.USER_INVITES.LIST);
   },
 
   /**

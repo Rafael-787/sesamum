@@ -35,7 +35,7 @@ export const UserInviteForm = ({
     resolver: zodResolver(userInviteSchema),
     defaultValues: {
       email: "",
-      company_id: undefined,
+      company: undefined,
       role: "company",
     },
   });
@@ -80,10 +80,10 @@ export const UserInviteForm = ({
 
       const payload = {
         email: data.email || undefined,
-        company_id: data.company_id,
+        company: data.company_id,
         role: data.role,
-        expires_at: expiresAt.toISOString(),
-        created_by: user?.id || 1, // Use current user ID or default to 1 (admin)
+        //expires_at: expiresAt.toISOString(),
+        //created_by: user?.id || 1, // Use current user ID or default to 1 (admin)
       };
       await userInvitesService.create(payload);
       onSuccess();

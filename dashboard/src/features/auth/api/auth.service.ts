@@ -31,7 +31,7 @@ export async function googleRegister(
 ): Promise<AuthResponse> {
   const response = await apiClient.post<AuthResponse>(
     ENDPOINTS.AUTH.GOOGLE_REGISTER,
-    { token, invite_token } as GoogleRegisterRequest,
+    { google_token: token, invite_token } as any,
   );
   return response.data;
 }

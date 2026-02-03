@@ -48,7 +48,7 @@ export const InviteDetailsModal: React.FC<InviteDetailsModalProps> = ({
 
     try {
       setLoadingCompany(true);
-      const response = await companiesService.getById(invite.company_id);
+      const response = await companiesService.getById(invite.company);
       setCompanyName(response.data.name);
     } catch (err) {
       console.error("Error fetching company:", err);
