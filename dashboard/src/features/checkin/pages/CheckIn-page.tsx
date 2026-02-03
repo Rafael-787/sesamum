@@ -86,9 +86,8 @@ const CheckInPage: React.FC = () => {
         }
 
         // Search for staff in the selected event
-        const response = await eventStaffService.getAll({
-          event_id: selectedEventId!,
-          staff_cpf: cleanCPF,
+        const response = await checksService.SearchStaff(selectedEventId!, {
+          search: cleanCPF,
         });
 
         if (response.data.length === 0) {
@@ -106,7 +105,7 @@ const CheckInPage: React.FC = () => {
         }
 
         // Search directly by event_staff ID
-        const response = await eventStaffService.getById(searchEventStaffId);
+        const response = await checksService.getById(searchEventStaffId);
         setSearchResult(response.data);
 
         // Auto-select the event if not already selected

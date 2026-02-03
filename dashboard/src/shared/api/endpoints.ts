@@ -7,24 +7,20 @@
  * Base URL: /api/v1/ (configured in apiClient)
  *
  * Usage:
- *   import { ENDPOINTS } from '@/api/endpoints';
- *   apiClient.get(ENDPOINTS.EVENTS.LIST);
+ * import { ENDPOINTS } from '@/api/endpoints';
+ * apiClient.get(ENDPOINTS.EVENTS.LIST);
  */
 
 export const ENDPOINTS = {
   // Authentication
   AUTH: {
-    LOGIN: "/api/v1/auth/login/",
     GOOGLE_LOGIN: "/api/v1/auth/google/login/",
     GOOGLE_REGISTER: "/api/v1/auth/google/register/",
-    REFRESH: "/api/v1/auth/refresh/",
-    LOGOUT: "/api/v1/auth/logout/",
   },
 
   // Dashboard
   DASHBOARD: {
     METRICS: "/api/v1/dashboard/metrics/",
-    ACTIVITIES: "/api/v1/dashboard/activities/",
   },
 
   // Events
@@ -34,6 +30,9 @@ export const ENDPOINTS = {
     CREATE: "/api/v1/events/",
     UPDATE: (id: number) => `/api/v1/events/${id}/`,
     DELETE: (id: number) => `/api/v1/events/${id}/`,
+    OVERVIEW: (id: number) => `/api/v1/events/${id}/overview/`,
+    STAFFS_TAB: (eventId: number) => `/api/v1/events/${eventId}/staffs/`,
+    COMPANIES_TAB: (eventId: number) => `/api/v1/events/${eventId}/companies/`,
   },
 
   // Projects
@@ -74,40 +73,32 @@ export const ENDPOINTS = {
 
   // User Invites
   USER_INVITES: {
-    LIST: "/api/v1/user-invites/",
-    DETAIL: (id: string) => `/api/v1/user-invites/${id}/`,
-    CREATE: "/api/v1/user-invites/",
-    DELETE: (id: string) => `/api/v1/user-invites/${id}/`,
+    LIST: "/api/v1/invites/",
+    CREATE: "/api/v1/invites/",
+    DELETE: (id: number) => `/api/v1/invites/${id}/`,
   },
 
   // Checks (Check-in/out)
   CHECKS: {
     LIST: "/api/v1/checks/",
-    CREATE: "/api/v1/checks/",
+    SEARCH_STAFF: (eventId: number) =>
+      `/api/v1/checks/${eventId}/events-staff/`,
   },
 
   // Event Companies (Relationship)
   EVENT_COMPANIES: {
-    LIST: "/api/v1/event-companies/",
-    DETAIL: (id: number) => `/api/v1/event-companies/${id}/`,
-    CREATE: "/api/v1/event-companies/",
-    DELETE: (id: number) => `/api/v1/event-companies/${id}/`,
+    ASSIGN: (eventId: number, companyId: number) =>
+      `/api/v1/events/${eventId}/company/${companyId}/`,
+    REMOVE: (eventId: number, companyId: number) =>
+      `/api/v1/events/${eventId}/company/${companyId}/`,
   },
 
   // Event Staff (Relationship)
   EVENT_STAFF: {
-    LIST: "/api/v1/event-staff/",
-    DETAIL: (id: string | number) => `/api/v1/event-staff/${id}/`,
-    CREATE: "/api/v1/event-staff/",
-    DELETE: (id: string | number) => `/api/v1/event-staff/${id}/`,
-    BULK: (eventId: number) => `/api/v1/events/${eventId}/staff/bulk`,
-  },
-
-  // Event Users (Relationship)
-  EVENT_USERS: {
-    LIST: "/api/v1/event-users/",
-    DETAIL: (id: number) => `/api/v1/event-users/${id}/`,
-    CREATE: "/api/v1/event-users/",
-    DELETE: (id: number) => `/api/v1/event-users/${id}/`,
+    ASSIGN: (eventId: number, staffId: number) =>
+      `/api/v1/events/${eventId}/staff/${staffId}/`,
+    REMOVE: (eventId: number, staffId: number) =>
+      `/api/v1/events/${eventId}/staff/${staffId}/`,
+    BULK: (eventId: number) => `/api/v1/events/${eventId}/staff/bulk/`,
   },
 } as const;

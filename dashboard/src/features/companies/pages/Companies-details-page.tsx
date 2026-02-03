@@ -68,8 +68,8 @@ const CompaniesDetailsPage: React.FC = () => {
       });
 
       // Fetch events for this company
-      const eventsResponse = await eventsService.getByCompany(Number(id));
-      setEvents(eventsResponse.data);
+      //const eventsResponse = await eventsService.getByCompany(Number(id));
+      //setEvents(eventsResponse.data);
     } catch (err) {
       setError("Erro ao carregar empresa");
       console.error("Error fetching company data:", err);

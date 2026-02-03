@@ -79,10 +79,10 @@ const StaffsDetailsPage: React.FC = () => {
         });
 
         // Fetch events for this staff member
-        const eventsResponse = await eventsService.getByStaff(
-          staffResponse.data.cpf,
-        );
-        setEvents(eventsResponse.data);
+        //const eventsResponse = await eventsService.getByStaff(
+        //  staffResponse.data.cpf,
+        //);
+        //setEvents(eventsResponse.data);
       } catch (err) {
         setError("Erro ao carregar membro da equipe");
         console.error("Error fetching staff data:", err);

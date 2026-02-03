@@ -57,7 +57,7 @@ export function EventForm({
         description: data.description || undefined,
         location: data.location || undefined,
         status: mode === "create" ? "open" : data.status || "open",
-        project_id: projectId || data.project_id || undefined,
+        project: projectId || data.project_id || undefined,
         date_begin: formatDateToISO(data.date_begin),
         date_end: formatDateToISO(data.date_end),
       } as Omit<Event, "id">;

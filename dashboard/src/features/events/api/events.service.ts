@@ -149,4 +149,23 @@ export const eventsService = {
       params: { company_id: companyId },
     });
   },
+
+  /**
+   * Get all events for a specific company
+   *
+   * @param eventId - Company ID
+   * @returns Promise with array of events assigned to the company
+   * @example
+   * const response = await eventsService.getByCompany(1);
+   * const companyEvents = response.data;
+   */
+  getCompanies: (eventId: number) => {
+    return apiClient.get<Event[]>(ENDPOINTS.EVENTS.COMPANIES_TAB(eventId));
+  },
+  getStaffs: (eventId: number) => {
+    return apiClient.get<Event[]>(ENDPOINTS.EVENTS.STAFFS_TAB(eventId));
+  },
+  getOverview: (eventId: number) => {
+    return apiClient.get<Event[]>(ENDPOINTS.EVENTS.OVERVIEW(eventId));
+  },
 };

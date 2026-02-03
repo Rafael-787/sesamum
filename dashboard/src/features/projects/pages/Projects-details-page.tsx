@@ -81,8 +81,8 @@ const ProjectDetailsPage: React.FC = () => {
           entityId: projectResponse.data.id,
         });
 
-        // Fetch events for this project
-        const eventsResponse = await eventsService.getAll({
+        // Fetch overview for this project
+        const eventsResponse = await projectsService.getAll({
           project_id: Number(id),
         });
         setEvents(eventsResponse.data);

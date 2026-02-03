@@ -4,7 +4,7 @@ export interface Project {
   name: string;
   status: "open" | "close" | "pending";
   description?: string;
-  company_id: number;
+  company: number;
   date_begin?: string;
   date_end?: string;
   events_qnt?: number;

@@ -86,8 +86,8 @@ const UsersDetailsPage: React.FC = () => {
         });
 
         // Fetch events for this user
-        const eventsResponse = await eventsService.getByUser(Number(id));
-        setEvents(eventsResponse.data);
+        //const eventsResponse = await eventsService.getByUser(Number(id));
+        //setEvents(eventsResponse.data);
       } catch (err) {
         setError("Erro ao carregar usuário");
         console.error("Error fetching user data:", err);

@@ -13,7 +13,7 @@ export const projectSchema = z
         message: "Status inválido",
       })
       .optional(),
-    company_id: z
+    company: z
       .number({
         message: "Selecione uma empresa",
       })

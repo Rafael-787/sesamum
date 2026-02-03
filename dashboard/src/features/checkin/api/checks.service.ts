@@ -32,4 +32,9 @@ export const checksService = {
   getById: async (id: number) => {
     return apiClient.get<Check>(`${ENDPOINTS.CHECKS.LIST}${id}/`);
   },
+  SearchStaff: async (eventId: number, params?: { search?: string }) => {
+    return apiClient.get<Check[]>(ENDPOINTS.CHECKS.SEARCH_STAFF(eventId), {
+      params,
+    });
+  },
 };

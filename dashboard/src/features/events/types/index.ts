@@ -62,3 +62,11 @@ export interface Check {
   events_staff_id: number;
   user_control_id: number;
 }
+
+export interface Overview {
+  metrics: {
+    total_staff: number;
+    total_companies?: number;
+    staff_limit?: number;
+  };
+}

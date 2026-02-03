@@ -43,7 +43,7 @@ export function ProjectForm({
       name: project?.name || "",
       description: project?.description || "",
       status: project?.status || "pending",
-      company_id: project?.company_id || undefined,
+      company: project?.company_id || undefined,
       date_begin: project?.date_begin
         ? formatDateToDDMMYYYY(project.date_begin)
         : "",
@@ -106,7 +106,7 @@ export function ProjectForm({
         name: data.name,
         description: data.description || undefined,
         status: mode === "create" ? "open" : data.status || "open",
-        company_id: data.company_id,
+        company: data.company_id as number,
         date_begin:
           data.date_begin && data.date_begin !== ""
             ? formatDateToISO(data.date_begin)

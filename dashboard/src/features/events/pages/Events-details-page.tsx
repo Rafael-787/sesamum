@@ -15,6 +15,7 @@ import { staffsService } from "@/features/staffs/api/staffs.service";
 import type { Event } from "../types";
 import type { CompanyWithEventData } from "@/features/companies";
 import type { Staff } from "@/features/staffs";
+import type { Overview } from "@/features/events/types";
 import { formatDate } from "@/shared/lib/dateUtils";
 import { useRecentlyVisited } from "@/shared/hooks/useRecentlyVisited";
 import { Modal } from "@/shared/components/ui/Modal";
@@ -36,6 +37,7 @@ const EventDetailsPage: React.FC = () => {
   const [companySearch, setCompanySearch] = useState("");
   const [companyFilter, setCompanyFilter] = useState("all");
   const [event, setEvent] = useState<Event | null>(null);
+  const [overview, setOverview] = useState<Overview[]>([]);
   const [companies, setCompanies] = useState<CompanyWithEventData[]>([]);
   const [staffs, setStaffs] = useState<Staff[]>([]);
   const [loading, setLoading] = useState(true);
@@ -78,12 +80,16 @@ const EventDetailsPage: React.FC = () => {
           entityId: eventResponse.data.id,
         });
 
+        // Fetch overview for this event
+        const overviewResponse = await eventsService.getOverview(Number(id));
+        setOverview(overviewResponse.data);
+
         // Fetch companies for this event
-        const companiesResponse = await companiesService.getByEvent(Number(id));
+        const companiesResponse = await eventsService.getCompanies(Number(id));
         setCompanies(companiesResponse.data);
 
         // Fetch staffs for this event
-        const staffsResponse = await staffsService.getByEvent(Number(id));
+        const staffsResponse = await eventsService.getStaffs(Number(id));
         setStaffs(staffsResponse.data);
       } catch (err) {
         setError("Erro ao carregar evento");
@@ -180,14 +186,7 @@ const EventDetailsPage: React.FC = () => {
   };
 
   // Example data - to be calculated from EventStaff/EventCompany APIs
-  const totalStaff = 42;
-  const companiesStaff = [
-    { name: "Acme Productions", role: "production", staffCount: 15 },
-    { name: "Tech Solutions", role: "service", staffCount: 12 },
-    { name: "Event Masters", role: "service", staffCount: 8 },
-    { name: "Creative Studios", role: "production", staffCount: 5 },
-    { name: "Global Services", role: "service", staffCount: 2 },
-  ];
+  console.log(`overview ${overview.metrics}`);
 
   if (loading) {
     return (
@@ -276,12 +275,7 @@ const EventDetailsPage: React.FC = () => {
         tabs={[
           {
             title: "Visão Geral",
-            content: (
-              <OverviewTab
-                totalStaff={totalStaff}
-                companiesStaff={companiesStaff}
-              />
-            ),
+            content: <OverviewTab overview={overview} />,
           },
           {
             title: "Staffs",

@@ -41,6 +41,20 @@ export const projectsService = {
   },
 
   /**
+   * Get a single project by ID
+   *
+   * @param id - Project ID
+   * @returns Promise with project data
+   * @example
+   * const response = await projectsService.getById(1);
+   * const project = response.data;
+   */
+  getCompanies: (id: number) => {
+    //INCOMPLETO
+    return apiClient.get<Project>(ENDPOINTS.PROJECTS.DETAIL(id));
+  },
+
+  /**
    * Create a new project
    *
    * @param data - Project data without ID
