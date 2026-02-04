@@ -3,6 +3,7 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
 from v1.views import (
+    AuthMe,
     CheckSearchStaffView,
     CheckViewSet,
     CompanySetView,
@@ -41,6 +42,7 @@ urlpatterns = [
         RegisterWithInviteView.as_view(),
         name="google-register",
     ),
+    path("auth/me/", AuthMe.as_view(), name="auth-me"),
     # Dashboard
     path(
         "dashboard/metrics/", DashboardMetricsView.as_view(), name="dashboard-metrics"

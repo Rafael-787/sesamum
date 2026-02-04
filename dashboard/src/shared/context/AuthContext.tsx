@@ -81,6 +81,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Confirm with backend /me endpoint
       try {
         const me = await validateToken(storedAccessToken);
+        console.log(me);
         let role: "admin" | "company" | "control" = "admin";
         if (devRole && devRole !== "dev") {
           role = devRole;
@@ -88,9 +89,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           role = me.role as "admin" | "company" | "control";
         }
         setUser({
-          id: me.user_id,
-          name: "", // Optionally fetch from /me if available
-          picture: "",
+          id: me.id,
+          name: me.name, // Optionally fetch from /me if available
+          picture: me.company,
           email: me.email,
           role,
           company_id: me.company_id || 1,

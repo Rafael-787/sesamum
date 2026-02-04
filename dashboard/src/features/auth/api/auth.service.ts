@@ -50,15 +50,7 @@ export async function logout(refreshToken: string) {
   return Promise.resolve({ message: "Successfully logged out" });
 }
 
-export async function validateToken(accessToken: string) {
-  // Simulate backend /me endpoint
-  // Always returns the decoded token for dev
-  return Promise.resolve({
-    user_id: 1,
-    email: "admin@sesamum.com",
-    role: "admin",
-    company_id: 1,
-    token_type: "access",
-    exp: 1848268000,
-  } as DecodedJWT);
+export async function validateToken() {
+  const response = await apiClient.get(ENDPOINTS.AUTH.ME);
+  return response.data;
 }

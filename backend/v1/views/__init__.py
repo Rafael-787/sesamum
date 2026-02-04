@@ -1,4 +1,4 @@
-from .auth_views import GoogleLoginView, RegisterWithInviteView
+from .auth_views import AuthMe, GoogleLoginView, RegisterWithInviteView
 from .check_views import CheckSearchStaffView, CheckViewSet
 from .companies_views import CompanySetView
 from .dashboard_views import DashboardMetricsView

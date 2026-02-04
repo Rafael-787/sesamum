@@ -217,13 +217,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 className="hover:cursor-pointer"
                 onClick={() => navigate(`/staffs/${user?.id}`)}
               >
-                <AvatarComponent size={32} alt="Admin User" />
+                <AvatarComponent size={32} alt={user?.name} />
               </button>
               <div className="flex-1 overflow-hidden">
-                <p className="text-sm font-medium truncate">Admin User</p>
-                <p className="text-xs text-sidebar-text-muted">
-                  admin@sesamum.com
-                </p>
+                <p className="text-sm font-medium truncate">{user?.name}</p>
+                <p className="text-xs text-sidebar-text-muted">{user?.email}</p>
               </div>
             </div>
             <button

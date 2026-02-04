@@ -30,7 +30,7 @@ export default function LoginPage() {
       const authResponse = await googleLogin(token);
 
       // Armazena os tokens recebidos do backend
-      setTokens(authResponse.access); // Assumindo que setTokens espera o Access Token do JWT
+      setTokens(authResponse.access);
 
       // Redireciona
       navigate("/");

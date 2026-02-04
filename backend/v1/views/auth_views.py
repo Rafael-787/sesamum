@@ -2,7 +2,7 @@ from django.conf import settings
 from google.auth.transport import requests as google_requests
 from google.oauth2 import id_token
 from rest_framework import status, views
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -44,6 +44,15 @@ class GoogleLoginView(views.APIView):
                 "user": UserSerializer(user).data,
             }
         )
+
+
+class AuthMe(views.APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        return Response(UserSerializer(user).data)
 
 
 class RegisterWithInviteView(views.APIView):

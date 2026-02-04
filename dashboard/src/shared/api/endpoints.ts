@@ -16,6 +16,7 @@ export const ENDPOINTS = {
   AUTH: {
     GOOGLE_LOGIN: "/api/v1/auth/google/login/",
     GOOGLE_REGISTER: "/api/v1/auth/google/register/",
+    ME: "/api/v1/auth/me/",
   },
 
   // Dashboard
