@@ -91,10 +91,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser({
           id: me.id,
           name: me.name, // Optionally fetch from /me if available
-          picture: me.company,
+          picture: "",
           email: me.email,
           role,
-          company_id: me.company_id || 1,
+          company_id: me.company || 1,
         });
       } catch {
         clearTokens();

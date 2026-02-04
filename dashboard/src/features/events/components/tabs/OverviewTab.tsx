@@ -2,7 +2,12 @@ import React from "react";
 import { MetricCard } from "@/features/dashboard/components/MetricCard";
 import Card from "@/shared/components/ui/Card";
 import * as Progress from "@radix-ui/react-progress";
-import { Building2, ReceiptRussianRuble, Users } from "lucide-react";
+import {
+  Building2,
+  PercentCircle,
+  ReceiptRussianRuble,
+  Users,
+} from "lucide-react";
 
 interface OverviewTabProps {
   totalStaff: number;
@@ -18,17 +23,18 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
   const totalStaff = overview?.metrics?.total_staff ?? 0;
   const totalCompanies = overview?.metrics?.total_companies ?? 0;
   const companies = overview?.companies ?? [];
+  console.log(overview);
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MetricCard
-          title="Empresas no Evento"
+          title="Empresas Atribuídas"
           value={totalCompanies}
           icon={<Building2 />}
           color="company"
         />
         <MetricCard
-          title="Staffs no Evento"
+          title="Staffs Atribuídos"
           value={totalStaff}
           icon={<Users />}
           color="user"
@@ -37,7 +43,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
 
       <Card>
         <h2 className="text-xl font-semibold text-text-title mb-6">
-          Status de Check-in/Check-out
+          Status de Credenciamento
         </h2>
         <div className="space-y-6">
           {/* Credenciamento Progress */}
@@ -107,10 +113,14 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
       <Card>
         <h2 className="text-xl font-semibold text-text-title mb-6">
           Staffs por Empresa
+          <p className="text-xs font-medium text-subtitle">
+            (Credenciado / contratado)
+          </p>
         </h2>
         <div className="space-y-4">
           {companies.map((company, index) => {
-            const percentage = (company.staffLimit / totalStaff) * 100;
+            const percentage =
+              (company.registration_count / company.staff_limit) * 100 || 0;
             return (
               <div key={index}>
                 <div className="flex justify-between items-center mb-2">
@@ -120,7 +130,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
                     </p>
                   </div>
                   <span className="text-sm font-semibold text-text-title">
-                    {company.staffLimit} staffs
+                    {company.registration_count} / {company.staff_limit} staffs
                   </span>
                 </div>
                 <Progress.Root
