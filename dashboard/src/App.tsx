@@ -16,7 +16,7 @@ const App: React.FC = () => {
   const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({
     children,
   }) => (
-    <div className="min-h-screen flex font-sans">
+    <div className="h-screen w-screen overflow-hidden flex font-sans">
       {/* Sidebar Navigation */}
       <Sidebar
         isOpen={isSidebarOpen}
@@ -24,7 +24,7 @@ const App: React.FC = () => {
       />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 h-full bg-sidebar-bg">
         {/* Mobile Header */}
         <header className="md:hidden bg-card-primary border-b border-card-border p-4 flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-3">
@@ -42,9 +42,9 @@ const App: React.FC = () => {
         </header>
 
         {/* Scrollable Content */}
-        <div className="h-screen bg-sidebar-bg">
-          <main className="bg-maind-bg flex-1 p-4 md:p-8 md:m-4 md:rounded-3xl h-[calc(100vh-64.8px)] md:h-[calc(100vh-32px)] overflow-y-auto">
-            <div className="max-w-7xl mx-auto">
+        <div className="flex-1 flex flex-col overflow-hidden relative">
+          <main className="bg-maind-bg flex-1 overflow-y-auto p-4 md:p-8 md:m-4 md:rounded-3xl shadow-sm">
+            <div className="max-w-7xl mx-auto min-h-full">
               <Suspense fallback={<LoadingPage />}>{children}</Suspense>
             </div>
           </main>

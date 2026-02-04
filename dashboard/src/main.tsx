@@ -46,7 +46,6 @@ enableMocking().then(() => {
           <App />
         </StrictMode>
       </AuthProvider>
-      ,
     </GoogleOAuthProvider>,
   );
 });

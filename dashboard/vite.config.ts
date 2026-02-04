@@ -13,6 +13,9 @@ export default defineConfig({
       "@/shared": path.resolve(__dirname, "./src/shared"),
     },
   },
+  server: {
+    allowedHosts: ["sesamum.demoiselle.icu"],
+  },
   // Environment variables are automatically loaded by Vite
   // VITE_* variables are exposed to the client
   // See .env.development and .env.example for available variables
