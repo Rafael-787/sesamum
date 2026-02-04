@@ -17,6 +17,8 @@ from v1.views import (
     EventViewSet,
     GoogleLoginView,
     InviteViewSet,
+    ProjectCompaniesTabView,
+    ProjectEventsTabView,
     ProjectViewSet,
     RegisterWithInviteView,
     StaffViewSet,
@@ -79,6 +81,16 @@ urlpatterns = [
         name="event-staff-bulk",
     ),
     # Project
+    path(
+        "projects/<int:project_id>/events/",
+        ProjectEventsTabView.as_view({"get": "list"}),
+        name="project-events",
+    ),
+    path(
+        "projects/<int:project_id>/companies/",
+        ProjectCompaniesTabView.as_view({"get": "list"}),
+        name="project-companies",
+    ),
     # Checks
     path(
         "checks/<int:event_id>/events-staff/",

@@ -17,7 +17,7 @@ interface OverviewTabProps {
 
 const OverviewTab: React.FC<OverviewTabProps> = ({
   totalStaff,
-  eventsStaff,
+  //eventsStaff,
   totalEvents,
   totalCompanies,
   closedEvents,
@@ -78,7 +78,9 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
         </div>
       </Card>
 
-      <Card>
+      {/* Área desativada no overview para mostrar o total de staff por cada evento
+
+        <Card>
         <h2 className="text-xl font-semibold text-text-title mb-6">
           Staffs por eventos
         </h2>
@@ -117,7 +119,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
             })
           )}
         </div>
-      </Card>
+      </Card>*/}
     </div>
   );
 };

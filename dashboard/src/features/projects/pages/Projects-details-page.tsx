@@ -10,9 +10,9 @@ import OverviewTab from "../components/tabs/OverviewTab";
 import EventsTab from "@/shared/components/tabs/EventsTab";
 import CompaniesTab from "@/shared/components/tabs/CompaniesTab";
 import { projectsService } from "../api/projects.service";
-import { eventsService } from "@/features/events/api/events.service";
+//import { eventsService } from "@/features/events/api/events.service";
 import { eventCompaniesService } from "@/features/events/api/eventCompanies.service";
-import { eventStaffService } from "@/features/events/api/eventStaff.service";
+//import { eventStaffService } from "@/features/events/api/eventStaff.service";
 import type { Project } from "../types";
 import type { Event } from "@/features/events/types";
 import { formatDate } from "@/shared/lib/dateUtils";
@@ -81,35 +81,21 @@ const ProjectDetailsPage: React.FC = () => {
           entityId: projectResponse.data.id,
         });
 
-        // Fetch overview for this project
-        const eventsResponse = await projectsService.getAll({
-          project_id: Number(id),
-        });
+        // Fetch events for this project
+        const eventsResponse = await projectsService.getEvents(Number(id));
         setEvents(eventsResponse.data);
 
         // Fetch companies for events in this project
-        const uniqueCompanies = new Map();
-        for (const event of eventsResponse.data) {
-          try {
-            const companiesResponse = await eventCompaniesService.getAll({
-              event_id: event.id,
-            });
-            companiesResponse.data.forEach((company) => {
-              if (!uniqueCompanies.has(company.id)) {
-                uniqueCompanies.set(company.id, company);
-              }
-            });
-          } catch (err) {
-            console.error(
-              `Error fetching companies for event ${event.id}:`,
-              err,
-            );
-          }
-        }
-        setCompanies(Array.from(uniqueCompanies.values()));
+        const companiesResponse = await projectsService.getCompanies(
+          Number(id),
+        );
+        setCompanies(companiesResponse.data);
 
         // Fetch staff metrics for events
-        const staffMetrics = await Promise.all(
+        {
+          /* Lógica desativada para a aba de Staffs por evento na aba de overview
+
+          const staffMetrics = await Promise.all(
           eventsResponse.data.map(async (event) => {
             try {
               const staffResponse = await eventStaffService.getAll({
@@ -127,7 +113,8 @@ const ProjectDetailsPage: React.FC = () => {
           }),
         );
         setEventsStaffMetrics(staffMetrics);
-        setTotalStaff(staffMetrics.reduce((sum, e) => sum + e.staffCount, 0));
+        setTotalStaff(staffMetrics.reduce((sum, e) => sum + e.staffCount, 0));*/
+        }
       } catch (err) {
         setError("Erro ao carregar projeto");
         console.error("Error fetching project data:", err);
@@ -204,9 +191,7 @@ const ProjectDetailsPage: React.FC = () => {
     // Refetch events after adding a new one
     if (!id) return;
     try {
-      const eventsResponse = await eventsService.getAll({
-        project_id: Number(id),
-      });
+      const eventsResponse = await projectsService.getEvents(Number(id));
       setEvents(eventsResponse.data);
     } catch (err) {
       console.error("Error refetching events:", err);
@@ -254,12 +239,6 @@ const ProjectDetailsPage: React.FC = () => {
             <p className="mt-1 text-text-title">
               {project.status === "open" ? "Aberto" : "Fechado"}
             </p>
-          </div>
-          <div>
-            <label className="text-sm font-medium text-text-subtitle">
-              Quantidade de Eventos
-            </label>
-            <p className="mt-1 text-text-title">{project.events_qnt || 0}</p>
           </div>
           {project.date_begin && (
             <div>

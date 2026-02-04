@@ -11,6 +11,10 @@ from .events_views import (
 from .eventsCompany_views import EventsCompanyView
 from .eventsStaff_views import EventsStaffView, EventStaffBulkView
 from .invites_views import InviteViewSet
-from .projects_views import ProjectViewSet
+from .projects_views import (
+    ProjectCompaniesTabView,
+    ProjectEventsTabView,
+    ProjectViewSet,
+)
 from .staff_views import StaffViewSet
 from .users_views import UserSetView

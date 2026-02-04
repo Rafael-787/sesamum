@@ -34,7 +34,9 @@ export const eventStaffService = {
    * Create a new event-staff relationship
    */
   create: async (data: CreateEventStaffPayload) => {
-    return apiClient.post<EventStaff>(ENDPOINTS.EVENT_STAFF.CREATE, data);
+    return apiClient.post(
+      ENDPOINTS.EVENT_STAFF.ASSIGN(data.event_id, data.staff_id),
+    );
   },
 
   /**

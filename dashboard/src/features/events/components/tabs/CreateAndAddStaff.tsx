@@ -59,17 +59,15 @@ const CreateAndAddStaff: React.FC<CreateAndAddStaffProps> = ({
 
       // Step 1: Create the staff member
       const createResponse = await staffsService.create({
-        name: data.name,
+        name: data.name.toUpperCase(),
         cpf: data.cpf.replace(/\D/g, ""), // Remove formatting
-        email: "",
-        company_id,
       });
 
       const createdStaff = createResponse.data;
 
       // Step 2: Add the newly created staff to the event
       await eventStaffService.create({
-        staff_cpf: createdStaff.cpf,
+        staff_id: createdStaff.id,
         event_id: eventId,
       });
 
@@ -162,7 +160,8 @@ const CreateAndAddStaff: React.FC<CreateAndAddStaffProps> = ({
         )}
       </div>
 
-      {/* Company info (read-only) */}
+      {/* Desativado, campo que mostrava a qual empresa o staff ia ser atribuído
+         // Company info (read-only)
       {user?.company_id && (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -175,7 +174,7 @@ const CreateAndAddStaff: React.FC<CreateAndAddStaffProps> = ({
             O staff será vinculado à sua empresa
           </p>
         </div>
-      )}
+      )}*/}
 
       {/* Action buttons */}
       <div className="flex justify-end gap-3 pt-4 border-t border-input-border">

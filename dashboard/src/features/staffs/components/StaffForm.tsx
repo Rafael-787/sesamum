@@ -53,10 +53,8 @@ export function StaffForm({
       }
 
       const payload = {
-        name: data.name,
-        cpf: data.cpf,
-        email: "",
-        company_id,
+        name: data.name.toUpperCase(),
+        cpf: data.cpf.replace(/\D/g, ""),
       } as Omit<Staff, "id" | "created_at">;
 
       if (mode === "create") {

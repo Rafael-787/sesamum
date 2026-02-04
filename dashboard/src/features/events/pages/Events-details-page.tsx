@@ -167,8 +167,10 @@ const EventDetailsPage: React.FC = () => {
     // Refetch companies after adding a new one
     if (!id) return;
     try {
-      const companiesResponse = await companiesService.getByEvent(Number(id));
+      const companiesResponse = await eventsService.getCompanies(Number(id));
       setCompanies(companiesResponse.data);
+      const overviewResponse = await eventsService.getOverview(Number(id));
+      setOverview(overviewResponse.data);
     } catch (err) {
       console.error("Error refetching companies:", err);
     }
@@ -178,8 +180,10 @@ const EventDetailsPage: React.FC = () => {
     // Refetch staffs after adding new ones
     if (!id) return;
     try {
-      const staffsResponse = await staffsService.getByEvent(Number(id));
+      const staffsResponse = await eventsService.getStaffs(Number(id));
       setStaffs(staffsResponse.data);
+      const overviewResponse = await eventsService.getOverview(Number(id));
+      setOverview(overviewResponse.data);
     } catch (err) {
       console.error("Error refetching staffs:", err);
     }

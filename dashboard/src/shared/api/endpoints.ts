@@ -43,6 +43,8 @@ export const ENDPOINTS = {
     CREATE: "/api/v1/projects/",
     UPDATE: (id: number) => `/api/v1/projects/${id}/`,
     DELETE: (id: number) => `/api/v1/projects/${id}/`,
+    EVENTS_TAB: (id: number) => `/api/v1/projects/${id}/events/`,
+    COMPANIES_TAB: (id: number) => `/api/v1/projects/${id}/companies/`,
   },
 
   // Companies

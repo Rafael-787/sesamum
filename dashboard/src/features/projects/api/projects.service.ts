@@ -50,8 +50,11 @@ export const projectsService = {
    * const project = response.data;
    */
   getCompanies: (id: number) => {
-    //INCOMPLETO
-    return apiClient.get<Project>(ENDPOINTS.PROJECTS.DETAIL(id));
+    return apiClient.get<Project>(ENDPOINTS.PROJECTS.COMPANIES_TAB(id));
+  },
+
+  getEvents: (id: number) => {
+    return apiClient.get<Project>(ENDPOINTS.PROJECTS.EVENTS_TAB(id));
   },
 
   /**
