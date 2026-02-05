@@ -15,6 +15,12 @@ interface Company {
   role: string;
   staffCount: number;
 }
+interface ListAction {
+  label: string;
+  onClick: (item: any) => void;
+  icon?: React.ReactNode;
+  variant?: "default" | "destructive";
+}
 
 interface CompaniesTabProps {
   eventId?: number;
@@ -24,7 +30,7 @@ interface CompaniesTabProps {
   setCompanyFilter: (value: string) => void;
   companies: Company[];
   onCompanyAdded?: () => void;
-  getActions?: [];
+  getActions?: (item: any) => ListAction[];
 }
 
 const CompaniesTab: React.FC<CompaniesTabProps> = ({

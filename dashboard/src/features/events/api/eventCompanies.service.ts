@@ -53,7 +53,9 @@ export const eventCompaniesService = {
   /**
    * Delete an event-company relationship
    */
-  delete: async (id: number) => {
-    return apiClient.delete(ENDPOINTS.EVENT_COMPANIES.DELETE(id));
+  delete: async (event_id: number, company_id: number) => {
+    return apiClient.delete(
+      ENDPOINTS.EVENT_COMPANIES.REMOVE(event_id, company_id),
+    );
   },
 };

@@ -10,8 +10,8 @@ import OverviewTab from "../components/tabs/OverviewTab";
 import StaffTab from "../components/tabs/StaffTab";
 import CompaniesTab from "@/shared/components/tabs/CompaniesTab";
 import { eventsService } from "../api/events.service";
-import { companiesService } from "@/features/companies/api/companies.service";
-import { staffsService } from "@/features/staffs/api/staffs.service";
+import { Trash } from "lucide-react";
+import { eventCompaniesService } from "../api/eventCompanies.service";
 import type { Event } from "../types";
 import type { CompanyWithEventData } from "@/features/companies";
 import type { Staff } from "@/features/staffs";
@@ -45,6 +45,9 @@ const EventDetailsPage: React.FC = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [isDeleteCompanyModalOpen, setIsDeleteCompanyModalOpen] =
+    useState(false);
+  const [companyToRemove, setCompanyToRemove] = useState<any>(null);
   const [toast, setToast] = useState<{
     open: boolean;
     type: "success" | "error";
@@ -189,6 +192,42 @@ const EventDetailsPage: React.FC = () => {
     }
   };
 
+  const confirmRemoveCompany = (company: any) => {
+    setCompanyToRemove(company);
+    setIsDeleteCompanyModalOpen(true);
+  };
+
+  // Lógica para chamar o serviço e remover a empresa
+  const handleRemoveCompany = async () => {
+    if (!companyToRemove || !event.id) return; // Certifique-se de ter o eventId disponível no contexto
+
+    try {
+      // Chama o serviço para desassociar a empresa do evento
+      await eventCompaniesService.delete(Number(event.id), companyToRemove.id);
+
+      // Feedback de sucesso
+      setToast({
+        open: true,
+        type: "success",
+        message: `${companyToRemove.name} foi removido do evento.`,
+      });
+
+      // Atualiza a lista de empresas aqui
+      const companiesResponse = await eventsService.getCompanies(Number(id));
+      setCompanies(companiesResponse.data);
+
+      setIsDeleteCompanyModalOpen(false);
+      setCompanyToRemove(null);
+    } catch (error) {
+      console.error("Erro ao remover empresa:", error);
+      setToast({
+        open: true,
+        type: "error",
+        message: `Erro ao remover empresa do evento.`,
+      });
+    }
+  };
+
   // Example data - to be calculated from EventStaff/EventCompany APIs
   console.log(`overview ${overview.metrics}`);
 
@@ -309,6 +348,14 @@ const EventDetailsPage: React.FC = () => {
                       setCompanyFilter={setCompanyFilter}
                       companies={companies}
                       onCompanyAdded={handleCompanyAdded}
+                      getActions={(company) => [
+                        {
+                          label: "Desassociar",
+                          icon: <Trash size={16} />,
+                          variant: "destructive", // Estilo vermelho similar ao StaffTab
+                          onClick: (c) => confirmRemoveCompany(c),
+                        },
+                      ]}
                     />
                   ),
                 },
@@ -352,6 +399,19 @@ const EventDetailsPage: React.FC = () => {
         type={toast.type}
         message={toast.message}
         onOpenChange={(open) => setToast({ ...toast, open })}
+      />
+      <ConfirmDialog
+        open={isDeleteCompanyModalOpen}
+        onOpenChange={(isOpen) => {
+          setIsDeleteCompanyModalOpen(isOpen);
+          if (!isOpen) setCompanyToRemove(null);
+        }}
+        title="Desassociar Empresa"
+        description={`Tem a certeza que deseja remover a empresa ${companyToRemove?.name} deste evento? Esta ação não excluirá a empresa do sistema, apenas removerá o vínculo com este evento.`}
+        confirmLabel="Confirmar Remoção"
+        cancelLabel="Cancelar"
+        onConfirm={handleRemoveCompany}
+        variant="danger"
       />
     </DetailsPageContainer>
   );
