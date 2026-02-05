@@ -81,7 +81,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Confirm with backend /me endpoint
       try {
         const me = await validateToken(storedAccessToken);
-        console.log(me);
         let role: "admin" | "company" | "control" = "admin";
         if (devRole && devRole !== "dev") {
           role = devRole;

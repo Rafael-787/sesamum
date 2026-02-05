@@ -229,7 +229,6 @@ const EventDetailsPage: React.FC = () => {
   };
 
   // Example data - to be calculated from EventStaff/EventCompany APIs
-  console.log(`overview ${overview.metrics}`);
 
   if (loading) {
     return (

@@ -26,7 +26,6 @@ export const usePermissions = () => {
     item?: { company_id?: number },
   ): boolean => {
     if (!user) return false;
-    console.log(`User role: ${user.role}`);
     // Admin can do everything
     if (user.role === "admin") return true;
 

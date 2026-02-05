@@ -37,7 +37,6 @@ export function CompanyForm({
   });
 
   const onSubmit = async (data: CompanyFormData) => {
-    console.log("click criar");
     try {
       setIsSubmitting(true);
       setError(null);

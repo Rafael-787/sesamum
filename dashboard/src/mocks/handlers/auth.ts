@@ -38,7 +38,6 @@ export const authHandlers = [
   http.post(`${API_BASE_URL}/api/v1/auth/google/login`, async ({ request }) => {
     await delay(1200);
     const { googleToken } = await request.json();
-    console.log(googleToken);
 
     if (!request || googleToken !== "google_token_admin@sesamum.com") {
       console.error("GoogleToken faltante ou não validado");
