@@ -44,7 +44,10 @@ export const eventCompaniesService = {
    * Create a new event-company relationship
    */
   create: async (data: Omit<EventCompany, "id">) => {
-    return apiClient.post<EventCompany>(ENDPOINTS.EVENT_COMPANIES.CREATE, data);
+    return apiClient.post<EventCompany>(
+      ENDPOINTS.EVENT_COMPANIES.CREATE(data.event_id, data.company_id),
+      data,
+    );
   },
 
   /**

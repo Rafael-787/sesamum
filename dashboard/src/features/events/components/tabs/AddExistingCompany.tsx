@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search, Building2, AlertCircle } from "lucide-react";
+import { Search, Building2, AlertCircle, Users } from "lucide-react";
 import type { Company } from "@/features/companies/types";
 import { companiesService } from "@/features/companies/api/companies.service";
 import { eventCompaniesService } from "../../api/eventCompanies.service";
@@ -18,19 +18,23 @@ const AddExistingCompany: React.FC<AddExistingCompanyProps> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [allCompanies, setAllCompanies] = useState<Company[]>([]);
-  const [selectedCompanyIds, setSelectedCompanyIds] = useState<number[]>([]);
+
+  const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(
+    null,
+  );
   const [selectedRole, setSelectedRole] = useState<"production" | "service">(
     "service",
   );
+
+  // CORREÇÃO: Permite number ou string para lidar com input vazio durante a edição
+  const [staffLimit, setStaffLimit] = useState<number | string>(1);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string>("");
 
-  // Debounce search term
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  // Fetch companies with server-side filtering
   useEffect(() => {
     const fetchCompanies = async () => {
       setIsLoading(true);
@@ -54,16 +58,20 @@ const AddExistingCompany: React.FC<AddExistingCompanyProps> = ({
   }, [debouncedSearchTerm]);
 
   const handleSelectCompany = (companyId: number) => {
-    setSelectedCompanyIds((prev) =>
-      prev.includes(companyId)
-        ? prev.filter((id) => id !== companyId)
-        : [...prev, companyId],
-    );
+    setSelectedCompanyId((prev) => (prev === companyId ? null : companyId));
   };
 
   const handleSubmit = async () => {
-    if (selectedCompanyIds.length === 0) {
-      setError("Selecione pelo menos uma empresa");
+    if (!selectedCompanyId) {
+      setError("Selecione uma empresa");
+      return;
+    }
+
+    // Converte para número para validação final
+    const finalLimit = Number(staffLimit);
+
+    if (!staffLimit || finalLimit < 1) {
+      setError("O limite de staff deve ser no mínimo 1");
       return;
     }
 
@@ -71,53 +79,30 @@ const AddExistingCompany: React.FC<AddExistingCompanyProps> = ({
     setError("");
 
     try {
-      const results = await Promise.allSettled(
-        selectedCompanyIds.map((companyId) =>
-          eventCompaniesService
-            .create({
-              company_id: companyId,
-              event_id: eventId,
-              role: selectedRole,
-            })
-            .catch((err) => {
-              // Attach company info to error
-              const company = allCompanies.find((c) => c.id === companyId);
-              throw { ...err, companyName: company?.name, companyId };
-            }),
-        ),
-      );
+      await eventCompaniesService.create({
+        company_id: selectedCompanyId,
+        event_id: eventId,
+        role: selectedRole,
+        staff_limit: finalLimit,
+      });
 
-      const failures = results.filter((r) => r.status === "rejected");
-      const successes = results.filter((r) => r.status === "fulfilled");
-
-      if (failures.length > 0) {
-        // Build error message with company names
-        const failedCompanies = failures
-          .map((f: any) => {
-            const companyName = f.reason?.companyName || "Empresa desconhecida";
-            return companyName;
-          })
-          .join(", ");
-
-        if (failures.length === selectedCompanyIds.length) {
-          // All failed
-          setError(
-            `${failures.length > 1 ? "As empresas" : "A empresa"} ${failedCompanies} ${failures.length > 1 ? "já foram adicionadas" : "já foi adicionada"} ao evento`,
-          );
-        } else {
-          // Some succeeded, some failed
-          setError(
-            `${successes.length} ${successes.length > 1 ? "empresas foram adicionadas" : "empresa foi adicionada"}. ${failures.length > 1 ? "As empresas" : "A empresa"} ${failedCompanies} ${failures.length > 1 ? "já estavam no evento" : "já estava no evento"}`,
-          );
-          onSuccess(); // Still refresh to show the ones that succeeded
-        }
-      } else {
-        // All succeeded
-        onSuccess();
-      }
+      onSuccess();
     } catch (err: any) {
-      setError("Erro ao adicionar empresas ao evento");
       console.error(err);
+      const errorMessage =
+        err.response?.data?.message ||
+        (err.response?.data?.non_field_errors
+          ? err.response.data.non_field_errors[0]
+          : "Erro ao adicionar empresa ao evento");
+
+      if (
+        errorMessage.includes("already exists") ||
+        errorMessage.includes("já existe")
+      ) {
+        setError("Esta empresa já foi adicionada a este evento.");
+      } else {
+        setError(errorMessage);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -132,40 +117,78 @@ const AddExistingCompany: React.FC<AddExistingCompanyProps> = ({
         </div>
       )}
 
-      {/* Role Selection */}
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700">
-          Função da Empresa no Evento
-        </label>
-        <div className="flex gap-4">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="radio"
-              name="role"
-              value="production"
-              checked={selectedRole === "production"}
-              onChange={(e) =>
-                setSelectedRole(e.target.value as "production" | "service")
-              }
-              className="w-4 h-4 text-primary border-gray-300 focus:ring-primary cursor-pointer"
-            />
-            <span className="text-sm text-gray-700">Produção</span>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Role Selection */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            Função da Empresa
           </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="radio"
-              name="role"
-              value="service"
-              checked={selectedRole === "service"}
-              onChange={(e) =>
-                setSelectedRole(e.target.value as "production" | "service")
-              }
-              className="w-4 h-4 text-primary border-gray-300 focus:ring-primary cursor-pointer"
-            />
-            <span className="text-sm text-gray-700">Serviço</span>
+          <div className="flex gap-4 h-[42px] items-center">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="role"
+                value="production"
+                checked={selectedRole === "production"}
+                onChange={(e) =>
+                  setSelectedRole(e.target.value as "production" | "service")
+                }
+                className="w-4 h-4 text-primary border-gray-300 focus:ring-primary cursor-pointer"
+              />
+              <span className="text-sm text-gray-700">Produção</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="role"
+                value="service"
+                checked={selectedRole === "service"}
+                onChange={(e) =>
+                  setSelectedRole(e.target.value as "production" | "service")
+                }
+                className="w-4 h-4 text-primary border-gray-300 focus:ring-primary cursor-pointer"
+              />
+              <span className="text-sm text-gray-700">Serviço</span>
+            </label>
+          </div>
+        </div>
+
+        {/* Staff Limit Input */}
+        <div className="space-y-2">
+          <label
+            htmlFor="staffLimit"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Limite de Staff
           </label>
+          <div className="relative">
+            <Users
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={18}
+            />
+            <input
+              id="staffLimit"
+              type="number"
+              min="1"
+              value={staffLimit}
+              onChange={(e) => {
+                const value = e.target.value;
+                // CORREÇÃO: Se vazio, define string vazia. Se número, converte.
+                if (value === "") {
+                  setStaffLimit("");
+                } else {
+                  const parsed = parseInt(value);
+                  setStaffLimit(isNaN(parsed) ? "" : parsed);
+                }
+              }}
+              className="w-full pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-input-bg border border-input-border text-input-text"
+              placeholder="Ex: 5"
+            />
+          </div>
         </div>
       </div>
+
+      <hr className="border-gray-100" />
 
       {/* Search Bar */}
       <div className="relative">
@@ -183,7 +206,7 @@ const AddExistingCompany: React.FC<AddExistingCompanyProps> = ({
       </div>
 
       {/* Companies List */}
-      <div className="max-h-96 overflow-y-auto border border-input-border rounded-lg">
+      <div className="max-h-80 overflow-y-auto border border-input-border rounded-lg">
         {isLoading ? (
           <div className="p-8 text-center text-gray-500">
             Carregando empresas disponíveis...
@@ -198,26 +221,32 @@ const AddExistingCompany: React.FC<AddExistingCompanyProps> = ({
             </p>
           </div>
         ) : (
-          <div>
+          <div className="divide-y divide-gray-100">
             {allCompanies.map((company) => {
-              const isSelected = selectedCompanyIds.includes(company.id);
+              const isSelected = selectedCompanyId === company.id;
               return (
                 <label
                   key={company.id}
                   className={`flex items-center gap-3 p-4 cursor-pointer hover:bg-gray-50 transition-colors ${
-                    isSelected ? "bg-primary/5" : ""
+                    isSelected
+                      ? "bg-primary/5 border-l-4 border-l-primary"
+                      : "border-l-4 border-l-transparent"
                   }`}
                 >
-                  <input
-                    type="checkbox"
-                    name="company"
-                    checked={isSelected}
-                    onChange={() => handleSelectCompany(company.id)}
-                    className="w-4 h-4 text-primary border-gray-300 focus:ring-primary cursor-pointer rounded"
-                  />
+                  <div className="relative flex items-center">
+                    <input
+                      type="radio"
+                      name="company_selection"
+                      checked={isSelected}
+                      onChange={() => handleSelectCompany(company.id)}
+                      className="w-4 h-4 text-primary border-gray-300 focus:ring-primary cursor-pointer"
+                    />
+                  </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-semibold text-sm text-title">
+                      <h4
+                        className={`font-semibold text-sm ${isSelected ? "text-primary" : "text-title"}`}
+                      >
                         {company.name}
                       </h4>
                     </div>
@@ -226,7 +255,8 @@ const AddExistingCompany: React.FC<AddExistingCompanyProps> = ({
                         <Building2 size={12} />
                         {company.cnpj}
                       </span>
-                      <span className="text-gray-500 capitalize">
+                      <span className="text-gray-500 capitalize px-2 py-0.5 bg-gray-100 rounded-full">
+                        Tipo:{" "}
                         {company.type === "production" ? "Produção" : "Serviço"}
                       </span>
                     </div>
@@ -249,12 +279,12 @@ const AddExistingCompany: React.FC<AddExistingCompanyProps> = ({
         </button>
         <button
           onClick={handleSubmit}
-          disabled={isSubmitting || selectedCompanyIds.length === 0}
+          disabled={
+            isSubmitting || !selectedCompanyId || Number(staffLimit) < 1
+          }
           className="hover:cursor-pointer px-4 py-2 text-sm font-medium text-button-text bg-primary rounded-lg hover:bg-button-bg-hover disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting
-            ? "Adicionando..."
-            : `Adicionar ${selectedCompanyIds.length > 0 ? `(${selectedCompanyIds.length})` : "Empresas"}`}
+          {isSubmitting ? "Adicionando..." : "Adicionar Empresa"}
         </button>
       </div>
     </div>

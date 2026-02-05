@@ -43,7 +43,7 @@ export function ProjectForm({
       name: project?.name || "",
       description: project?.description || "",
       status: project?.status || "pending",
-      company: project?.company_id || undefined,
+      company: project?.company || undefined,
       date_begin: project?.date_begin
         ? formatDateToDDMMYYYY(project.date_begin)
         : "",
@@ -78,12 +78,12 @@ export function ProjectForm({
 
   // Load initial company if in edit mode
   useEffect(() => {
-    if (mode === "edit" && project?.company_id) {
+    if (mode === "edit" && project?.company) {
       const fetchInitialCompany = async () => {
         try {
           const response = await companiesService.getAll();
           const initialCompany = response.data.find(
-            (c) => c.id === project.company_id,
+            (c) => c.id === project.company,
           );
           if (initialCompany) {
             setCompanies([initialCompany]);
@@ -94,7 +94,7 @@ export function ProjectForm({
       };
       fetchInitialCompany();
     }
-  }, [mode, project?.company_id]);
+  }, [mode, project?.company]);
 
   const onSubmit = async (data: ProjectFormData) => {
     try {
@@ -106,7 +106,7 @@ export function ProjectForm({
         name: data.name,
         description: data.description || undefined,
         status: mode === "create" ? "open" : data.status || "open",
-        company: data.company_id as number,
+        company: data.company as number,
         date_begin:
           data.date_begin && data.date_begin !== ""
             ? formatDateToISO(data.date_begin)
@@ -218,13 +218,13 @@ export function ProjectForm({
       {/* Company autocomplete */}
       <div>
         <label
-          htmlFor="company_id"
+          htmlFor="company"
           className="block text-sm font-medium text-gray-700 mb-1"
         >
           Empresa
         </label>
         <Controller
-          name="company_id"
+          name="company"
           control={control}
           render={({ field, fieldState }) => (
             <Autocomplete

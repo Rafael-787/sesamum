@@ -91,7 +91,7 @@ export const ENDPOINTS = {
 
   // Event Companies (Relationship)
   EVENT_COMPANIES: {
-    ASSIGN: (eventId: number, companyId: number) =>
+    CREATE: (eventId: number, companyId: number) =>
       `/api/v1/events/${eventId}/company/${companyId}/`,
     REMOVE: (eventId: number, companyId: number) =>
       `/api/v1/events/${eventId}/company/${companyId}/`,
