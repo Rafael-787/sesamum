@@ -24,6 +24,7 @@ interface CompaniesTabProps {
   setCompanyFilter: (value: string) => void;
   companies: Company[];
   onCompanyAdded?: () => void;
+  getActions?: [];
 }
 
 const CompaniesTab: React.FC<CompaniesTabProps> = ({
@@ -34,6 +35,7 @@ const CompaniesTab: React.FC<CompaniesTabProps> = ({
   setCompanyFilter,
   companies,
   onCompanyAdded,
+  getActions,
 }) => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
@@ -97,6 +99,7 @@ const CompaniesTab: React.FC<CompaniesTabProps> = ({
         }
         notFoundMessage="Nenhuma empresa encontrada"
         onClick={handleCompanyClick}
+        getActions={getActions}
       >
         {(company) => (
           <>

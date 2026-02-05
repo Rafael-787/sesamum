@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import ListToolbar from "@/shared/components/list/ListToolbar";
 import ListCard from "@/shared/components/list/ListCard";
+import { ConfirmDialog } from "@/shared/components/ui/ConfirmDialog";
+import { Toast } from "@/shared";
 import { Modal } from "@/shared/components/ui/Modal";
 import Badge from "@/shared/components/ui/Badge";
 import {
@@ -9,12 +11,14 @@ import {
   Clock,
   CloudUpload,
   Plus,
+  Trash,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { formatDateTime } from "@/shared/lib/dateUtils";
 import StaffCSVUpload from "./StaffCSVUpload";
 import AddExistingStaff from "./AddExistingStaff";
 import CreateAndAddStaff from "./CreateAndAddStaff";
+import { eventStaffService } from "../../api/eventStaff.service";
 
 interface Staff {
   id: number;
@@ -54,11 +58,19 @@ const StaffTab: React.FC<StaffTabProps> = ({
   mockStaff,
   onStaffAdded,
 }) => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [staffToRemove, setStaffToRemove] = useState<any>(null);
   const [modalView, setModalView] = useState<
     "menu" | "csv" | "existing" | "new"
   >("menu");
+  const [toast, setToast] = useState({
+    open: false,
+    type: "default",
+    message: "",
+  });
 
   // Build filter options dynamically from companies
   const filterOptions = [
@@ -93,6 +105,39 @@ const StaffTab: React.FC<StaffTabProps> = ({
     handleModalClose();
     if (onStaffAdded) {
       onStaffAdded();
+    }
+  };
+  const confirmRemove = (staff: any) => {
+    setStaffToRemove(staff);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleRemoveStaff = async () => {
+    if (!staffToRemove || !id) return;
+
+    try {
+      // Chama o serviço para deletar a relação (Ajuste o método conforme seu service)
+      await eventStaffService.delete(id, staffToRemove.id);
+
+      setToast({
+        open: true,
+        type: "success",
+        message: `${staffToRemove.name} foi removido do evento.`,
+      });
+
+      // Fecha o modal e recarrega a lista
+      setIsDeleteModalOpen(false);
+      setStaffToRemove(null);
+      if (onStaffAdded) {
+        onStaffAdded();
+      }
+    } catch (error) {
+      console.error(error);
+      setToast({
+        open: true,
+        type: "error",
+        message: "Erro ao remover o staff do evento.",
+      });
     }
   };
 
@@ -198,6 +243,14 @@ const StaffTab: React.FC<StaffTabProps> = ({
         }
         notFoundMessage="Nenhum membro da equipe encontrado"
         onClick={handleStaffClick}
+        getActions={(staff) => [
+          {
+            label: "Desassociar",
+            icon: <Trash size={16} />,
+            variant: "destructive", // Isso deixará o texto vermelho conforme configurado no ListCard
+            onClick: (s) => confirmRemove(s),
+          },
+        ]}
       >
         {(staff) => (
           <>
@@ -251,6 +304,25 @@ const StaffTab: React.FC<StaffTabProps> = ({
           </>
         )}
       </ListCard>
+      <Toast
+        open={toast.open}
+        onOpenChange={(open) => setToast((prev) => ({ ...prev, open }))}
+        message={toast.message}
+      />
+      <ConfirmDialog
+        open={isDeleteModalOpen}
+        onOpenChange={(isOpen) => {
+          setIsDeleteModalOpen(isOpen);
+          // Limpa o estado selecionado ao fechar (seja por clique fora ou ESC)
+          if (!isOpen) setStaffToRemove(null);
+        }}
+        title="Desassociar Membro"
+        description={`Tem a certeza que deseja remover ${staffToRemove?.name} deste evento? O registo do staff permanecerá no sistema, apenas a ligação ao evento será removida.`}
+        confirmLabel="Confirmar Remoção"
+        cancelLabel="Cancelar"
+        onConfirm={handleRemoveStaff}
+        variant="danger"
+      />
     </div>
   );
 };

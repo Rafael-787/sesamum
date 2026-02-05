@@ -42,8 +42,8 @@ export const eventStaffService = {
   /**
    * Delete an event-staff relationship
    */
-  delete: async (id: string | number) => {
-    return apiClient.delete(ENDPOINTS.EVENT_STAFF.DELETE(id));
+  delete: async (event_id: number, staff_id: number) => {
+    return apiClient.delete(ENDPOINTS.EVENT_STAFF.REMOVE(event_id, staff_id));
   },
 
   /**
