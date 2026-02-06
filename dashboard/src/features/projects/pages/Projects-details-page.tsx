@@ -10,9 +10,7 @@ import OverviewTab from "../components/tabs/OverviewTab";
 import EventsTab from "@/shared/components/tabs/EventsTab";
 import CompaniesTab from "@/shared/components/tabs/CompaniesTab";
 import { projectsService } from "../api/projects.service";
-//import { eventsService } from "@/features/events/api/events.service";
-import { eventCompaniesService } from "@/features/events/api/eventCompanies.service";
-//import { eventStaffService } from "@/features/events/api/eventStaff.service";
+import { eventsService } from "@/features/events";
 import type { Project } from "../types";
 import type { Event } from "@/features/events/types";
 import { formatDate } from "@/shared/lib/dateUtils";
@@ -22,6 +20,7 @@ import { ProjectForm } from "../components/ProjectForm";
 import { ConfirmDialog } from "@/shared/components/ui/ConfirmDialog";
 import { Toast } from "@/shared/components/ui/Toast";
 import { usePermissions } from "@/shared/hooks/usePermissions";
+import { Trash } from "lucide-react";
 
 const ProjectDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -47,6 +46,8 @@ const ProjectDetailsPage: React.FC = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [isDeleteEventModalOpen, setIsDeleteEventModalOpen] = useState(false);
+  const [eventToRemove, setEventToRemove] = useState<Event | null>(null);
   const [toast, setToast] = useState<{
     open: boolean;
     type: "success" | "error";
@@ -90,31 +91,6 @@ const ProjectDetailsPage: React.FC = () => {
           Number(id),
         );
         setCompanies(companiesResponse.data);
-
-        // Fetch staff metrics for events
-        {
-          /* Lógica desativada para a aba de Staffs por evento na aba de overview
-
-          const staffMetrics = await Promise.all(
-          eventsResponse.data.map(async (event) => {
-            try {
-              const staffResponse = await eventStaffService.getAll({
-                event_id: event.id,
-              });
-              // The API returns Staff[] when filtering by event_id
-              return {
-                name: event.name,
-                staffCount: staffResponse.data.length,
-              };
-            } catch (err) {
-              console.error(`Error fetching staff for event ${event.id}:`, err);
-              return { name: event.name, staffCount: 0 };
-            }
-          }),
-        );
-        setEventsStaffMetrics(staffMetrics);
-        setTotalStaff(staffMetrics.reduce((sum, e) => sum + e.staffCount, 0));*/
-        }
       } catch (err) {
         setError("Erro ao carregar projeto");
         console.error("Error fetching project data:", err);
@@ -198,6 +174,39 @@ const ProjectDetailsPage: React.FC = () => {
     }
   };
 
+  const confirmRemoveEvent = (event: Event) => {
+    setEventToRemove(event);
+    setIsDeleteEventModalOpen(true);
+  };
+
+  // Função para remover o evento
+  const handleRemoveEvent = async () => {
+    if (!eventToRemove || !id) return;
+
+    try {
+      // Deleta o evento
+      await eventsService.delete(eventToRemove.id);
+
+      setToast({
+        open: true,
+        type: "success",
+        message: "Evento removido com sucesso.",
+      });
+
+      // Atualiza a lista de eventos
+      handleEventAdded(); // Reutiliza a função que já faz o refetch dos eventos
+
+      setIsDeleteEventModalOpen(false);
+      setEventToRemove(null);
+    } catch (error) {
+      console.error(error);
+      setToast({
+        open: true,
+        type: "error",
+        message: "Erro ao remover o evento.",
+      });
+    }
+  };
   if (loading) {
     return (
       <DetailsPageContainer>
@@ -310,6 +319,14 @@ const ProjectDetailsPage: React.FC = () => {
                 setEventFilter={setEventFilter}
                 events={events}
                 onEventAdded={handleEventAdded}
+                getActions={(event) => [
+                  {
+                    label: "Remover",
+                    icon: <Trash size={16} />,
+                    variant: "destructive",
+                    onClick: (e) => confirmRemoveEvent(e),
+                  },
+                ]}
               />
             ),
           },
@@ -346,6 +363,19 @@ const ProjectDetailsPage: React.FC = () => {
           onCancel={handleEditCancel}
         />
       </Modal>
+      <ConfirmDialog
+        open={isDeleteEventModalOpen}
+        onOpenChange={(isOpen) => {
+          setIsDeleteEventModalOpen(isOpen);
+          if (!isOpen) setEventToRemove(null);
+        }}
+        title="Remover Evento"
+        description={`Tem certeza que deseja excluir o evento "${eventToRemove?.name}"? Esta ação excluirá permanentemente o evento e todos os dados associados a ele.`}
+        confirmLabel="Excluir Evento"
+        cancelLabel="Cancelar"
+        onConfirm={handleRemoveEvent}
+        variant="danger"
+      />
     </DetailsPageContainer>
   );
 };

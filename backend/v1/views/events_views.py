@@ -37,12 +37,17 @@ class EventViewSet(CreatedByMixin, AdminWriteCompanyReadMixin, viewsets.ModelVie
     def get_queryset(self):
         user = self.request.user
         if user.role in ["admin", "control"]:
-            return Event.objects.filter(project__isnull=True)
-        return Event.objects.filter(
-            Q(project__isnull=True),
-            Q(participating_companies__company=user.company)
-            | Q(project__company=user.company),
-        ).distinct()
+            queryset = Event.objects.all()
+        else:
+            queryset = Event.objects.filter(
+                Q(participating_companies__company=user.company)
+                | Q(project__company=user.company),
+            ).distinct()
+
+        if self.action == "list":
+            queryset.filter(project__isnull=True)
+
+        return queryset
 
     def retrieve(self, request, pk=None):
         """Detalhes de um Evento"""

@@ -7,6 +7,7 @@ import { Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { EventForm } from "@/features/events/components/EventForm";
 import { useAuth } from "@/shared/context/AuthContext";
+import { type ListAction } from "../list/ListCard";
 
 interface Event {
   id: number;
@@ -25,6 +26,7 @@ interface EventsTabProps {
   setEventFilter: (value: string) => void;
   events: Event[];
   onEventAdded?: () => void;
+  getActions?: (item: any) => ListAction[];
 }
 
 const EventsTab: React.FC<EventsTabProps> = ({
@@ -36,6 +38,7 @@ const EventsTab: React.FC<EventsTabProps> = ({
   setEventFilter,
   events,
   onEventAdded,
+  getActions,
 }) => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
@@ -119,6 +122,7 @@ const EventsTab: React.FC<EventsTabProps> = ({
         }
         notFoundMessage="Nenhum evento encontrado"
         onClick={handleEventClick}
+        getActions={getActions}
       >
         {(event) => (
           <>
