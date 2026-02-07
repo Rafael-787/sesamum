@@ -46,7 +46,7 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
     }
 
     const headers = lines[0].split(",").map((h) => h.trim().toLowerCase());
-    const requiredHeaders = ["name", "cpf"];
+    const requiredHeaders = ["nome", "cpf"];
     const missingHeaders = requiredHeaders.filter((h) => !headers.includes(h));
 
     if (missingHeaders.length > 0) {
@@ -68,7 +68,7 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
       });
 
       // Validate required fields
-      if (!row.name) {
+      if (!row.nome) {
         validationErrors.push({
           row: i + 1,
           field: "name",
@@ -85,10 +85,8 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
       }
 
       data.push({
-        name: row.name,
+        name: row.nome,
         cpf: row.cpf.replace(/\D/g, ""),
-        email: row.email,
-        company_id: row.company_id ? parseInt(row.company_id) : undefined,
       });
     }
 
@@ -149,8 +147,7 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
   };
 
   const downloadTemplate = () => {
-    const template =
-      "name,cpf,email,company_id\nJoão Silva,12345678901,joao@example.com,1";
+    const template = "nome,cpf\nJoão Silva,12345678901";
     const blob = new Blob([template], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -177,16 +174,10 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
             </p>
             <ul className="list-disc list-inside space-y-1 text-xs">
               <li>
-                <strong>name</strong> (obrigatório): Nome completo do staff
+                <strong>nome</strong>: Nome completo do staff.
               </li>
               <li>
-                <strong>cpf</strong> (obrigatório): CPF do staff (11 dígitos)
-              </li>
-              <li>
-                <strong>email</strong> (opcional): Email do staff
-              </li>
-              <li>
-                <strong>company_id</strong> (opcional): ID da empresa
+                <strong>cpf</strong>: CPF do staff (somente números).
               </li>
             </ul>
           </div>
@@ -256,7 +247,10 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
         <>
           <div className="flex items-center gap-2 text-sm text-green-600 bg-green-50 p-3 rounded-lg">
             <CheckCircle size={16} />
-            <span>{parsedData.length} staff(s) prontos para importação</span>
+            <span>
+              {parsedData.length} staff{parsedData.length > 1 ? "s" : ""} pronto
+              {parsedData.length > 1 ? "s" : ""} para importação
+            </span>
           </div>
 
           <div className="max-h-96 overflow-y-auto border border-input-border rounded-lg">
@@ -265,7 +259,6 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
                 <tr>
                   <th className="px-4 py-2 text-left font-semibold">Nome</th>
                   <th className="px-4 py-2 text-left font-semibold">CPF</th>
-                  <th className="px-4 py-2 text-left font-semibold">Email</th>
                 </tr>
               </thead>
               <tbody>
@@ -273,7 +266,6 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
                   <tr key={index} className="border-t border-input-border">
                     <td className="px-4 py-2">{staff.name}</td>
                     <td className="px-4 py-2">{staff.cpf}</td>
-                    <td className="px-4 py-2">{staff.email || "-"}</td>
                   </tr>
                 ))}
               </tbody>
