@@ -1,112 +1,114 @@
-@import "tailwindcss";
-
 @theme {
-  --color-primary: #2563eb; /* azul claro padrão */
-  --color-secondary: #64748b; /* azul escuro padrão */
-  --color-maind-bg: #f1f5f9; /* cinza claro para fundos */
+    --color-primary: #2563eb; /* azul claro padrão */
+    --color-secondary: #64748b; /* azul escuro padrão */
+    --color-maind-bg: #f1f5f9; /* cinza claro para fundos */
 
-  /* Cores dos títulos e subtítulos */
-  --color-title: #0f172a; /* cor do título */
-  --color-subtitle: #64748b; /* cor do subtítulo */
+    /* Cores dos títulos e subtítulos */
+    --color-title: #0f172a; /* cor do título */
+    --color-subtitle: #64748b; /* cor do subtítulo */
 
-  /* Cores dos cartões */
-  --color-card-primary: #fff; /* branco padrão para cartões */
-  --color-card-secondary: #f8fafc; /* cinza claro para hover */
-  --color-card-border: #e2e8f0; /* borda cinza para cartões */
+    /* Cores dos cartões */
+    --color-card-primary: #fff; /* branco padrão para cartões */
+    --color-card-secondary: #f8fafc; /* cinza claro para hover */
+    --color-card-border: #e2e8f0; /* borda cinza para cartões */
 
-  /* Cores da sidebar */
-  --color-sidebar-bg: #0f172a; /* azul escuro para sidebar */
-  --color-sidebar-border: #1e293b; /* borda azul escuro para sidebar */
-  --color-sidebar-text: #f1f5f9; /* texto claro para sidebar */
-  --color-sidebar-text-muted: var(
-    --color-subtitle
-  ); /* texto mutado para sidebar */
-  --color-sidebar-hover-bg: #1e293b; /* hover azul médio para sidebar */
+    /* Cores da sidebar */
+    --color-sidebar-bg: #0f172a; /* azul escuro para sidebar */
+    --color-sidebar-border: #1e293b; /* borda azul escuro para sidebar */
+    --color-sidebar-text: #f1f5f9; /* texto claro para sidebar */
+    --color-sidebar-text-muted: var(
+        --color-subtitle
+    ); /* texto mutado para sidebar */
+    --color-sidebar-hover-bg: #1e293b; /* hover azul médio para sidebar */
 
-  /* Cores dos botões */
-  --color-button-bg: var(--color-primary); /* cor primária */
-  --color-button-text: var(--color-card-primary); /* texto branco para botões */
-  --color-button-bg-hover: #1d4ed8; /* azul mais escuro para hover de botões */
-  --color-button-shadow: #000103; /* sombra preta leve para botões */
+    /* Cores dos botões */
+    --color-button-bg: var(--color-primary); /* cor primária */
+    --color-button-text: var(
+        --color-card-primary
+    ); /* texto branco para botões */
+    --color-button-bg-hover: #1d4ed8; /* azul mais escuro para hover de botões */
+    --color-button-shadow: #000103; /* sombra preta leve para botões */
 
-  /* Cores dos inputs */
-  --color-input-bg: #f8fafc; /* cinza claro para fundo de */
-  --color-input-border: var(--color-card-border); /* borda cinza para inputs */
-  --color-input-text: var(--color-title); /* texto escuro para inputs */
-  --color-input-icon: #94a3b8; /* ícones cinza para inputs */
+    /* Cores dos inputs */
+    --color-input-bg: #f8fafc; /* cinza claro para fundo de */
+    --color-input-border: var(
+        --color-card-border
+    ); /* borda cinza para inputs */
+    --color-input-text: var(--color-title); /* texto escuro para inputs */
+    --color-input-icon: #94a3b8; /* ícones cinza para inputs */
 
-  /* Toast (Radix UI) */
-  --color-toast-default-bg: var(--color-card-primary);
-  --color-toast-default-text: var(--color-title);
-  --color-toast-default-border: var(--color-primary);
-  --color-toast-success-bg: #e6f9ed;
-  --color-toast-success-text: #15803d;
-  --color-toast-success-border: #22c55e;
-  --color-toast-error-bg: #fef2f2;
-  --color-toast-error-text: #b91c1c;
-  --color-toast-error-border: #ef4444;
-  --color-toast-warning-bg: #fef9c3;
-  --color-toast-warning-text: #b45309;
-  --color-toast-warning-border: #facc15;
+    /* Toast (Radix UI) */
+    --color-toast-default-bg: var(--color-card-primary);
+    --color-toast-default-text: var(--color-title);
+    --color-toast-default-border: var(--color-primary);
+    --color-toast-success-bg: #e6f9ed;
+    --color-toast-success-text: #15803d;
+    --color-toast-success-border: #22c55e;
+    --color-toast-error-bg: #fef2f2;
+    --color-toast-error-text: #b91c1c;
+    --color-toast-error-border: #ef4444;
+    --color-toast-warning-bg: #fef9c3;
+    --color-toast-warning-text: #b45309;
+    --color-toast-warning-border: #facc15;
 
-  /* Cores dos Badges */
-  --color-badge-default-bg: var(--color-input-border);
-  --color-badge-default-text: var(--color-input-text);
-  --color-badge-open-bg: var(--color-toast-success-bg);
-  --color-badge-open-text: var(--color-toast-success-text);
-  --color-badge-closed-bg: var(--color-toast-error-bg);
-  --color-badge-closed-text: var(--color-toast-error-text);
-  --color-badge-pending-bg: var(--color-toast-warning-bg);
-  --color-badge-pending-text: var(--color-toast-warning-text);
-  --color-badge-admin-text: var(--color-primary);
-  --color-badge-company-text: var(--color-badge-default-text);
-  --color-badge-controller-text: var(--color-badge-pending-text);
-  --color-badge-production-bg: var(--color-toast-warning-bg);
-  --color-badge-production-text: var(--color-toast-warning-text);
-  --color-badge-service-bg: var(--color-toast-success-bg);
-  --color-badge-service-text: var(--color-toast-success-text);
-  --color-badge-credentialed-bg: var(--color-toast-warning-bg);
-  --color-badge-credentialed-text: var(--color-toast-warning-text);
-  --color-badge-pending-bg: var(--color-badge-credentialed-bg);
-  --color-badge-pending-text: var(--color-badge-credentialed-text);
-  --color-badge-checked-in-bg: var(--color-toast-success-bg);
-  --color-badge-checked-in-text: var(--color-toast-success-text);
-  --color-badge-checked-out-bg: var(--color-toast-error-bg);
-  --color-badge-checked-out-text: var(--color-toast-error-text);
-  --color-badge-expired-bg: var(--color-badge-closed-bg);
-  --color-badge-expired-text: var(--color-badge-closed-text);
+    /* Cores dos Badges */
+    --color-badge-default-bg: var(--color-input-border);
+    --color-badge-default-text: var(--color-input-text);
+    --color-badge-open-bg: var(--color-toast-success-bg);
+    --color-badge-open-text: var(--color-toast-success-text);
+    --color-badge-closed-bg: var(--color-toast-error-bg);
+    --color-badge-closed-text: var(--color-toast-error-text);
+    --color-badge-pending-bg: var(--color-toast-warning-bg);
+    --color-badge-pending-text: var(--color-toast-warning-text);
+    --color-badge-admin-text: var(--color-primary);
+    --color-badge-company-text: var(--color-badge-default-text);
+    --color-badge-controller-text: var(--color-badge-pending-text);
+    --color-badge-production-bg: var(--color-toast-warning-bg);
+    --color-badge-production-text: var(--color-toast-warning-text);
+    --color-badge-service-bg: var(--color-toast-success-bg);
+    --color-badge-service-text: var(--color-toast-success-text);
+    --color-badge-credentialed-bg: var(--color-toast-warning-bg);
+    --color-badge-credentialed-text: var(--color-toast-warning-text);
+    --color-badge-pending-bg: var(--color-badge-credentialed-bg);
+    --color-badge-pending-text: var(--color-badge-credentialed-text);
+    --color-badge-checked-in-bg: var(--color-toast-success-bg);
+    --color-badge-checked-in-text: var(--color-toast-success-text);
+    --color-badge-checked-out-bg: var(--color-toast-error-bg);
+    --color-badge-checked-out-text: var(--color-toast-error-text);
+    --color-badge-expired-bg: var(--color-badge-closed-bg);
+    --color-badge-expired-text: var(--color-badge-closed-text);
 
-  /* Cores tipos */
-  --color-event-bg: var(--color-primary);
-  --color-project-bg: var(--color-toast-warning-border);
-  --color-user-bg: var(--color-toast-success-border);
-  --color-staff-bg: var(--color-user-bg);
-  --color-company-bg: var(--color-toast-error-border);
-  --color-default-bg: var(--color-input-border);
+    /* Cores tipos */
+    --color-event-bg: var(--color-primary);
+    --color-project-bg: var(--color-toast-warning-border);
+    --color-user-bg: var(--color-toast-success-border);
+    --color-staff-bg: var(--color-user-bg);
+    --color-company-bg: var(--color-toast-error-border);
+    --color-default-bg: var(--color-input-border);
 
-  /* Cores Calendário */
-  --color-calendar-event: var(--color-primary);
-  --color-calendar-project: var(--color-toast-warning-border);
-  --color-today-bg: var(--color-input-border);
+    /* Cores Calendário */
+    --color-calendar-event: var(--color-primary);
+    --color-calendar-project: var(--color-toast-warning-border);
+    --color-today-bg: var(--color-input-border);
 
-  --animate-skeleton-loader: skeleton-loading 1.5s ease-in-out infinite;
+    --animate-skeleton-loader: skeleton-loading 1.5s ease-in-out infinite;
 
-  @keyframes skeleton-loading {
-    0% {
-      background-position: -200px 0;
+    @keyframes skeleton-loading {
+        0% {
+            background-position: -200px 0;
+        }
+        100% {
+            background-position: calc(200px + 100%) 0;
+        }
     }
-    100% {
-      background-position: calc(200px + 100%) 0;
-    }
-  }
 }
 @layer components {
-  .calendar-project {
-    background-color: var(--color-calendar-project) !important;
-    border-color: var(--color-calendar-project) !important;
-  }
+    .calendar-project {
+        background-color: var(--color-calendar-project) !important;
+        border-color: var(--color-calendar-project) !important;
+    }
 
-  .fc .fc-day-today {
-    background-color: var(--fc-today-bg-color) !important;
-  }
+    .fc .fc-day-today {
+        background-color: var(--fc-today-bg-color) !important;
+    }
 }

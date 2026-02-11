@@ -1,11 +1,10 @@
 @import "tailwindcss";
-@import "./theme.css" layer(theme);
-@import "./theme.css" layer(components);
+@import "./theme.css";
 
-:root {
-  --fc-today-bg-color: var(--color-today-bg);
-  --fc-button-bg-color: var(--color-button-bg);
-  --fc-button-border-color: var(--color-button-bg);
-  --fc-button-hover-bg-color: var(--color-button-bg-hover);
-  --fc-button-active-bg-color: var(--color-button-bg);
+root {
+    --fc-today-bg-color: var(--color-today-bg);
+    --fc-button-bg-color: var(--color-button-bg);
+    --fc-button-border-color: var(--color-button-bg);
+    --fc-button-hover-bg-color: var(--color-button-bg-hover);
+    --fc-button-active-bg-color: var(--color-button-bg);
 }

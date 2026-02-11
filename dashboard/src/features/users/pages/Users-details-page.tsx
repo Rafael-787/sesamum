@@ -20,16 +20,6 @@ import { Toast } from "@/shared/components/ui/Toast";
 import { useAuth } from "@/shared/context/AuthContext";
 import { usePermissions } from "@/shared/hooks/usePermissions";
 
-// Mock company names (should come from companies API in production)
-const COMPANY_NAMES: Record<number, string> = {
-  0: "Administração Sesamum",
-  1: "ProduEvents Ltda",
-  2: "Tech Solutions SP",
-  3: "Esportes & Eventos",
-  4: "Agro Expo Brasil",
-  5: "Cultural Events RJ",
-};
-
 const UsersDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -237,9 +227,7 @@ const UsersDetailsPage: React.FC = () => {
               <label className="text-sm font-medium text-text-subtitle">
                 Empresa
               </label>
-              <p className="mt-1 text-text-title">
-                {COMPANY_NAMES[user.company_id] || `Empresa ${user.company_id}`}
-              </p>
+              <p className="mt-1 text-text-title">{user.company || "N/A"}</p>
             </div>
           </div>
         </div>

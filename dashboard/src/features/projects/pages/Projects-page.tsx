@@ -143,17 +143,18 @@ const ProjectsPage: React.FC = () => {
                 <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-subtitle">
                   <span className="flex items-center gap-1">
                     <Building2 size={14} />
-                    {`Empresa #${project.company_id}`}
+                    {`${project.company}`}
                   </span>
                   <span className="flex items-center gap-1">
                     <Calendar size={14} />
                     {formatDate(project.date_begin)} -{" "}
                     {formatDate(project.date_end)}
                   </span>
+                  {/* Indicador de quantidade de eventos
                   <span className="flex items-center gap-1">
                     <Calendar size={14} />
                     {project.events_qnt ?? 0} eventos
-                  </span>
+                  </span>*/}
                 </div>
               </div>
             </>

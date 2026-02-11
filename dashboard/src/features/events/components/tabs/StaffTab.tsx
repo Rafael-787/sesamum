@@ -19,12 +19,13 @@ import StaffCSVUpload from "./StaffCSVUpload";
 import AddExistingStaff from "./AddExistingStaff";
 import CreateAndAddStaff from "./CreateAndAddStaff";
 import { eventStaffService } from "../../api/eventStaff.service";
+import { set } from "zod/v3";
 
 interface Staff {
   id: number;
   name: string;
   cpf: string;
-  company_id: number;
+  company: string;
   last_action?: "check-in" | "check-out" | "credentialed" | "pending";
   checkin_time?: string;
   checkout_time?: string;
@@ -149,6 +150,7 @@ const StaffTab: React.FC<StaffTabProps> = ({
             eventId={eventId}
             onSuccess={handleCSVSuccess}
             onCancel={handleModalClose}
+            setToast={setToast}
           />
         );
       case "existing":
@@ -274,7 +276,7 @@ const StaffTab: React.FC<StaffTabProps> = ({
                     </span>
                     <span className="flex items-center gap-1">
                       <Building2 size={14} />
-                      Empresa #{staff.company_id}
+                      {staff.company || "N/A"}
                     </span>
                   </div>
 
@@ -307,6 +309,7 @@ const StaffTab: React.FC<StaffTabProps> = ({
       <Toast
         open={toast.open}
         onOpenChange={(open) => setToast((prev) => ({ ...prev, open }))}
+        type={toast.type}
         message={toast.message}
       />
       <ConfirmDialog

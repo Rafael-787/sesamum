@@ -37,7 +37,7 @@ export function EventForm({
       name: event?.name || "",
       description: event?.description || "",
       location: event?.location || "",
-      status: event?.status === "pending" ? "open" : event?.status || "open",
+      status: event?.status || "pending",
       project_id: projectId || event?.project_id || undefined,
       date_begin: event?.date_begin
         ? formatDateToDDMMYYYY(event.date_begin)
@@ -172,6 +172,7 @@ export function EventForm({
             className="w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-input-bg border border-input-border text-input-text"
             disabled={isSubmitting}
           >
+            <option value="pending">Pendente</option>
             <option value="open">Aberto</option>
             <option value="close">Fechado</option>
           </select>

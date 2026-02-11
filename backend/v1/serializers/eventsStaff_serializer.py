@@ -54,4 +54,5 @@ class EventsStaffControlSerializer(serializers.ModelSerializer):
     def get_last_status(self, obj):
         # Pega o último check para determinar estado atual (In/Out)
         last_check = obj.checks_history.order_by("-timestamp").first()
-        return last_check.action if last_check else None
+        data = {"action": last_check.action, "timestamp": last_check.timestamp}
+        return data if last_check else None

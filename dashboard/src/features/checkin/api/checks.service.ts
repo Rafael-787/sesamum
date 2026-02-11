@@ -4,8 +4,7 @@ import type { Check, CheckAction } from "@/shared/types";
 
 export interface CreateCheckData {
   action: CheckAction;
-  events_staff_id: string;
-  user_control_id: number;
+  events_staff: string;
 }
 
 export const checksService = {

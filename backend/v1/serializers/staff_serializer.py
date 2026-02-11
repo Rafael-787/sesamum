@@ -52,3 +52,13 @@ class StaffSerializer(serializers.ModelSerializer):
         # Injetamos a empresa nos atributos para o perform_create
         attrs["company"] = company
         return super().validate(attrs)
+
+    def to_representation(self, instance):
+        # Chamamos a representação padrão (que traria o ID)
+        representation = super().to_representation(instance)
+
+        # Substituímos o valor do ID pelo nome do fornecedor apenas no JSON de saída
+        if instance.company:
+            representation["company"] = instance.company.name
+
+        return representation

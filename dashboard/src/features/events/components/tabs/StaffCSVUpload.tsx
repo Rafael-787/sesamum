@@ -1,18 +1,23 @@
 import React, { useState } from "react";
 import { Upload, X, CheckCircle, AlertCircle, FileText } from "lucide-react";
 import { eventStaffService } from "../../api/eventStaff.service";
+import { type Dispatch, type SetStateAction } from "react";
+import { type ToastType } from "@/shared/components/ui/Toast";
 
 interface StaffCSVData {
   name: string;
   cpf: string;
-  email?: string;
-  company_id?: number;
 }
-
+export interface ToastState {
+  open: boolean;
+  type: ToastType;
+  message: string;
+}
 interface StaffCSVUploadProps {
   eventId: number;
   onSuccess: () => void;
   onCancel: () => void;
+  setToast: Dispatch<SetStateAction<ToastState>>;
 }
 
 interface ValidationError {
@@ -25,6 +30,7 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
   eventId,
   onSuccess,
   onCancel,
+  setToast,
 }) => {
   const [file, setFile] = useState<File | null>(null);
   const [parsedData, setParsedData] = useState<StaffCSVData[]>([]);
@@ -66,6 +72,10 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
       headers.forEach((header, index) => {
         row[header] = values[index] || "";
       });
+
+      if (!row.nome && !row.cpf) {
+        continue;
+      }
 
       // Validate required fields
       if (!row.nome) {
@@ -123,16 +133,29 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
     setApiError("");
 
     try {
-      await eventStaffService.createBulk(eventId, parsedData);
+      const response = await eventStaffService.createBulk(eventId, parsedData);
+      setToast({
+        open: true,
+        type: "success",
+        message: response.data.message,
+      });
       onSuccess();
     } catch (error: any) {
+      let errorMessage = "Erro ao importar staff";
+
       if (error.response?.data?.detail) {
-        setApiError(error.response.data.detail);
+        errorMessage = error.response.data.detail;
       } else if (error instanceof Error) {
-        setApiError(error.message || "Erro ao importar staff");
-      } else {
-        setApiError("Erro ao importar staff");
+        errorMessage = error.message;
       }
+
+      setApiError(errorMessage);
+
+      setToast({
+        open: true,
+        type: "error",
+        message: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -296,9 +319,7 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
           disabled={isLoading || parsedData.length === 0 || errors.length > 0}
           className="hover:cursor-pointer px-4 py-2 text-sm font-medium text-button-text bg-primary rounded-lg hover:bg-button-bg-hover disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading
-            ? "Importando..."
-            : `Importar ${parsedData.length} Staff(s)`}
+          {isLoading ? "Importando..." : `Importar ${parsedData.length} Staffs`}
         </button>
       </div>
     </div>

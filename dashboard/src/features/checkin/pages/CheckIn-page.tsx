@@ -131,8 +131,7 @@ const CheckInPage: React.FC = () => {
     try {
       await checksService.create({
         action,
-        events_staff_id: searchResult.id,
-        user_control_id: user.id,
+        events_staff: searchResult.id,
       });
 
       showToast("success", `${getActionLabel(action)} realizado com sucesso!`);
@@ -164,24 +163,28 @@ const CheckInPage: React.FC = () => {
   };
 
   const getStatusBadge = (eventsStaff: EventStaff) => {
-    if (!eventsStaff.registration_check_id) {
+    if (!eventsStaff.is_registered) {
       return <Badge variant="pending" label="Aguardando Registro" />;
     }
 
-    if (eventsStaff.lastCheck?.action === "check-in") {
-      return <Badge variant="open" label="Dentro do Evento" />;
+    if (eventsStaff?.last_status?.action === "check-in") {
+      return <Badge variant="check-in" label="Dentro do Evento" />;
+    }
+
+    if (eventsStaff?.last_status?.action === "check-out") {
+      return <Badge variant="check-out" label="Fora do Evento" />;
     }
 
     return <Badge variant="credentialed" label="Registrado" />;
   };
 
-  const canRegister = searchResult && !searchResult.registration_check_id;
+  const canRegister = searchResult && !searchResult.is_registered;
   const canCheckIn =
     searchResult &&
-    searchResult.registration_check_id &&
-    searchResult.lastCheck?.action !== "check-in";
+    searchResult.is_registered &&
+    searchResult.last_status?.action !== "check-in";
   const canCheckOut =
-    searchResult && searchResult.lastCheck?.action === "check-in";
+    searchResult && searchResult.last_status?.action === "check-in";
 
   return (
     <PageContainer>
@@ -325,32 +328,31 @@ const CheckInPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
               <label className="text-sm font-medium text-text-subtitle">
+                Nome
+              </label>
+              <p className="mt-1 text-text-title">{searchResult.staff_name}</p>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-text-subtitle">
                 CPF
               </label>
               <p className="mt-1 text-text-title">{searchResult.staff_cpf}</p>
             </div>
-            <div>
-              <label className="text-sm font-medium text-text-subtitle">
-                ID EventStaff (QR Code)
-              </label>
-              <p className="mt-1 text-text-title font-mono text-sm break-all">
-                {searchResult.id}
-              </p>
-            </div>
-            <div>
+            {/* Demonstrativo do ID do evento
+              <div>
               <label className="text-sm font-medium text-text-subtitle">
                 ID do Evento
               </label>
               <p className="mt-1 text-text-title">{searchResult.event_id}</p>
-            </div>
-            {searchResult.lastCheck && (
+            </div>*/}
+            {searchResult.last_status?.action && (
               <>
                 <div>
                   <label className="text-sm font-medium text-text-subtitle">
                     Última Ação
                   </label>
                   <p className="mt-1 text-text-title capitalize">
-                    {getActionLabel(searchResult.lastCheck.action)}
+                    {getActionLabel(searchResult.last_status?.action)}
                   </p>
                 </div>
                 <div>
@@ -358,7 +360,15 @@ const CheckInPage: React.FC = () => {
                     Data/Hora
                   </label>
                   <p className="mt-1 text-text-title">
-                    {formatDateTime(searchResult.lastCheck.timestamp)}
+                    {formatDateTime(searchResult.last_status?.timestamp)}
+                  </p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-text-subtitle">
+                    ID EventStaff (QR Code)
+                  </label>
+                  <p className="mt-1 text-text-title font-mono text-sm break-all">
+                    {searchResult.id}
                   </p>
                 </div>
               </>

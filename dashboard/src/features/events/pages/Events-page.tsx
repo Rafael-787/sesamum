@@ -15,6 +15,7 @@ import { eventsService } from "../api/events.service";
 import { EventForm } from "../components/EventForm";
 import { useDebounce } from "@/shared/hooks/useDebounce";
 import { usePermissions } from "@/shared/hooks/usePermissions";
+import { formatDate } from "@/shared";
 
 const EventsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -147,19 +148,20 @@ const EventsPage: React.FC = () => {
                     <Badge variant={event.status} />
                   </div>
                   <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-subtitle">
+                    {/* Indicador de empresa
                     <span className="flex items-center gap-1">
                       <Building2 size={14} />
                       {event.companies && event.companies[0]?.company_id
                         ? `Empresa #${event.companies[0].company_id}`
                         : ""}
-                    </span>
+                        </span>*/}
                     <span className="flex items-center gap-1">
                       <MapPin size={14} />
-                      {event.location ?? "Local não informado"}
+                      {event.location || "Local não informado"}
                     </span>
                     <span className="flex items-center gap-1">
-                      <Users size={14} />
-                      {event.staffs_qnt ?? "N/A"} staffs
+                      <Calendar size={14} />
+                      {formatDate(event.date_begin)} -{" "}
                     </span>
                   </div>
                 </div>

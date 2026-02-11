@@ -1,18 +1,6 @@
-from django.db import transaction
 from rest_framework import serializers, validators
-from rest_framework.validators import UniqueTogetherValidator
 
-from ..models import (
-    Check,
-    Company,
-    Event,
-    EventsStaff,
-    Project,
-    Staff,
-    User,
-    UserInvite,
-)
-from ..utils import sanitize_digits
+from ..models import Company, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -26,8 +14,19 @@ class UserSerializer(serializers.ModelSerializer):
         required=True,
         allow_blank=False,
     )
+    company = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all())
 
     class Meta:
         model = User
         fields = ["id", "name", "email", "role", "company", "created_at"]
         read_only_fields = ["role", "company", "created_at", "email"]
+
+    def to_representation(self, instance):
+        # Chamamos a representação padrão (que traria o ID)
+        representation = super().to_representation(instance)
+
+        # Substituímos o valor do ID pelo nome do fornecedor apenas no JSON de saída
+        if instance.company:
+            representation["company"] = instance.company.name
+
+        return representation

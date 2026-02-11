@@ -5,5 +5,5 @@ export interface User {
   picture: string;
   email: string;
   role: "admin" | "company" | "control";
-  company_id: number;
+  company: string;
 }

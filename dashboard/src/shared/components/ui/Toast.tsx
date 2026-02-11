@@ -41,7 +41,7 @@ export const Toast: React.FC<ToastProps> = ({
   onOpenChange,
   duration = 3000,
 }) => {
-  const variant = typeVars[type && type in typeVars ? type : "default"];
+  const variant = typeVars[type in typeVars ? type : "default"];
   return (
     <ToastPrimitive.Provider swipeDirection="right" duration={duration}>
       <ToastPrimitive.Root

@@ -302,7 +302,7 @@ const UsersPage: React.FC = () => {
                       </span>
                       <span className="flex items-center gap-1">
                         <Building2 size={14} />
-                        Empresa #{item.company_id}
+                        {item.company}
                       </span>
                     </div>
                   </div>
@@ -349,7 +349,7 @@ const UsersPage: React.FC = () => {
                     </span>
                     <span className="flex items-center gap-1">
                       <Building2 size={14} />
-                      Empresa #{item.company_id}
+                      {item.company || "N/A"}
                     </span>
                   </div>
                 </div>

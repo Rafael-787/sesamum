@@ -81,6 +81,17 @@ class EventsStaffView(views.APIView):
 class EventStaffBulkView(views.APIView):
     permission_classes = [IsCompanyOrAdmin]
 
+    def has_permission(self, request, event_id):
+        # Admin atribui sem nenhuma restrição (user.company é irrelevante para Admin)
+        if request.user.role != "admin":
+            # Se a empresa não for dona do projeto do qual o evento faz parte
+            if not Event.objects.filter(project__company=request.user.company).exists():
+                # Verifica se a empresa foi atribuída ao evento
+                if not EventsCompany.objects.filter(
+                    event=event_id, company=request.user.company
+                ).exists():
+                    raise PermissionDenied("Empresa não atribuída a esse evento.")
+
     def post(self, request, event_id):
         """Bulk Upsert de Staffs para um evento"""
         try:
@@ -88,12 +99,8 @@ class EventStaffBulkView(views.APIView):
         except Event.DoesNotExist:
             return Response(status=404)
 
-        # Validação de Permissão: O evento deve pertencer à company do usuário
-        if event.project.company != request.user.company:
-            return Response(
-                {"error": "Permission denied for this event"},
-                status=status.HTTP_403_FORBIDDEN,
-            )
+        # Validação de Permissão: A company do usuário deve ser dona ou participante
+        self.has_permission(request, event_id)
 
         staff_list = request.data.get("staffs", [])
         created_count = 0
@@ -119,5 +126,5 @@ class EventStaffBulkView(views.APIView):
                 created_count += 1
 
         return Response(
-            {"message": f"{created_count} staffs linked to event"}, status=200
+            {"message": f"{created_count} staffs atribuídos ao evento."}, status=200
         )

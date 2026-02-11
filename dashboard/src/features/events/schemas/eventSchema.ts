@@ -10,7 +10,7 @@ export const eventSchema = z
     description: z.string().optional(),
     location: z.string().optional(),
     status: z
-      .enum(["open", "close"], {
+      .enum(["open", "close", "pending"], {
         message: "Status inválido",
       })
       .optional(),

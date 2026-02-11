@@ -23,6 +23,7 @@ import { EventForm } from "../components/EventForm";
 import { ConfirmDialog } from "@/shared/components/ui/ConfirmDialog";
 import { Toast } from "@/shared/components/ui/Toast";
 import { usePermissions } from "@/shared/hooks/usePermissions";
+import { Badge } from "@/shared";
 
 const EventDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -269,7 +270,7 @@ const EventDetailsPage: React.FC = () => {
               Status
             </label>
             <p className="mt-1 text-text-title">
-              {event.status === "open" ? "Aberto" : "Fechado"}
+              <Badge variant={event.status} />
             </p>
           </div>
           {event.project_id && (

@@ -20,8 +20,6 @@ export const InviteDetailsModal: React.FC<InviteDetailsModalProps> = ({
   onOpenChange,
   onDeleteSuccess,
 }) => {
-  const [companyName, setCompanyName] = useState<string>("");
-  const [loadingCompany, setLoadingCompany] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,28 +33,6 @@ export const InviteDetailsModal: React.FC<InviteDetailsModalProps> = ({
     type: "success",
     message: "",
   });
-
-  // Fetch company name when modal opens
-  useEffect(() => {
-    if (invite && open) {
-      fetchCompanyName();
-    }
-  }, [invite, open]);
-
-  const fetchCompanyName = async () => {
-    if (!invite) return;
-
-    try {
-      setLoadingCompany(true);
-      const response = await companiesService.getById(invite.company);
-      setCompanyName(response.data.name);
-    } catch (err) {
-      console.error("Error fetching company:", err);
-      setCompanyName(`Empresa #${invite.company_id}`);
-    } finally {
-      setLoadingCompany(false);
-    }
-  };
 
   const handleDeleteClick = () => {
     setShowConfirmation(true);
@@ -216,7 +192,7 @@ export const InviteDetailsModal: React.FC<InviteDetailsModalProps> = ({
               <div className="flex-1">
                 <p className="text-xs text-subtitle font-medium mb-1">Email</p>
                 <p className="text-sm text-title">
-                  {invite.email || "Qualquer email pode usar"}
+                  {invite.email || "Não especificado"}
                 </p>
               </div>
             </div>
@@ -228,9 +204,7 @@ export const InviteDetailsModal: React.FC<InviteDetailsModalProps> = ({
                 <p className="text-xs text-subtitle font-medium mb-1">
                   Empresa
                 </p>
-                <p className="text-sm text-title">
-                  {loadingCompany ? "Carregando..." : companyName}
-                </p>
+                <p className="text-sm text-title">{invite.company}</p>
               </div>
             </div>
 

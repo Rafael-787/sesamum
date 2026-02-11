@@ -51,8 +51,8 @@ export const eventStaffService = {
    */
   createBulk: async (
     eventId: number,
-    staff: Array<{ cpf: string; name: string; email?: string }>,
+    staffs: Array<{ cpf: string; name: string; email?: string }>,
   ) => {
-    return apiClient.post(ENDPOINTS.EVENT_STAFF.BULK(eventId), { staff });
+    return apiClient.post(ENDPOINTS.EVENT_STAFF.BULK(eventId), { staffs });
   },
 };

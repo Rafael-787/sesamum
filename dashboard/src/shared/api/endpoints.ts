@@ -85,6 +85,7 @@ export const ENDPOINTS = {
   // Checks (Check-in/out)
   CHECKS: {
     LIST: "/api/v1/checks/",
+    CREATE: "/api/v1/checks/",
     SEARCH_STAFF: (eventId: number) =>
       `/api/v1/checks/${eventId}/events-staff/`,
   },

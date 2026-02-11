@@ -124,10 +124,11 @@ const CompaniesTab: React.FC<CompaniesTabProps> = ({
                     <Building2 size={14} />
                     {company.cnpj}
                   </span>
+                  {/* Mostrador de qnt de staff desativado
                   <span className="flex items-center gap-1">
                     <UserIcon size={14} />
                     {company.staffCount} staffs
-                  </span>
+                    </span>*/}
                 </div>
               </div>
             </ListCard.Body>

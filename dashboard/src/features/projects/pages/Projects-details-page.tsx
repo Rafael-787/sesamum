@@ -21,6 +21,7 @@ import { ConfirmDialog } from "@/shared/components/ui/ConfirmDialog";
 import { Toast } from "@/shared/components/ui/Toast";
 import { usePermissions } from "@/shared/hooks/usePermissions";
 import { Trash } from "lucide-react";
+import { Badge } from "@/shared";
 
 const ProjectDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -242,12 +243,10 @@ const ProjectDetailsPage: React.FC = () => {
       <DetailsInfoSection>
         <div className="grid grid-cols-2 gap-6">
           <div>
-            <label className="text-sm font-medium text-text-subtitle">
+            <label className="flex flex-col text-sm font-medium text-text-subtitle">
               Status
             </label>
-            <p className="mt-1 text-text-title">
-              {project.status === "open" ? "Aberto" : "Fechado"}
-            </p>
+            <Badge variant={project.status} />
           </div>
           {project.date_begin && (
             <div>
