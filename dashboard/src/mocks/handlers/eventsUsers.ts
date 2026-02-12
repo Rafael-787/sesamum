@@ -1,7 +1,7 @@
 import { http, HttpResponse, delay } from "msw";
 import { mockEventsUsers } from "../data/eventsUsers";
 import { mockEvents } from "../data/events";
-import type { EventUser } from "../../types";
+import type { EventUser } from "@/features/events/types";
 
 /**
  * EventUsers MSW Handlers
@@ -72,7 +72,7 @@ export const eventUsersHandlers = [
     if (!relation) {
       return HttpResponse.json(
         { detail: "Event-User relationship not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -94,7 +94,7 @@ export const eventUsersHandlers = [
     if (!newRelationData.user_id || !newRelationData.event_id) {
       return HttpResponse.json(
         { detail: "user_id and event_id are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -102,13 +102,13 @@ export const eventUsersHandlers = [
     const exists = mockEventsUsers.some(
       (eu) =>
         eu.user_id === newRelationData.user_id &&
-        eu.event_id === newRelationData.event_id
+        eu.event_id === newRelationData.event_id,
     );
 
     if (exists) {
       return HttpResponse.json(
         { detail: "User is already assigned to this event" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -138,7 +138,7 @@ export const eventUsersHandlers = [
     if (index === -1) {
       return HttpResponse.json(
         { detail: "Event-User relationship not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 

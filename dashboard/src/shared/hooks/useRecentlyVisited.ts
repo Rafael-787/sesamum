@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import type { RecentActivity } from "../types";
+import type { RecentActivity } from "@/features/dashboard";
 
 const STORAGE_KEY = "sesamum_recent_activities";
 const MAX_ITEMS = 50;
@@ -34,7 +34,7 @@ export const useRecentlyVisited = () => {
         // Remove duplicate if exists (same entityId and type)
         const filtered = existing.filter(
           (item) =>
-            !(item.entityId === visit.entityId && item.type === visit.type)
+            !(item.entityId === visit.entityId && item.type === visit.type),
         );
 
         // Add new visit at the beginning
@@ -56,7 +56,7 @@ export const useRecentlyVisited = () => {
         console.error("Error adding recent visit to localStorage:", error);
       }
     },
-    [getRecentVisits]
+    [getRecentVisits],
   );
 
   /**

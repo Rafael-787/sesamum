@@ -9,6 +9,7 @@ export const companySchema = z.object({
     .min(3, "Nome deve ter no mínimo 3 caracteres")
     .max(100, "Nome deve ter no máximo 100 caracteres"),
   cnpj: z.string().regex(cnpjRegex, "CNPJ inválido (use 00.000.000/0000-00)"),
+  type: z.enum(["production", "service"]),
 });
 
 export type CompanyFormData = z.infer<typeof companySchema>;

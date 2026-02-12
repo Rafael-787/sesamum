@@ -9,7 +9,6 @@ import {
 import { companiesService } from "@/features/companies/api/companies.service";
 import { userInvitesService } from "../api/userInvites.service";
 import type { Company } from "@/features/companies/types";
-import { useAuth } from "@/shared/context/AuthContext";
 
 interface UserInviteFormProps {
   onSuccess: () => void;
@@ -20,7 +19,7 @@ export const UserInviteForm = ({
   onSuccess,
   onCancel,
 }: UserInviteFormProps) => {
-  const { user } = useAuth();
+  // const { user } = useAuth();
   const [companies, setCompanies] = useState<Company[]>([]);
   const [isLoadingCompanies, setIsLoadingCompanies] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,7 +34,7 @@ export const UserInviteForm = ({
     resolver: zodResolver(userInviteSchema),
     defaultValues: {
       email: "",
-      company: undefined,
+      company_id: undefined,
       role: "company",
     },
   });
@@ -80,10 +79,12 @@ export const UserInviteForm = ({
 
       const payload = {
         email: data.email || undefined,
-        company: data.company_id,
+        company_id: data.company_id,
+        company:
+          companies.find((c) => c.id === data.company_id)?.name || "Unknown",
         role: data.role,
-        //expires_at: expiresAt.toISOString(),
-        //created_by: user?.id || 1, // Use current user ID or default to 1 (admin)
+        expires_at: expiresAt.toISOString(),
+        created_by: 1, // Use current user ID or default to 1 (admin)
       };
       await userInvitesService.create(payload);
       onSuccess();

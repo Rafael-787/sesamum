@@ -38,10 +38,6 @@ const ProjectDetailsPage: React.FC = () => {
   const [project, setProject] = useState<Project | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
   const [companies, setCompanies] = useState<any[]>([]);
-  const [totalStaff, setTotalStaff] = useState(0);
-  const [eventsStaffMetrics, setEventsStaffMetrics] = useState<
-    Array<{ name: string; staffCount: number }>
-  >([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -101,7 +97,7 @@ const ProjectDetailsPage: React.FC = () => {
     };
 
     fetchProjectData();
-  }, [id]);
+  }, [id, addRecentVisit]);
 
   const handleEdit = () => {
     setIsEditModalOpen(true);
@@ -231,6 +227,10 @@ const ProjectDetailsPage: React.FC = () => {
   const canEdit = can("update", "project");
   const canDelete = can("delete", "project");
 
+  // Constants for metrics (until backend supports them)
+  const totalStaff = 0;
+  const eventsStaffMetrics: Array<{ name: string; staffCount: number }> = [];
+
   return (
     <DetailsPageContainer>
       <DetailsPageHeader
@@ -318,7 +318,7 @@ const ProjectDetailsPage: React.FC = () => {
                 setEventFilter={setEventFilter}
                 events={events}
                 onEventAdded={handleEventAdded}
-                getActions={(event) => [
+                getActions={() => [
                   {
                     label: "Remover",
                     icon: <Trash size={16} />,

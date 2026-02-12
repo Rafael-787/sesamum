@@ -16,6 +16,11 @@ export interface Check {
   timestamp: string;
   events_staff_id: string; // Nano UUID reference to events_staff
   user_control_id: number; // User with role 'control' who performed the action
+  event_id?: number;
+  is_registered?: boolean; // Optional: flag indicating if staff is registered
+  last_status?: CheckAction; // Optional: flag indicating if staff is registered
+  staff_name: string;
+  staff_cpf: number;
 }
 
 /**
@@ -34,6 +39,7 @@ export type InviteRole = "company" | "control";
 export interface UserInvite {
   id: string; // Nano UUID used as token in invite URL
   company: string;
+  company_id: number;
   email?: string; // Optional - if set, restricts the slot to this specific email
   role: InviteRole;
   used_by: number | null; // User ID who consumed this invite (null = not used)
@@ -55,13 +61,15 @@ export interface JWTTokens {
  * Auth response with tokens and user data
  */
 export interface AuthResponse {
-  tokens: JWTTokens;
+  access: string;
+  refresh: string;
   user: {
     id: number;
     name: string;
     email: string;
     role: string;
-    company_id?: number;
+    company: string;
+    company_id: number;
   };
 }
 
@@ -78,4 +86,28 @@ export interface GoogleLoginRequest {
 export interface GoogleRegisterRequest {
   token: string; // Google OAuth token (id_token)
   invite_token: string; // Nano UUID from user_invites table
+}
+
+/**
+ * Dashboard metrics structure
+ */
+export interface DashboardMetrics {
+  activeEvents: number;
+  totalProjects: number;
+  totalCompanies: number;
+  totalUsers: number;
+  recentCheckIns: number;
+}
+
+/**
+ * Recent Activity item structure for local storage history
+ */
+export interface RecentActivity {
+  id: number;
+  type: "event" | "user" | "company" | "project" | "staff" | "checkin";
+  title: string;
+  description: string;
+  url: string;
+  entityId: number;
+  timestamp: string;
 }

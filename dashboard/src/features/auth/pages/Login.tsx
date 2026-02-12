@@ -4,13 +4,12 @@ import { Card } from "@/shared";
 import { useAuth } from "@/shared/context/AuthContext";
 import { googleLogin } from "../api/auth.service";
 import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
-import axios from "axios";
+
 import logo from "@/assets/logo_dark.svg";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { setTokens, isAuthenticated, user } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
+  const { setTokens } = useAuth();
   const [error, setError] = useState<string | null>(null);
 
   const handleGoogleSuccess = async (
@@ -34,8 +33,8 @@ export default function LoginPage() {
 
       // Redireciona
       navigate("/");
-    } catch (err) {
-      if (err.response.status === 403) {
+    } catch (err: any) {
+      if (err.response?.status === 403) {
         setError("Usuário não cadastrado ou autorizado");
       }
 

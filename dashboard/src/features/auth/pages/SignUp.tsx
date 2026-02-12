@@ -52,7 +52,7 @@ export default function SignUpPage() {
         }
 
         const companyResponse = await companiesService.getById(
-          inviteData.company,
+          inviteData.company_id,
         );
 
         setInvite(inviteData);
@@ -88,7 +88,7 @@ export default function SignUpPage() {
       const authResponse = await googleRegister(token, inviteToken);
 
       // Store tokens via AuthContext
-      setTokens(authResponse.access);
+      setTokens(authResponse.tokens.access);
 
       // Redirect to dashboard
       navigate("/");

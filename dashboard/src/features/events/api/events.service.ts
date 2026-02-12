@@ -1,6 +1,8 @@
 import { apiClient } from "@/shared/api/client";
 import { ENDPOINTS } from "@/shared/api/endpoints";
-import type { Event } from "../types";
+import type { CompanyWithEventData } from "@/features/companies";
+
+import type { Event, Overview, StaffWithStatus } from "../types";
 
 /**
  * Events API Service
@@ -114,11 +116,12 @@ export const eventsService = {
    * const response = await eventsService.getByUser(1);
    * const userEvents = response.data;
    */
+  /*
   getByUser: (userId: number) => {
     return apiClient.get<Event[]>(ENDPOINTS.EVENT_USERS.LIST, {
       params: { user_id: userId },
     });
-  },
+  },*/
 
   /**
    * Get all events for a specific staff member
@@ -129,11 +132,12 @@ export const eventsService = {
    * const response = await eventsService.getByStaff('123.456.789-00');
    * const staffEvents = response.data;
    */
+  /*
   getByStaff: (staffCpf: string) => {
     return apiClient.get<Event[]>(ENDPOINTS.EVENT_STAFF.LIST, {
       params: { staff_cpf: staffCpf },
     });
-  },
+  },*/
 
   /**
    * Get all events for a specific company
@@ -143,12 +147,12 @@ export const eventsService = {
    * @example
    * const response = await eventsService.getByCompany(1);
    * const companyEvents = response.data;
-   */
+   */ /*
   getByCompany: (companyId: number) => {
     return apiClient.get<Event[]>(ENDPOINTS.EVENT_COMPANIES.LIST, {
       params: { company_id: companyId },
     });
-  },
+  },*/
 
   /**
    * Get all events for a specific company
@@ -160,12 +164,16 @@ export const eventsService = {
    * const companyEvents = response.data;
    */
   getCompanies: (eventId: number) => {
-    return apiClient.get<Event[]>(ENDPOINTS.EVENTS.COMPANIES_TAB(eventId));
+    return apiClient.get<CompanyWithEventData[]>(
+      ENDPOINTS.EVENTS.COMPANIES_TAB(eventId),
+    );
   },
   getStaffs: (eventId: number) => {
-    return apiClient.get<Event[]>(ENDPOINTS.EVENTS.STAFFS_TAB(eventId));
+    return apiClient.get<StaffWithStatus[]>(
+      ENDPOINTS.EVENTS.STAFFS_TAB(eventId),
+    );
   },
   getOverview: (eventId: number) => {
-    return apiClient.get<Event[]>(ENDPOINTS.EVENTS.OVERVIEW(eventId));
+    return apiClient.get<Overview>(ENDPOINTS.EVENTS.OVERVIEW(eventId));
   },
 };

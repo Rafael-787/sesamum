@@ -1,4 +1,4 @@
-import type { Company } from "../../types";
+import type { Company } from "@/features/companies/types";
 
 // ==========================================
 // 🏢 Companies Mock Data (API-Compliant)

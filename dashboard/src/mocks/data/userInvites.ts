@@ -30,7 +30,8 @@ export let mockUserInvites: UserInvite[] = [
   // ✅ PENDING INVITES (Active)
   {
     id: "invite_V1StGXR8_Z5jdHi6B", // Nano UUID
-    company_id: 1, // Alpha Production
+    company_id: 1,
+    company: "Produevents",
     email: "newuser@alphaproduction.com", // Email-restricted invite
     role: "company",
     used_by: null,
@@ -41,7 +42,8 @@ export let mockUserInvites: UserInvite[] = [
   },
   {
     id: "invite_K3pL9xR2_M8nQwEr",
-    company_id: 2, // Beta Services
+    company_id: 2,
+    company: "Tech Solutions",
     role: "control", // Any email can use this
     used_by: null,
     status: "pending", // Computed
@@ -51,7 +53,8 @@ export let mockUserInvites: UserInvite[] = [
   },
   {
     id: "invite_P7yT4vN1_H6kLmZx",
-    company_id: 3, // Gamma Tech
+    company_id: 3,
+    company: "Esporte & Eventos",
     email: "tech.lead@gammatech.com",
     role: "company",
     used_by: null,
@@ -65,6 +68,7 @@ export let mockUserInvites: UserInvite[] = [
   {
     id: "invite_W2aB8cD5_R9tYuIo",
     company_id: 1,
+    company: "Produevents",
     email: "maria.santos@alphaproduction.com",
     role: "company",
     used_by: 2, // Maria Santos user ID
@@ -76,6 +80,7 @@ export let mockUserInvites: UserInvite[] = [
   {
     id: "invite_F5gH3jK8_L2mNpQw",
     company_id: 4, // Delta Logistics
+    company: "Delta Logistics",
     role: "control",
     used_by: 4, // Pedro Costa user ID
     status: "used", // Computed
@@ -88,6 +93,7 @@ export let mockUserInvites: UserInvite[] = [
   {
     id: "invite_X9zC4vB6_N8mKlPo",
     company_id: 2,
+    company: "Tech Solutions",
     email: "expired@betaservices.com",
     role: "company",
     used_by: null,
@@ -99,6 +105,7 @@ export let mockUserInvites: UserInvite[] = [
   {
     id: "invite_Q2wE7rT9_Y5uIoAq",
     company_id: 5, // Epsilon Media
+    company: "Epsilon Media",
     role: "control",
     used_by: null,
     status: "expired", // Computed
@@ -116,6 +123,7 @@ export function resetUserInvites(): void {
     {
       id: "invite_V1StGXR8_Z5jdHi6B",
       company_id: 1,
+      company: "Produevents",
       email: "newuser@alphaproduction.com",
       role: "company",
       used_by: null,
@@ -127,6 +135,7 @@ export function resetUserInvites(): void {
     {
       id: "invite_K3pL9xR2_M8nQwEr",
       company_id: 2,
+      company: "Tech Solutions",
       role: "control",
       used_by: null,
       status: "pending",
@@ -137,6 +146,7 @@ export function resetUserInvites(): void {
     {
       id: "invite_P7yT4vN1_H6kLmZx",
       company_id: 3,
+      company: "Esporte & Eventos",
       email: "tech.lead@gammatech.com",
       role: "company",
       used_by: null,
@@ -148,6 +158,7 @@ export function resetUserInvites(): void {
     {
       id: "invite_W2aB8cD5_R9tYuIo",
       company_id: 1,
+      company: "Produevents",
       email: "maria.santos@alphaproduction.com",
       role: "company",
       used_by: 2,
@@ -159,6 +170,7 @@ export function resetUserInvites(): void {
     {
       id: "invite_F5gH3jK8_L2mNpQw",
       company_id: 4,
+      company: "Delta Logistics",
       role: "control",
       used_by: 4,
       status: "used",
@@ -169,6 +181,7 @@ export function resetUserInvites(): void {
     {
       id: "invite_X9zC4vB6_N8mKlPo",
       company_id: 2,
+      company: "Tech Solutions",
       email: "expired@betaservices.com",
       role: "company",
       used_by: null,
@@ -180,6 +193,7 @@ export function resetUserInvites(): void {
     {
       id: "invite_Q2wE7rT9_Y5uIoAq",
       company_id: 5,
+      company: "Epsilon Media",
       role: "control",
       used_by: null,
       status: "expired",

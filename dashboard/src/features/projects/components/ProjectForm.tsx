@@ -43,7 +43,7 @@ export function ProjectForm({
       name: project?.name || "",
       description: project?.description || "",
       status: project?.status || "pending",
-      company: project?.company || undefined,
+      company: project?.company_id || undefined,
       date_begin: project?.date_begin
         ? formatDateToDDMMYYYY(project.date_begin)
         : "",
@@ -78,12 +78,12 @@ export function ProjectForm({
 
   // Load initial company if in edit mode
   useEffect(() => {
-    if (mode === "edit" && project?.company) {
+    if (mode === "edit" && project?.company_id) {
       const fetchInitialCompany = async () => {
         try {
           const response = await companiesService.getAll();
           const initialCompany = response.data.find(
-            (c) => c.id === project.company,
+            (c) => c.id === project.company_id,
           );
           if (initialCompany) {
             setCompanies([initialCompany]);
@@ -94,7 +94,7 @@ export function ProjectForm({
       };
       fetchInitialCompany();
     }
-  }, [mode, project?.company]);
+  }, [mode, project?.company_id]);
 
   const onSubmit = async (data: ProjectFormData) => {
     try {
@@ -106,7 +106,7 @@ export function ProjectForm({
         name: data.name,
         description: data.description || undefined,
         status: mode === "create" ? "open" : data.status || "open",
-        company: data.company as number,
+        company: Number(data.company),
         date_begin:
           data.date_begin && data.date_begin !== ""
             ? formatDateToISO(data.date_begin)

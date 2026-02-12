@@ -45,7 +45,7 @@ class EventViewSet(CreatedByMixin, AdminWriteCompanyReadMixin, viewsets.ModelVie
             ).distinct()
 
         if self.action == "list":
-            queryset.filter(project__isnull=True)
+            queryset = queryset.filter(project__isnull=True)
 
         return queryset
 

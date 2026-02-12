@@ -79,7 +79,7 @@ export const ENDPOINTS = {
     LIST: "/api/v1/invites/",
     CREATE: "/api/v1/invites/",
     DETAIL: (id: string) => `/api/v1/invites/${id}/`,
-    DELETE: (id: number) => `/api/v1/invites/${id}/`,
+    DELETE: (id: string) => `/api/v1/invites/${id}/`,
   },
 
   // Checks (Check-in/out)
@@ -92,6 +92,7 @@ export const ENDPOINTS = {
 
   // Event Companies (Relationship)
   EVENT_COMPANIES: {
+    LIST: "/api/v1/event-companies/",
     CREATE: (eventId: number, companyId: number) =>
       `/api/v1/events/${eventId}/company/${companyId}/`,
     REMOVE: (eventId: number, companyId: number) =>
@@ -100,6 +101,7 @@ export const ENDPOINTS = {
 
   // Event Staff (Relationship)
   EVENT_STAFF: {
+    LIST: "/api/v1/event-staff/",
     ASSIGN: (eventId: number, staffId: number) =>
       `/api/v1/events/${eventId}/staff/${staffId}/`,
     REMOVE: (eventId: number, staffId: number) =>

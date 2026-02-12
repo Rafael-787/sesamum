@@ -1,6 +1,6 @@
 import { http, HttpResponse, delay } from "msw";
 import { mockProjects } from "../data/projects";
-import type { Project } from "../../types";
+import type { Project } from "@/features/projects/types";
 
 /**
  * Projects MSW Handlers
@@ -47,7 +47,7 @@ export const projectHandlers = [
     if (search) {
       const searchLower = search.toLowerCase();
       filtered = filtered.filter((p) =>
-        p.name.toLowerCase().includes(searchLower)
+        p.name.toLowerCase().includes(searchLower),
       );
     }
 
@@ -69,7 +69,7 @@ export const projectHandlers = [
     if (!project) {
       return HttpResponse.json(
         { detail: "Project not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -91,7 +91,7 @@ export const projectHandlers = [
     if (!newProjectData.name || !newProjectData.company_id) {
       return HttpResponse.json(
         { detail: "Name and company_id are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -124,7 +124,7 @@ export const projectHandlers = [
       if (index === -1) {
         return HttpResponse.json(
           { detail: "Project not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
@@ -134,7 +134,7 @@ export const projectHandlers = [
       if (!updateData.name || !updateData.company_id) {
         return HttpResponse.json(
           { detail: "Name and company_id are required" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -151,7 +151,7 @@ export const projectHandlers = [
           "Content-Type": "application/json",
         },
       });
-    }
+    },
   ),
 
   // PATCH /api/v1/projects/:id/ - Partial update project
@@ -166,7 +166,7 @@ export const projectHandlers = [
       if (index === -1) {
         return HttpResponse.json(
           { detail: "Project not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
@@ -185,7 +185,7 @@ export const projectHandlers = [
           "Content-Type": "application/json",
         },
       });
-    }
+    },
   ),
 
   // DELETE /api/v1/projects/:id/ - Delete project
@@ -198,7 +198,7 @@ export const projectHandlers = [
     if (index === -1) {
       return HttpResponse.json(
         { detail: "Project not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 

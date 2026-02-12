@@ -17,7 +17,6 @@ export function CompanyForm({
   mode,
   company,
   onSuccess,
-  onCancel,
 }: CompanyFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -33,6 +32,7 @@ export function CompanyForm({
     defaultValues: {
       name: company?.name || "",
       cnpj: company?.cnpj || "",
+      type: company?.type || "production",
     },
   });
 
@@ -124,6 +124,28 @@ export function CompanyForm({
         />
         {errors.cnpj && (
           <p className="mt-1 text-xs text-red-600">{errors.cnpj.message}</p>
+        )}
+      </div>
+
+      {/* Type select */}
+      <div>
+        <label
+          htmlFor="type"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Tipo de Empresa
+        </label>
+        <select
+          id="type"
+          {...register("type")}
+          className="w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-input-bg border border-input-border text-input-text appearance-none"
+          disabled={isSubmitting}
+        >
+          <option value="production">Produtora</option>
+          <option value="service">Prestadora de Serviço</option>
+        </select>
+        {errors.type && (
+          <p className="mt-1 text-xs text-red-600">{errors.type.message}</p>
         )}
       </div>
 

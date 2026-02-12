@@ -2,21 +2,12 @@ import React from "react";
 import { MetricCard } from "@/features/dashboard/components/MetricCard";
 import Card from "@/shared/components/ui/Card";
 import * as Progress from "@radix-ui/react-progress";
-import {
-  Building2,
-  PercentCircle,
-  ReceiptRussianRuble,
-  Users,
-} from "lucide-react";
+import { Building2, Users } from "lucide-react";
+
+import type { Overview } from "../../types";
 
 interface OverviewTabProps {
-  totalStaff: number;
-  totalCompanies?: number;
-  companiesStaff: Array<{
-    name: string;
-    role: string;
-    staffCount: number;
-  }>;
+  overview: Overview | null;
 }
 
 const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {

@@ -1,6 +1,6 @@
 import { http, HttpResponse, delay } from "msw";
 import { mockStaffs, sanitizeCPF } from "../data/staffs";
-import type { Staff } from "../../types";
+import type { Staff } from "@/features/staffs/types";
 
 /**
  * Staffs MSW Handlers
@@ -55,8 +55,8 @@ export const staffHandlers = [
       filtered = filtered.filter(
         (s) =>
           s.name.toLowerCase().includes(searchLower) ||
-          s.cpf.includes(search) ||
-          s.email.toLowerCase().includes(searchLower),
+          (s.cpf?.includes(search) ?? false) ||
+          (s.email?.toLowerCase().includes(searchLower) ?? false),
       );
     }
 

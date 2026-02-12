@@ -2,7 +2,7 @@ import { http, HttpResponse, delay } from "msw";
 import { mockEventsCompanies } from "../data/eventsCompanies";
 import { mockEvents } from "../data/events";
 import { mockCompanies } from "../data/companies";
-import type { EventCompany } from "../../types";
+import type { EventCompany } from "@/features/events/types";
 
 /**
  * EventCompanies MSW Handlers
@@ -36,7 +36,7 @@ export const eventCompaniesHandlers = [
     if (companyIdParam) {
       const companyId = Number(companyIdParam);
       const companyEventRelations = filtered.filter(
-        (ec) => ec.company_id === companyId
+        (ec) => ec.company_id === companyId,
       );
 
       // Get the actual events for this company
@@ -55,14 +55,14 @@ export const eventCompaniesHandlers = [
     if (eventIdParam) {
       const eventId = Number(eventIdParam);
       const eventCompanyRelations = filtered.filter(
-        (ec) => ec.event_id === eventId
+        (ec) => ec.event_id === eventId,
       );
 
       // Get the actual companies for this event with enriched data
       const enrichedCompanies = eventCompanyRelations
         .map((relation) => {
           const company = mockCompanies.find(
-            (c) => c.id === relation.company_id
+            (c) => c.id === relation.company_id,
           );
           return company
             ? {
@@ -102,7 +102,7 @@ export const eventCompaniesHandlers = [
       if (!relation) {
         return HttpResponse.json(
           { detail: "Event-Company relationship not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
@@ -112,7 +112,7 @@ export const eventCompaniesHandlers = [
           "Content-Type": "application/json",
         },
       });
-    }
+    },
   ),
 
   // POST /api/v1/event-companies/ - Create new event_company relationship
@@ -125,7 +125,7 @@ export const eventCompaniesHandlers = [
     if (!newRelationData.company_id || !newRelationData.event_id) {
       return HttpResponse.json(
         { detail: "company_id and event_id are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -136,7 +136,7 @@ export const eventCompaniesHandlers = [
     if (!["production", "service"].includes(newRelationData.role)) {
       return HttpResponse.json(
         { detail: "role must be 'production' or 'service'" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -144,13 +144,13 @@ export const eventCompaniesHandlers = [
     const exists = mockEventsCompanies.some(
       (ec) =>
         ec.company_id === newRelationData.company_id &&
-        ec.event_id === newRelationData.event_id
+        ec.event_id === newRelationData.event_id,
     );
 
     if (exists) {
       return HttpResponse.json(
         { detail: "Company is already assigned to this event" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -182,13 +182,13 @@ export const eventCompaniesHandlers = [
       if (index === -1) {
         return HttpResponse.json(
           { detail: "Event-Company relationship not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
       mockEventsCompanies.splice(index, 1);
 
       return new HttpResponse(null, { status: 204 });
-    }
+    },
   ),
 ];

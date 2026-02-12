@@ -1,6 +1,8 @@
 import { apiClient } from "@/shared/api/client";
 import { ENDPOINTS } from "@/shared/api/endpoints";
 import type { Project } from "../types";
+import type { Event } from "@/features/events/types";
+import type { Company } from "@/features/companies/types";
 
 /**
  * Projects API Service
@@ -50,11 +52,11 @@ export const projectsService = {
    * const project = response.data;
    */
   getCompanies: (id: number) => {
-    return apiClient.get<Project>(ENDPOINTS.PROJECTS.COMPANIES_TAB(id));
+    return apiClient.get<Company[]>(ENDPOINTS.PROJECTS.COMPANIES_TAB(id));
   },
 
   getEvents: (id: number) => {
-    return apiClient.get<Project>(ENDPOINTS.PROJECTS.EVENTS_TAB(id));
+    return apiClient.get<Event[]>(ENDPOINTS.PROJECTS.EVENTS_TAB(id));
   },
 
   /**

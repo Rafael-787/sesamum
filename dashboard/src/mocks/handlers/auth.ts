@@ -1,12 +1,7 @@
 import { http, HttpResponse, delay } from "msw";
 import { mockUsers } from "../data/users";
 import { mockUserInvites } from "../data/userInvites";
-import type {
-  GoogleLoginRequest,
-  GoogleRegisterRequest,
-  AuthResponse,
-  JWTTokens,
-} from "../../shared/types";
+import type { GoogleRegisterRequest } from "../../shared/types";
 
 // ==========================================
 // 🔐 Auth MSW Handlers (Google OAuth + Mock JWT)
@@ -37,7 +32,7 @@ const user = {
 export const authHandlers = [
   http.post(`${API_BASE_URL}/api/v1/auth/google/login`, async ({ request }) => {
     await delay(1200);
-    const { googleToken } = await request.json();
+    const { googleToken } = (await request.json()) as { googleToken: string };
 
     if (!request || googleToken !== "google_token_admin@sesamum.com") {
       console.error("GoogleToken faltante ou não validado");

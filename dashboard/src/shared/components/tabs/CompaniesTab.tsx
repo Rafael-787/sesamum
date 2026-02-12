@@ -3,7 +3,7 @@ import ListToolbar from "@/shared/components/list/ListToolbar";
 import ListCard from "@/shared/components/list/ListCard";
 import Badge from "@/shared/components/ui/Badge";
 import { Modal } from "@/shared/components/ui/Modal";
-import { User as UserIcon, Building2 } from "lucide-react";
+import { Building2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AddExistingCompany from "@/features/events/components/tabs/AddExistingCompany";
 import { useAuth } from "@/shared/context/AuthContext";

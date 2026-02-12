@@ -1,6 +1,6 @@
 import { http, HttpResponse, delay } from "msw";
 import { mockCompanies, sanitizeCNPJ } from "../data/companies";
-import type { Company } from "../../types";
+import type { Company } from "@/features/companies/types";
 
 /**
  * Companies MSW Handlers

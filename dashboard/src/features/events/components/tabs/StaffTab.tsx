@@ -19,17 +19,7 @@ import StaffCSVUpload from "./StaffCSVUpload";
 import AddExistingStaff from "./AddExistingStaff";
 import CreateAndAddStaff from "./CreateAndAddStaff";
 import { eventStaffService } from "../../api/eventStaff.service";
-import { set } from "zod/v3";
-
-interface Staff {
-  id: number;
-  name: string;
-  cpf: string;
-  company: string;
-  last_action?: "check-in" | "check-out" | "credentialed" | "pending";
-  checkin_time?: string;
-  checkout_time?: string;
-}
+import type { StaffWithStatus } from "../../types";
 
 interface Company {
   id: number;
@@ -45,7 +35,7 @@ interface StaffTabProps {
   setStaffSearch: (value: string) => void;
   staffFilter: string;
   setStaffFilter: (value: string) => void;
-  mockStaff: Staff[];
+  mockStaff: StaffWithStatus[];
   companies: Company[];
   onStaffAdded?: () => void;
 }
@@ -67,11 +57,28 @@ const StaffTab: React.FC<StaffTabProps> = ({
   const [modalView, setModalView] = useState<
     "menu" | "csv" | "existing" | "new"
   >("menu");
-  const [toast, setToast] = useState({
+  const [toast, setToast] = useState<{
+    open: boolean;
+    type: "default" | "success" | "warning" | "error";
+    message: string;
+  }>({
     open: false,
     type: "default",
     message: "",
   });
+
+  const getBadgeVariant = (action?: string) => {
+    switch (action) {
+      case "check-in":
+        return "check-in";
+      case "check-out":
+        return "check-out";
+      case "registration":
+        return "credentialed";
+      default:
+        return "pending";
+    }
+  };
 
   // Build filter options dynamically from companies
   const filterOptions = [
@@ -85,15 +92,17 @@ const StaffTab: React.FC<StaffTabProps> = ({
   const filteredStaff = mockStaff.filter((staff) => {
     const matchesSearch =
       staff.name.toLowerCase().includes(staffSearch.toLowerCase()) ||
-      staff.cpf.includes(staffSearch);
+      (staff.cpf && staff.cpf.includes(staffSearch));
+
+    const lastAction = staff.last_status?.action || "pending";
     const matchesFilter =
       staffFilter === "all" ||
       filterOptions.find((option) => option.value === staffFilter)?.value ===
-        staff.last_action;
+        lastAction;
     return matchesSearch && matchesFilter;
   });
 
-  const handleStaffClick = (staff: Staff) => {
+  const handleStaffClick = (staff: StaffWithStatus) => {
     navigate(`/staffs/${staff.id}`);
   };
 
@@ -118,7 +127,7 @@ const StaffTab: React.FC<StaffTabProps> = ({
 
     try {
       // Chama o serviço para deletar a relação (Ajuste o método conforme seu service)
-      await eventStaffService.delete(id, staffToRemove.id);
+      await eventStaffService.delete(Number(id), staffToRemove.id);
 
       setToast({
         open: true,
@@ -245,7 +254,7 @@ const StaffTab: React.FC<StaffTabProps> = ({
         }
         notFoundMessage="Nenhum membro da equipe encontrado"
         onClick={handleStaffClick}
-        getActions={(staff) => [
+        getActions={() => [
           {
             label: "Desassociar",
             icon: <Trash size={16} />,
@@ -264,9 +273,7 @@ const StaffTab: React.FC<StaffTabProps> = ({
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <h3 className="text-title font-semibold">{staff.name}</h3>
-                  <Badge
-                    variant={staff.last_action ? staff.last_action : "pending"}
-                  />
+                  <Badge variant={getBadgeVariant(staff.last_status?.action)} />
                 </div>
                 <div className="flex flex-col gap-1">
                   <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-subtitle">
@@ -284,18 +291,9 @@ const StaffTab: React.FC<StaffTabProps> = ({
                     {
                       <span className="flex items-center gap-1">
                         <Clock size={14} />
-                        In:{" "}
-                        {staff.checkin_time
-                          ? formatDateTime(staff.checkin_time)
-                          : "N/A"}
-                      </span>
-                    }
-                    {
-                      <span className="flex items-center gap-1">
-                        <Clock size={14} />
-                        Out:{" "}
-                        {staff.checkout_time
-                          ? formatDateTime(staff.checkout_time)
+                        Última ação:{" "}
+                        {staff.last_status?.timestamp
+                          ? formatDateTime(staff.last_status.timestamp)
                           : "N/A"}
                       </span>
                     }

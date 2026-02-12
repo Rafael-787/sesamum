@@ -1,10 +1,6 @@
 import { apiClient } from "@/shared/api/client";
 import { ENDPOINTS } from "@/shared/api/endpoints";
-import type {
-  AuthResponse,
-  GoogleLoginRequest,
-  GoogleRegisterRequest,
-} from "@/shared/types";
+import type { AuthResponse, GoogleLoginRequest } from "@/shared/types";
 
 /**
  * Google OAuth login service
@@ -41,11 +37,11 @@ export const DEV_ACCESS_TOKEN =
 export const DEV_REFRESH_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6ImFkbWluQHNlc2FtdW0uY29tIiwidG9rZW5fdHlwZSI6InJlZnJlc2giLCJleHAiOjE4NDgyNjgwMDB9.def456";
 
-export async function login(email: string, password: string) {
+export async function login(_email: string, _password: string) {
   // ...existing code...
 }
 
-export async function logout(refreshToken: string) {
+export async function logout(_refreshToken: string) {
   // Simulate backend logout
   return Promise.resolve({ message: "Successfully logged out" });
 }

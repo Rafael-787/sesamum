@@ -10,7 +10,6 @@ import {
   validateToken,
   logout as apiLogout,
 } from "@/features/auth/api/auth.service";
-import { useNavigate } from "react-router-dom";
 
 /**
  * AuthContext
@@ -80,7 +79,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       // Confirm with backend /me endpoint
       try {
-        const me = await validateToken(storedAccessToken);
+        const me = await validateToken();
         let role: "admin" | "company" | "control" = "admin";
         if (devRole && devRole !== "dev") {
           role = devRole;

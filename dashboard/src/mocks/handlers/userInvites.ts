@@ -158,7 +158,8 @@ export const userInvitesHandlers = [
       // Create new invite
       const newInvite: UserInvite = {
         id: generateInviteToken(),
-        company_id,
+        company: company.name,
+        company_id: company_id,
         email,
         role,
         used_by: null,

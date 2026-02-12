@@ -10,27 +10,22 @@ import EventsTab from "@/shared/components/tabs/EventsTab";
 import Badge from "@/shared/components/ui/Badge";
 import { Modal } from "@/shared/components/ui/Modal";
 import { companiesService } from "../api/companies.service";
-import { eventsService } from "@/features/events/api/events.service";
 import type { Company } from "../types";
-import type { Event } from "@/features/events/types";
 import { useRecentlyVisited } from "@/shared/hooks/useRecentlyVisited";
 import { CompanyForm } from "../components/CompanyForm";
 import { ConfirmDialog } from "@/shared/components/ui/ConfirmDialog";
 import { Toast } from "@/shared/components/ui/Toast";
-import { useAuth } from "@/shared/context/AuthContext";
 import { usePermissions } from "@/shared/hooks/usePermissions";
 
 const CompaniesDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addRecentVisit } = useRecentlyVisited();
-  const { user } = useAuth();
   const { can } = usePermissions(); // Move hook to top before any conditional returns
   const [eventSearch, setEventSearch] = useState("");
   const [eventFilter, setEventFilter] = useState("all");
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [company, setCompany] = useState<Company | null>(null);
-  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -213,7 +208,7 @@ const CompaniesDetailsPage: React.FC = () => {
                 setEventSearch={setEventSearch}
                 eventFilter={eventFilter}
                 setEventFilter={setEventFilter}
-                events={events}
+                events={[]}
               />
             ),
           },

@@ -5,7 +5,6 @@ import {
 } from "@/shared/components/layout/PageLayout";
 import { checksService } from "../api/checks.service";
 import { eventsService } from "@/features/events/api/events.service";
-import { eventStaffService } from "@/features/events/api/eventStaff.service";
 import type { Event } from "@/features/events/types";
 import type { EventStaff } from "@/features/events/types";
 import { useAuth } from "@/shared/context/AuthContext";
@@ -20,6 +19,7 @@ import {
 import Badge from "@/shared/components/ui/Badge";
 import { formatDateTime } from "@/shared/lib/dateUtils";
 import { Toast } from "@/shared/components/ui/Toast";
+// import type { Check } from "@/shared/types";
 
 type SearchMode = "cpf" | "qrcode";
 
@@ -29,7 +29,7 @@ const CheckInPage: React.FC = () => {
   const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
   const [searchMode, setSearchMode] = useState<SearchMode>("cpf");
   const [searchCPF, setSearchCPF] = useState("");
-  const [searchEventStaffId, setSearchEventStaffId] = useState("");
+  const [searchEventStaffId, setSearchEventStaffId] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [searchResult, setSearchResult] = useState<EventStaff | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -110,7 +110,7 @@ const CheckInPage: React.FC = () => {
 
         // Auto-select the event if not already selected
         if (!selectedEventId) {
-          setSelectedEventId(response.data.event_id);
+          setSelectedEventId(response.data.event_id ?? null);
         }
       }
     } catch (err) {

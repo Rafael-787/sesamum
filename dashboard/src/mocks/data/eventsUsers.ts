@@ -1,4 +1,4 @@
-import type { EventUser } from "../../types";
+import type { EventUser } from "@/features/events/types";
 
 /**
  * Mock EventsUser Data

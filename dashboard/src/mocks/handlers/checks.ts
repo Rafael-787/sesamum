@@ -6,6 +6,7 @@ import {
   getRegistrationCheck,
 } from "../data/checks";
 import { mockEventsStaffs } from "../data/eventsStaffs";
+import { mockStaffs } from "../data/staffs";
 import type { Check, CheckAction } from "../../shared/types";
 
 // ==========================================
@@ -97,6 +98,10 @@ export const checkHandlers = [
         }
 
         // Create registration check
+        const staffDetails = mockStaffs.find(
+          (s) => s.cpf === eventsStaff.staff_cpf,
+        ) || { name: "Unknown", cpf: 0 };
+
         const newCheckId = getNextCheckId();
         const newCheck: Check = {
           id: newCheckId,
@@ -104,6 +109,8 @@ export const checkHandlers = [
           timestamp: new Date().toISOString(),
           events_staff_id,
           user_control_id,
+          staff_name: staffDetails.name,
+          staff_cpf: Number(staffDetails.cpf) || 0,
         };
 
         mockChecks.push(newCheck);
@@ -161,6 +168,20 @@ export const checkHandlers = [
         }
       }
 
+      // Find staff details
+      const staffMember = mockEventsStaffs.find(
+        (es) => es.id === events_staff_id,
+      );
+      // We need actual staff data, not just event_staff relation
+      // Since we don't have direct access to staff_id in mockEventsStaffs (it might not be there or might be different),
+      // we'll use a placeholder or try to find it.
+      // Actually mockEventsStaffs has staff_cpf ?
+      // Let's import mockStaffs.
+
+      const staffDetails = mockStaffs.find(
+        (s) => s.cpf === staffMember?.staff_cpf,
+      ) || { name: "Unknown", cpf: 0 };
+
       // Create check-in or check-out
       const newCheckId = getNextCheckId();
       const newCheck: Check = {
@@ -169,6 +190,8 @@ export const checkHandlers = [
         timestamp: new Date().toISOString(),
         events_staff_id,
         user_control_id,
+        staff_name: staffDetails.name,
+        staff_cpf: Number(staffDetails.cpf) || 0,
       };
 
       mockChecks.push(newCheck);

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Modal } from "@/shared/components/ui/Modal";
 import Badge from "@/shared/components/ui/Badge";
 import { Toast } from "@/shared/components/ui/Toast";
 import type { UserInvite } from "@/shared/types";
 import { Building2, Mail, Calendar, Clock, Copy, Check } from "lucide-react";
 import { userInvitesService } from "../api/userInvites.service";
-import { companiesService } from "@/features/companies/api/companies.service";
 
 interface InviteDetailsModalProps {
   invite: UserInvite | null;

@@ -12,10 +12,9 @@ import CompaniesTab from "@/shared/components/tabs/CompaniesTab";
 import { eventsService } from "../api/events.service";
 import { Trash } from "lucide-react";
 import { eventCompaniesService } from "../api/eventCompanies.service";
-import type { Event } from "../types";
+
 import type { CompanyWithEventData } from "@/features/companies";
-import type { Staff } from "@/features/staffs";
-import type { Overview } from "@/features/events/types";
+import type { Event, Overview, StaffWithStatus } from "../types";
 import { formatDate } from "@/shared/lib/dateUtils";
 import { useRecentlyVisited } from "@/shared/hooks/useRecentlyVisited";
 import { Modal } from "@/shared/components/ui/Modal";
@@ -38,9 +37,9 @@ const EventDetailsPage: React.FC = () => {
   const [companySearch, setCompanySearch] = useState("");
   const [companyFilter, setCompanyFilter] = useState("all");
   const [event, setEvent] = useState<Event | null>(null);
-  const [overview, setOverview] = useState<Overview[]>([]);
+  const [overview, setOverview] = useState<Overview | null>(null);
   const [companies, setCompanies] = useState<CompanyWithEventData[]>([]);
-  const [staffs, setStaffs] = useState<Staff[]>([]);
+  const [staffs, setStaffs] = useState<StaffWithStatus[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -200,7 +199,7 @@ const EventDetailsPage: React.FC = () => {
 
   // Lógica para chamar o serviço e remover a empresa
   const handleRemoveCompany = async () => {
-    if (!companyToRemove || !event.id) return; // Certifique-se de ter o eventId disponível no contexto
+    if (!companyToRemove || !event?.id) return; // Certifique-se de ter o eventId disponível no contexto
 
     try {
       // Chama o serviço para desassociar a empresa do evento
@@ -348,7 +347,7 @@ const EventDetailsPage: React.FC = () => {
                       setCompanyFilter={setCompanyFilter}
                       companies={companies}
                       onCompanyAdded={handleCompanyAdded}
-                      getActions={(company) => [
+                      getActions={() => [
                         {
                           label: "Desassociar",
                           icon: <Trash size={16} />,

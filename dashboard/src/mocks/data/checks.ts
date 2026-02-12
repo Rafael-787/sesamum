@@ -30,6 +30,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-15T08:00:00Z",
     events_staff_id: "es_V1StGXR8_Z5jdHi6B", // João Silva at Event 1
     user_control_id: 7, // Roberto Lima (control)
+    staff_name: "João Silva",
+    staff_cpf: 12345678900,
   },
   {
     id: 2,
@@ -37,6 +39,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-15T14:30:00Z",
     events_staff_id: "es_V1StGXR8_Z5jdHi6B",
     user_control_id: 7,
+    staff_name: "João Silva",
+    staff_cpf: 12345678900,
   },
   {
     id: 3,
@@ -44,6 +48,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-15T23:45:00Z",
     events_staff_id: "es_V1StGXR8_Z5jdHi6B",
     user_control_id: 7,
+    staff_name: "João Silva",
+    staff_cpf: 12345678900,
   },
 
   // Staff 2 - Maria Santos (CPF: 98765432100) - Registration + check-in (still inside)
@@ -53,6 +59,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-15T08:15:00Z",
     events_staff_id: "es_K3pL9xR2_M8nQwEr", // Maria Santos at Event 1
     user_control_id: 7,
+    staff_name: "Maria Santos",
+    staff_cpf: 98765432100,
   },
   {
     id: 5,
@@ -60,6 +68,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-15T15:00:00Z",
     events_staff_id: "es_K3pL9xR2_M8nQwEr",
     user_control_id: 8, // Fernanda Costa (control)
+    staff_name: "Maria Santos",
+    staff_cpf: 98765432100,
   },
 
   // Staff 3 - Pedro Oliveira (CPF: 11122233344) - Only registered, never checked in
@@ -69,6 +79,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-15T09:00:00Z",
     events_staff_id: "es_P7yT4vN1_H6kLmZx", // Pedro Oliveira at Event 1
     user_control_id: 7,
+    staff_name: "Pedro Oliveira",
+    staff_cpf: 11122233344,
   },
 
   // ========================================
@@ -82,6 +94,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-18T07:30:00Z",
     events_staff_id: "es_W2aB8cD5_R9tYuIo", // Ana Costa at Event 2
     user_control_id: 8,
+    staff_name: "Ana Costa",
+    staff_cpf: 55566677788,
   },
   {
     id: 8,
@@ -89,6 +103,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-18T09:00:00Z",
     events_staff_id: "es_W2aB8cD5_R9tYuIo",
     user_control_id: 8,
+    staff_name: "Ana Costa",
+    staff_cpf: 55566677788,
   },
   {
     id: 9,
@@ -96,6 +112,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-18T18:30:00Z",
     events_staff_id: "es_W2aB8cD5_R9tYuIo",
     user_control_id: 8,
+    staff_name: "Ana Costa",
+    staff_cpf: 55566677788,
   },
 
   // Staff 5 - Carlos Souza (CPF: 99988877766) - Registration only
@@ -105,6 +123,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-18T07:45:00Z",
     events_staff_id: "es_F5gH3jK8_L2mNpQw", // Carlos Souza at Event 2
     user_control_id: 8,
+    staff_name: "Carlos Souza",
+    staff_cpf: 99988877766,
   },
 
   // ========================================
@@ -118,6 +138,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-19T08:00:00Z",
     events_staff_id: "es_X9zC4vB6_N8mKlPo", // Lucia Ferreira at Event 3
     user_control_id: 7,
+    staff_name: "Lucia Ferreira",
+    staff_cpf: 44455566677,
   },
   {
     id: 12,
@@ -125,6 +147,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-19T10:30:00Z",
     events_staff_id: "es_X9zC4vB6_N8mKlPo",
     user_control_id: 7,
+    staff_name: "Lucia Ferreira",
+    staff_cpf: 44455566677,
   },
 
   // Staff 7 - Rafael Alves (CPF: 33344455566) - Full cycle with multiple check-ins (in/out/in/out)
@@ -134,6 +158,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-19T08:15:00Z",
     events_staff_id: "es_Q2wE7rT9_Y5uIoAq", // Rafael Alves at Event 3
     user_control_id: 7,
+    staff_name: "Rafael Alves",
+    staff_cpf: 33344455566,
   },
   {
     id: 14,
@@ -141,6 +167,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-19T09:00:00Z",
     events_staff_id: "es_Q2wE7rT9_Y5uIoAq",
     user_control_id: 7,
+    staff_name: "Rafael Alves",
+    staff_cpf: 33344455566,
   },
   {
     id: 15,
@@ -148,6 +176,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-19T12:00:00Z",
     events_staff_id: "es_Q2wE7rT9_Y5uIoAq",
     user_control_id: 8,
+    staff_name: "Rafael Alves",
+    staff_cpf: 33344455566,
   },
   {
     id: 16,
@@ -155,6 +185,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-19T14:00:00Z",
     events_staff_id: "es_Q2wE7rT9_Y5uIoAq",
     user_control_id: 8,
+    staff_name: "Rafael Alves",
+    staff_cpf: 33344455566,
   },
   {
     id: 17,
@@ -162,6 +194,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-19T18:00:00Z",
     events_staff_id: "es_Q2wE7rT9_Y5uIoAq",
     user_control_id: 8,
+    staff_name: "Rafael Alves",
+    staff_cpf: 33344455566,
   },
 
   // Staff 8 - Juliana Lima (CPF: 22233344455) - Registration only (not checked in yet)
@@ -171,6 +205,8 @@ export let mockChecks: Check[] = [
     timestamp: "2026-01-19T08:30:00Z",
     events_staff_id: "es_Z7xN3mK9_L4pQwRt", // Juliana Lima at Event 3
     user_control_id: 7,
+    staff_name: "Juliana Lima",
+    staff_cpf: 22233344455,
   },
 ];
 
@@ -185,6 +221,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-15T08:00:00Z",
       events_staff_id: "es_V1StGXR8_Z5jdHi6B",
       user_control_id: 7,
+      staff_name: "João Silva",
+      staff_cpf: 12345678900,
     },
     {
       id: 2,
@@ -192,6 +230,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-15T14:30:00Z",
       events_staff_id: "es_V1StGXR8_Z5jdHi6B",
       user_control_id: 7,
+      staff_name: "João Silva",
+      staff_cpf: 12345678900,
     },
     {
       id: 3,
@@ -199,6 +239,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-15T23:45:00Z",
       events_staff_id: "es_V1StGXR8_Z5jdHi6B",
       user_control_id: 7,
+      staff_name: "João Silva",
+      staff_cpf: 12345678900,
     },
     {
       id: 4,
@@ -206,6 +248,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-15T08:15:00Z",
       events_staff_id: "es_K3pL9xR2_M8nQwEr",
       user_control_id: 7,
+      staff_name: "Maria Santos",
+      staff_cpf: 98765432100,
     },
     {
       id: 5,
@@ -213,6 +257,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-15T15:00:00Z",
       events_staff_id: "es_K3pL9xR2_M8nQwEr",
       user_control_id: 8,
+      staff_name: "Maria Santos",
+      staff_cpf: 98765432100,
     },
     {
       id: 6,
@@ -220,6 +266,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-15T09:00:00Z",
       events_staff_id: "es_P7yT4vN1_H6kLmZx",
       user_control_id: 7,
+      staff_name: "Pedro Oliveira",
+      staff_cpf: 11122233344,
     },
     {
       id: 7,
@@ -227,6 +275,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-18T07:30:00Z",
       events_staff_id: "es_W2aB8cD5_R9tYuIo",
       user_control_id: 8,
+      staff_name: "Ana Costa",
+      staff_cpf: 55566677788,
     },
     {
       id: 8,
@@ -234,6 +284,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-18T09:00:00Z",
       events_staff_id: "es_W2aB8cD5_R9tYuIo",
       user_control_id: 8,
+      staff_name: "Ana Costa",
+      staff_cpf: 55566677788,
     },
     {
       id: 9,
@@ -241,6 +293,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-18T18:30:00Z",
       events_staff_id: "es_W2aB8cD5_R9tYuIo",
       user_control_id: 8,
+      staff_name: "Ana Costa",
+      staff_cpf: 55566677788,
     },
     {
       id: 10,
@@ -248,6 +302,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-18T07:45:00Z",
       events_staff_id: "es_F5gH3jK8_L2mNpQw",
       user_control_id: 8,
+      staff_name: "Carlos Souza",
+      staff_cpf: 99988877766,
     },
     {
       id: 11,
@@ -255,6 +311,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-19T08:00:00Z",
       events_staff_id: "es_X9zC4vB6_N8mKlPo",
       user_control_id: 7,
+      staff_name: "Lucia Ferreira",
+      staff_cpf: 44455566677,
     },
     {
       id: 12,
@@ -262,6 +320,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-19T10:30:00Z",
       events_staff_id: "es_X9zC4vB6_N8mKlPo",
       user_control_id: 7,
+      staff_name: "Lucia Ferreira",
+      staff_cpf: 44455566677,
     },
     {
       id: 13,
@@ -269,6 +329,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-19T08:15:00Z",
       events_staff_id: "es_Q2wE7rT9_Y5uIoAq",
       user_control_id: 7,
+      staff_name: "Rafael Alves",
+      staff_cpf: 33344455566,
     },
     {
       id: 14,
@@ -276,6 +338,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-19T09:00:00Z",
       events_staff_id: "es_Q2wE7rT9_Y5uIoAq",
       user_control_id: 7,
+      staff_name: "Rafael Alves",
+      staff_cpf: 33344455566,
     },
     {
       id: 15,
@@ -283,6 +347,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-19T12:00:00Z",
       events_staff_id: "es_Q2wE7rT9_Y5uIoAq",
       user_control_id: 8,
+      staff_name: "Rafael Alves",
+      staff_cpf: 33344455566,
     },
     {
       id: 16,
@@ -290,6 +356,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-19T14:00:00Z",
       events_staff_id: "es_Q2wE7rT9_Y5uIoAq",
       user_control_id: 8,
+      staff_name: "Rafael Alves",
+      staff_cpf: 33344455566,
     },
     {
       id: 17,
@@ -297,6 +365,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-19T18:00:00Z",
       events_staff_id: "es_Q2wE7rT9_Y5uIoAq",
       user_control_id: 8,
+      staff_name: "Rafael Alves",
+      staff_cpf: 33344455566,
     },
     {
       id: 18,
@@ -304,6 +374,8 @@ export function resetChecks(): void {
       timestamp: "2026-01-19T08:30:00Z",
       events_staff_id: "es_Z7xN3mK9_L4pQwRt",
       user_control_id: 7,
+      staff_name: "Juliana Lima",
+      staff_cpf: 22233344455,
     },
   ];
 }

@@ -27,7 +27,7 @@ const enrichWithLastCheck = (eventStaff: EventStaff): EventStaff => {
   const lastCheck = getLastCheckForStaff(eventStaff.id);
   return {
     ...eventStaff,
-    lastCheck: lastCheck || undefined,
+    last_status: lastCheck || undefined,
   };
 };
 
@@ -93,7 +93,29 @@ export const eventStaffsHandlers = [
 
       // Get the actual staffs for this event
       const staffCpfs = eventStaffRelations.map((es) => es.staff_cpf);
-      const eventStaffs = mockStaffs.filter((s) => staffCpfs.includes(s.cpf));
+      const eventStaffs = mockStaffs
+        .filter((s) => staffCpfs.includes(s.cpf))
+        .map((staff) => {
+          // Find the relationship to get last_status
+          const relation = eventStaffRelations.find(
+            (r) => r.staff_cpf === staff.cpf,
+          );
+          // Enrich with lastCheck (last_status)
+          // Note: mock data might not have last_status populated in relation, so we might need to calculate it or use what's there.
+          // relation should be enriched if we used a getter, but here we are filtering raw mockEventsStaffs.
+          // Let's use enrichWithLastCheck helper on the relation first.
+
+          let lastStatus = undefined;
+          if (relation) {
+            const enrichedRelation = enrichWithLastCheck(relation);
+            lastStatus = enrichedRelation.last_status;
+          }
+
+          return {
+            ...staff,
+            last_status: lastStatus,
+          };
+        });
 
       return HttpResponse.json(eventStaffs, {
         status: 200,

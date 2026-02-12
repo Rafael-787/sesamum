@@ -10,27 +10,24 @@ import EventsTab from "@/shared/components/tabs/EventsTab";
 import AvatarComponent from "@/shared/components/ui/Avatar";
 import { Modal } from "@/shared/components/ui/Modal";
 import { usersService } from "../api/users.service";
-import { eventsService } from "@/features/events/api/events.service";
 import type { User } from "../types";
 import type { Event } from "@/features/events/types";
 import { useRecentlyVisited } from "@/shared/hooks/useRecentlyVisited";
 import { UserForm } from "../components/UserForm";
 import { ConfirmDialog } from "@/shared/components/ui/ConfirmDialog";
 import { Toast } from "@/shared/components/ui/Toast";
-import { useAuth } from "@/shared/context/AuthContext";
 import { usePermissions } from "@/shared/hooks/usePermissions";
 
 const UsersDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addRecentVisit } = useRecentlyVisited();
-  const { user: currentUser } = useAuth();
   const { can } = usePermissions(); // Move hook to top before any conditional returns
   const [eventSearch, setEventSearch] = useState("");
   const [eventFilter, setEventFilter] = useState("all");
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);

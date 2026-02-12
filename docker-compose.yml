@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: sesamum_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: sesamum
+      MYSQL_USER: sesamum_user
+      MYSQL_PASSWORD: sesamum_password
+      MYSQL_ROOT_PASSWORD: root_password
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: sesamum_backend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DEBUG: "False"
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS}
+      DB_NAME: sesamum
+      DB_USER: sesamum_user
+      DB_PASSWORD: sesamum_password
+      DB_HOST: db
+      DB_PORT: 3306
+      SECRET_KEY: ${SECRET_KEY}
+      # URL usada pelo Django para redirecionamentos (Google Auth, etc)
+      FRONTEND_URL: ${FRONTEND_URL}
+    volumes:
+      # Compartilha estáticos gerados com o Nginx
+      - static_volume:/app/staticfiles
+
+  frontend:
+    build:
+      context: ./dashboard
+      args:
+        # Define a URL da API relativa (pois o Nginx fará o proxy na mesma porta 80)
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+        # O Client ID do Google deve ser passado aqui
+        VITE_GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID}"
+        # Desativa o Mock Service Worker em produção
+        VITE_ENABLE_MSW: "false"
+    container_name: sesamum_frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    volumes:
+      # Monta o volume de estáticos para o Nginx servir em /static/
+      - static_volume:/app/staticfiles:ro
+
+volumes:
+  db_data:
+  static_volume:

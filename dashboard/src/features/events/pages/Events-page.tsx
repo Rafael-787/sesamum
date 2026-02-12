@@ -8,7 +8,7 @@ import ListCard from "@/shared/components/list/ListCard";
 import { type Event } from "../types/index";
 import { Modal } from "@/shared/components/ui/Modal";
 
-import { Calendar, Building2, Users, MapPin } from "lucide-react";
+import { Calendar, MapPin } from "lucide-react";
 import Badge from "@/shared/components/ui/Badge";
 import { useNavigate } from "react-router-dom";
 import { eventsService } from "../api/events.service";

@@ -9,7 +9,7 @@ import {
 import EventsTab from "@/shared/components/tabs/EventsTab";
 import AvatarComponent from "@/shared/components/ui/Avatar";
 import { staffsService } from "../api/staffs.service";
-import { eventsService } from "@/features/events/api/events.service";
+
 import type { Staff } from "../types";
 import type { Event } from "@/features/events/types";
 import { formatDateTime } from "@/shared/lib/dateUtils";
@@ -18,7 +18,6 @@ import { Modal } from "@/shared/components/ui/Modal";
 import { StaffForm } from "../components/StaffForm";
 import { ConfirmDialog } from "@/shared/components/ui/ConfirmDialog";
 import { Toast } from "@/shared/components/ui/Toast";
-import { useAuth } from "@/shared/context/AuthContext";
 import { usePermissions } from "@/shared/hooks/usePermissions";
 
 // Mock company names (should come from companies API in production)
@@ -34,12 +33,11 @@ const StaffsDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addRecentVisit } = useRecentlyVisited();
-  const { user } = useAuth();
   const { can } = usePermissions(); // Move hook to top before any conditional returns
   const [eventSearch, setEventSearch] = useState("");
   const [eventFilter, setEventFilter] = useState("all");
   const [staff, setStaff] = useState<Staff | null>(null);
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events] = useState<Event[]>([]); // setEvents removed
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -216,8 +214,8 @@ const StaffsDetailsPage: React.FC = () => {
                 Empresa
               </label>
               <p className="mt-1 text-text-title">
-                {COMPANY_NAMES[staff.company_id] ||
-                  `Empresa ${staff.company_id}`}
+                {COMPANY_NAMES[staff.company_id || 0] ||
+                  `Empresa ${staff.company_id || "?"}`}
               </p>
             </div>
             <div>

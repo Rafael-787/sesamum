@@ -1,7 +1,7 @@
 import { http, HttpResponse, delay } from "msw";
 import { mockEvents } from "../data/events";
 import { mockEventsCompanies } from "../data/eventsCompanies";
-import type { Event } from "../../types";
+import type { Event } from "@/features/events/types";
 
 /**
  * Events MSW Handlers

@@ -1,4 +1,4 @@
-import type { Staff } from "../../types";
+import type { Staff } from "@/features/staffs/types";
 
 // ==========================================
 // 👥 Staffs Mock Data (API-Compliant)

@@ -1,6 +1,6 @@
 import { http, HttpResponse, delay } from "msw";
 import { mockUsers } from "../data/users";
-import type { User } from "../../types";
+import type { User } from "@/features/users";
 
 /**
  * Users MSW Handlers
@@ -49,7 +49,7 @@ export const userHandlers = [
       filtered = filtered.filter(
         (u) =>
           u.name.toLowerCase().includes(searchLower) ||
-          u.email.toLowerCase().includes(searchLower)
+          u.email.toLowerCase().includes(searchLower),
       );
     }
 
@@ -90,7 +90,7 @@ export const userHandlers = [
     if (!newUserData.name || !newUserData.role) {
       return HttpResponse.json(
         { detail: "Name and role are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -101,7 +101,7 @@ export const userHandlers = [
     ) {
       return HttpResponse.json(
         { detail: "Email already exists" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -141,7 +141,7 @@ export const userHandlers = [
     if (!updateData.name || !updateData.email || !updateData.role) {
       return HttpResponse.json(
         { detail: "Name, email, and role are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -151,7 +151,7 @@ export const userHandlers = [
     ) {
       return HttpResponse.json(
         { detail: "Email already exists" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -192,7 +192,7 @@ export const userHandlers = [
       ) {
         return HttpResponse.json(
           { detail: "Email already exists" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -209,7 +209,7 @@ export const userHandlers = [
           "Content-Type": "application/json",
         },
       });
-    }
+    },
   ),
 
   // DELETE /api/v1/users/:id/ - Delete user

@@ -1,3 +1,12 @@
+import type { Check } from "@/shared/types";
+import type { Staff } from "@/features/staffs";
+
+export type { Check };
+
+export interface StaffWithStatus extends Staff {
+  last_status?: Check;
+}
+
 // Event type based on copilot-instructions
 export interface Event {
   id: number;
@@ -19,6 +28,7 @@ export interface EventCompany {
   role: "production" | "service";
   event_id: number;
   company_id: number;
+  staff_limit: number;
 }
 
 /**
@@ -29,11 +39,13 @@ export interface EventStaff {
   id: string; // Nano UUID (e.g., "es_V1StGXR8_Z5jdHi6B")
   event_id: number;
   staff_id?: number; // Populated by backend from staff_cpf
-  staff_cpf: string; // Redundant field for fast lookup
+  staff_cpf?: string; // Redundant field for fast lookup
   registration_check_id?: number | null; // FK to checks table - NULL means not yet registered
   created_at?: string; // Server-generated
   created_by?: number; // User ID who created the assignment - Server-generated
-  lastCheck?: Check; // Optional: last check for UI display
+  last_status?: Check; // Optional: last check for UI display
+  is_registered?: boolean; // Optional: flag indicating if staff is registered
+  staff_name?: string; // Flattened field from staff relation
 }
 
 /**
@@ -51,22 +63,15 @@ export interface EventUser {
   event_id: number;
 }
 
-/**
- * @deprecated Use Check from shared/types instead
- * Kept for backward compatibility
- */
-export interface Check {
-  id: number;
-  action: "check-in" | "check-out";
-  timestamp: string;
-  events_staff_id: number;
-  user_control_id: number;
-}
-
 export interface Overview {
   metrics: {
     total_staff: number;
     total_companies?: number;
     staff_limit?: number;
   };
+  companies?: {
+    name: string;
+    registration_count: number;
+    staff_limit: number;
+  }[];
 }

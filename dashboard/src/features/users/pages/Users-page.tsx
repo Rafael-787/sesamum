@@ -50,12 +50,10 @@ const UsersPage: React.FC = () => {
 
       // When "convite" is selected, only fetch invites
       if (filter === "convite") {
-        const InvitesResponse = await Promise.all([
-          userInvitesService.getAll(),
-        ]);
+        const invitesResponse = await userInvitesService.getAll();
 
         setUsers([]);
-        setInvites(InvitesResponse.data);
+        setInvites(invitesResponse.data);
       } else if (filter !== "all") {
         // When a specific role is selected, only fetch users with that role (no invites)
         const params: { role?: string; search?: string } = {
