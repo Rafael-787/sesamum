@@ -39,6 +39,7 @@ services:
       FRONTEND_URL: ${FRONTEND_URL}
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      DEV: ${DEV}
     volumes:
       # Compartilha estáticos gerados com o Nginx
       - static_volume:/app/staticfiles
@@ -57,8 +58,8 @@ services:
     restart: always
     depends_on:
       - backend
-    ports:
-      - "80:80"
+    #    ports:
+    #      - "80:80"
     volumes:
       # Monta o volume de estáticos para o Nginx servir em /static/
       - static_volume:/app/staticfiles:ro
