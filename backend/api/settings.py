@@ -83,12 +83,24 @@ WSGI_APPLICATION = "api.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+if os.getenv("DEV") == "True":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": os.getenv("DB_NAME", "sesamum"),
+            "USER": os.getenv("DB_USER", "sesamum_user"),
+            "PASSWORD": os.getenv("DB_PASSWORD", "sesamum_password"),
+            "HOST": os.getenv("DB_HOST", "db"),
+            "PORT": os.getenv("DB_PORT", "3306"),
+        }
+    }
 
 
 # Password validation
