@@ -14,8 +14,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Dar permissão de execução ao script
-RUN chmod +x entrypoint.sh
+# Dar permissão de execução ao script e corrigir quebras de linha (Windows/Linux)
+RUN sed -i 's/\r$//' entrypoint.sh && chmod +x entrypoint.sh
 
 # Criar diretório para estáticos
 RUN mkdir -p staticfiles

@@ -21,6 +21,8 @@ services:
     build: ./backend
     container_name: sesamum_backend
     restart: always
+    ports:
+      - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
@@ -35,6 +37,8 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       # URL usada pelo Django para redirecionamentos (Google Auth, etc)
       FRONTEND_URL: ${FRONTEND_URL}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
     volumes:
       # Compartilha estáticos gerados com o Nginx
       - static_volume:/app/staticfiles
@@ -44,7 +48,7 @@ services:
       context: ./dashboard
       args:
         # Define a URL da API relativa (pois o Nginx fará o proxy na mesma porta 80)
-        VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+        VITE_API_BASE_URL: ${API_BASE_URL}
         # O Client ID do Google deve ser passado aqui
         VITE_GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID}"
         # Desativa o Mock Service Worker em produção

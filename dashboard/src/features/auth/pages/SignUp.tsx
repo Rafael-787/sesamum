@@ -88,7 +88,7 @@ export default function SignUpPage() {
       const authResponse = await googleRegister(token, inviteToken);
 
       // Store tokens via AuthContext
-      setTokens(authResponse.tokens.access);
+      setTokens(authResponse.access);
 
       // Redirect to dashboard
       navigate("/");
