@@ -40,7 +40,7 @@ services:
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       DEV: ${DEV}
-      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS}
     volumes:
       # Compartilha estáticos gerados com o Nginx
       - static_volume:/app/staticfiles
