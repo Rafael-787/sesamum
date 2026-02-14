@@ -12,8 +12,7 @@ import axios, { type AxiosInstance, type AxiosError } from "axios";
  */
 
 // Get base URL from environment variables, fallback to localhost
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
 /**
  * Axios instance with pre-configured settings

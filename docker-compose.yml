@@ -60,8 +60,8 @@ services:
     restart: always
     depends_on:
       - backend
-    #    ports:
-    #      - "80:80"
+    ports:
+      - "80:80"
     volumes:
       # Monta o volume de estáticos para o Nginx servir em /static/
       - static_volume:/app/staticfiles:ro
