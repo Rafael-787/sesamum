@@ -79,9 +79,8 @@ export const UserInviteForm = ({
 
       const payload = {
         email: data.email || undefined,
+        company: data.company_id,
         company_id: data.company_id,
-        company:
-          companies.find((c) => c.id === data.company_id)?.name || "Unknown",
         role: data.role,
         expires_at: expiresAt.toISOString(),
         created_by: 1, // Use current user ID or default to 1 (admin)

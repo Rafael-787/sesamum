@@ -51,7 +51,10 @@ export const userInvitesService = {
    * });
    */
   create: (
-    data: Omit<UserInvite, "id" | "used_by" | "status" | "created_at">,
+    data: Omit<
+      UserInvite,
+      "id" | "used_by" | "status" | "created_at" | "company"
+    >,
   ) => {
     return apiClient.post<UserInvite>(ENDPOINTS.USER_INVITES.CREATE, data);
   },
