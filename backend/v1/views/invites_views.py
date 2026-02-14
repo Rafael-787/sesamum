@@ -3,7 +3,7 @@ from rest_framework import mixins, viewsets
 
 from ..mixins import CreatedByMixin
 from ..models import UserInvite
-from ..permissions import IsAdmin, AllowAny
+from ..permissions import IsAdmin
 from ..serializers import InviteSerializer
 
 
@@ -19,15 +19,16 @@ class InviteViewSet(
     queryset = UserInvite.objects.filter(used_by__isnull=True)
     serializer_class = InviteSerializer
 
-"""
-    def get_permissions(self):
-        
-        Instancia e retorna a lista de permissões que esta view requer.
-        
+
+def get_permissions(self):
+        """
+        Libera o 'retrieve' para qualquer pessoa (público)
+        e restringe o restante para Admins.
+        """
         if self.action == 'retrieve':
-            permission_classes = [AllowAny]
-        else:
-            permission_classes = [IsAdmin]
+            # Retornar uma lista vazia desativa as restrições para esta action
+            # O DRF interpreta isso como "acesso livre"
+            return []
         
-        return [permission() for permission in permission_classes]
-"""
+        # Para todas as outras ações (list, create, destroy), exige Admin
+        return [IsAdmin()]
