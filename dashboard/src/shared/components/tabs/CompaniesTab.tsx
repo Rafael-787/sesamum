@@ -94,9 +94,10 @@ const CompaniesTab: React.FC<CompaniesTabProps> = ({
         onSearchChange={setCompanySearch}
         filterValue={companyFilter}
         onFilterChange={setCompanyFilter}
-        {...((isAdmin || onCompanyAdded) && {
-          onAdd: () => setModalOpen(true),
-        })}
+        {...(isAdmin &&
+          onCompanyAdded && {
+            onAdd: () => setModalOpen(true),
+          })}
         addLabel="Adicionar Empresa"
       />
 
