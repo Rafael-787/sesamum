@@ -25,6 +25,7 @@ class CheckSearchStaffView(viewsets.ReadOnlyModelViewSet):
     serializer_class = EventsStaffControlSerializer
     permission_classes = [IsControlOrAdmin]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = []
     search_fields = ["staff__name", "staff__cpf"]
 
     def get_queryset(self):

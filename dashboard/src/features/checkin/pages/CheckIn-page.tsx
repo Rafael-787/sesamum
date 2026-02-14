@@ -251,7 +251,7 @@ const CheckInPage: React.FC = () => {
             <option value="">Selecione um evento</option>
             {events.map((event) => (
               <option key={event.id} value={event.id}>
-                {event.name} ({formatDateTime(event.date_begin).split(" ")[0]})
+                {event.name}
               </option>
             ))}
           </select>
