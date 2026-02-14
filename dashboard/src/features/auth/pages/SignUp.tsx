@@ -52,7 +52,7 @@ export default function SignUpPage() {
         }
 
         const companyResponse = await companiesService.getById(
-          inviteData.company_id,
+          inviteData.company,
         );
 
         setInvite(inviteData);

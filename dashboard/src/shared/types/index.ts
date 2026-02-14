@@ -38,7 +38,7 @@ export type InviteRole = "company" | "control";
  */
 export interface UserInvite {
   id: string; // Nano UUID used as token in invite URL
-  company: string;
+  company: number;
   company_id: number;
   email?: string; // Optional - if set, restricts the slot to this specific email
   role: InviteRole;
