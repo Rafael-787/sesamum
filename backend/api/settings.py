@@ -85,6 +85,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost",
     "http://127.0.0.1",
     "https://sesamum.demoiselle.icu",
+    "https://sesamum.demoiselle.icu/api",
 ]
 
 
@@ -186,4 +187,4 @@ CORS_ALLOW_HEADERS = [
 ]
 
 # Se você estiver usando autenticação via cookies/sessão (JWT no header geralmente não exige isso, mas é bom ter)
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = False
