@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False")
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS","localhost").split(",")
+ALLOWED_HOSTS = [host.strip() for host in os.getenv("ALLOWED_HOSTS", "localhost").split(",") if host]
 
 
 # Application definition
@@ -79,7 +79,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "api.wsgi.application"
 
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS").split(",")
+CSRF_TRUSTED_ORIGINS = [host.strip() for host in os.getenv("CSRF_TRUSTED_ORIGINS", "localhost").split(",") if host]
 
 
 # Database
@@ -162,7 +162,7 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS","").split(",")
+CORS_ALLOWED_ORIGINS = [host.strip() for host in os.getenv("CORS_ALLOWED_ORIGINS","").split(",") if host]
 
 
 CORS_ALLOW_HEADERS = [
