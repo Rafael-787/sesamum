@@ -180,9 +180,3 @@ CORS_ALLOW_HEADERS = [
 
 # Se você estiver usando autenticação via cookies/sessão (JWT no header geralmente não exige isso, mas é bom ter)
 CORS_ALLOW_CREDENTIALS = True
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# Opcional, mas recomendado com Cloudflare Tunnel
-USE_X_FORWARDED_HOST = True
-USE_X_FORWARDED_PORT = True

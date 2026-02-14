@@ -51,6 +51,13 @@ export default function SignUpPage() {
           return;
         }
 
+<<<<<<< HEAD
+=======
+        const companyResponse = await companiesService.getById(
+          inviteData.company_id,
+        );
+
+>>>>>>> parent of b512fdf ([UI] Correção página sign-up)
         setInvite(inviteData);
         setCompany(inviteData.company);
       } catch (err) {
