@@ -4,6 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 from v1.views import (
     AuthMe,
+    CheckEventsView,
     CheckSearchStaffView,
     CheckViewSet,
     CompanySetView,
@@ -96,6 +97,11 @@ urlpatterns = [
         "checks/<int:event_id>/events-staff/",
         CheckSearchStaffView.as_view({"get": "list"}),
         name="list-events-staffs",
+    ),
+    path(
+        "checks/events/",
+        CheckEventsView.as_view({"get": "list"}),
+        name="list-events",
     ),
     # Router
     path("", include(router.urls)),

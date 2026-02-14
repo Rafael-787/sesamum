@@ -1,12 +1,10 @@
-from django.core.serializers.python import Serializer
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, viewsets
-from rest_framework.exceptions import NotFound
 
 from ..models import Check, Event, EventsStaff
 from ..permissions import IsControlOrAdmin
-from ..serializers import CheckSerializer, EventsStaffControlSerializer
+from ..serializers import CheckSerializer, EventSerializer, EventsStaffControlSerializer
 
 
 class CheckViewSet(viewsets.ModelViewSet):
@@ -33,3 +31,9 @@ class CheckSearchStaffView(viewsets.ReadOnlyModelViewSet):
         event_id = self.kwargs.get("event_id")
         get_object_or_404(Event, id=event_id)
         return EventsStaff.objects.filter(event=event_id)
+
+
+class CheckEventsView(viewsets.ReadOnlyModelViewSet):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+    permission_classes = [IsControlOrAdmin]

@@ -2,6 +2,7 @@ import apiClient from "@/shared/api/client";
 import { ENDPOINTS } from "@/shared/api/endpoints";
 import type { Check, CheckAction } from "@/shared/types";
 import type { EventStaff } from "@/features/events/types";
+import type { Event } from "@/features/events/types";
 
 export interface CreateCheckData {
   action: CheckAction;
@@ -31,6 +32,9 @@ export const checksService = {
    */
   getById: async (id: string) => {
     return apiClient.get<EventStaff>(`${ENDPOINTS.CHECKS.LIST}${id}/`);
+  },
+  getEvents: async () => {
+    return apiClient.get<Event[]>(`${ENDPOINTS.CHECKS.LIST_EVENTS}/`);
   },
   SearchStaff: async (eventId: number, params?: { search?: string }) => {
     return apiClient.get<EventStaff[]>(ENDPOINTS.CHECKS.SEARCH_STAFF(eventId), {

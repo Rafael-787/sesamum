@@ -1,5 +1,5 @@
 from .auth_views import AuthMe, GoogleLoginView, RegisterWithInviteView
-from .check_views import CheckSearchStaffView, CheckViewSet
+from .check_views import CheckEventsView, CheckSearchStaffView, CheckViewSet
 from .companies_views import CompanySetView
 from .dashboard_views import DashboardMetricsView
 from .events_views import (

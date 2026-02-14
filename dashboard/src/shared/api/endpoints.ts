@@ -88,6 +88,7 @@ export const ENDPOINTS = {
     CREATE: "/api/v1/checks/",
     SEARCH_STAFF: (eventId: number) =>
       `/api/v1/checks/${eventId}/events-staff/`,
+    LIST_EVENTS: "api/v1/checks/events/",
   },
 
   // Event Companies (Relationship)

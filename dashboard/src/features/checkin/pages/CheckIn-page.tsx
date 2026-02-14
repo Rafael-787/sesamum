@@ -46,7 +46,7 @@ const CheckInPage: React.FC = () => {
 
   const fetchOpenEvents = async () => {
     try {
-      const response = await eventsService.getAll({ status: "open" });
+      const response = await checksService.getEvents();
       setEvents(response.data);
       if (response.data.length > 0) {
         setSelectedEventId(response.data[0].id);
