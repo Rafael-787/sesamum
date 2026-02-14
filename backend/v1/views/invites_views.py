@@ -19,13 +19,15 @@ class InviteViewSet(
     queryset = UserInvite.objects.filter(used_by__isnull=True)
     serializer_class = InviteSerializer
 
+"""
     def get_permissions(self):
-        """
+        
         Instancia e retorna a lista de permissões que esta view requer.
-        """
+        
         if self.action == 'retrieve':
             permission_classes = [AllowAny]
         else:
             permission_classes = [IsAdmin]
         
         return [permission() for permission in permission_classes]
+"""
