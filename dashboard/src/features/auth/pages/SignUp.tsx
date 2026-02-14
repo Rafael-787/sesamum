@@ -4,9 +4,9 @@ import { Card, Badge } from "@/shared";
 import { useAuth } from "@/shared/context/AuthContext";
 import { googleRegister } from "../api/auth.service";
 import { userInvitesService } from "@/features/users/api/userInvites.service";
-import { companiesService } from "@/features/companies/api/companies.service";
+//import { companiesService } from "@/features/companies/api/companies.service";
 import type { UserInvite } from "@/shared/types";
-import type { Company } from "@/features/companies";
+//import type { Company } from "@/features/companies";
 import { GoogleLogin, type CredentialResponse } from "@react-oauth/google"; // Importação do Google
 import logo from "@/assets/logo_dark.svg";
 
@@ -19,7 +19,7 @@ export default function SignUpPage() {
   const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [invite, setInvite] = useState<UserInvite | null>(null);
-  const [company, setCompany] = useState<Company | null>(null);
+  const [company, setCompany] = useState<String | null>(null);
 
   const inviteToken = searchParams.get("invite");
 
@@ -51,12 +51,8 @@ export default function SignUpPage() {
           return;
         }
 
-        const companyResponse = await companiesService.getById(
-          inviteData.company,
-        );
-
         setInvite(inviteData);
-        setCompany(companyResponse.data);
+        setCompany(inviteData.company);
       } catch (err) {
         console.error("Invite validation error:", err);
         setError("Convite inválido ou não encontrado.");
@@ -190,9 +186,7 @@ export default function SignUpPage() {
               {/* Invitation Details */}
               <div className="text-center space-y-4">
                 <p className="text-sm text-subtitle">Você foi convidado para</p>
-                <h2 className="text-2xl font-bold text-title">
-                  {company.name}
-                </h2>
+                <h2 className="text-2xl font-bold text-title">{company}</h2>
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-sm text-subtitle">como</span>
                   <Badge
