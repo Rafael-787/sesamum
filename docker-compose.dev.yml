@@ -20,6 +20,8 @@ services:
     container_name: sesamum_backend
     restart: always
 
+    #ports:
+    #  - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
@@ -36,6 +38,7 @@ services:
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       DEV: ${DEV}
     volumes:
+      # Compartilha estáticos gerados com o Nginx
       - static_volume:/app/staticfiles
 
   frontend:
@@ -43,12 +46,16 @@ services:
       context: ./dashboard
       args:
         VITE_GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID}"
+        # Desativa o Mock Service Worker em produção
         VITE_ENABLE_MSW: "false"
     container_name: sesamum_frontend
     restart: always
     depends_on:
       - backend
+    ports:
+      - "80:80"
     volumes:
+      # Monta o volume de estáticos para o Nginx servir em /static/
       - static_volume:/app/staticfiles:ro
 
 volumes:
