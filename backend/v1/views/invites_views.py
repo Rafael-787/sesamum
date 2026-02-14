@@ -20,15 +20,17 @@ class InviteViewSet(
     serializer_class = InviteSerializer
 
 
+"""
 def get_permissions(self):
-        """
+
         Libera o 'retrieve' para qualquer pessoa (público)
         e restringe o restante para Admins.
-        """
+
         if self.action == 'retrieve':
             # Retornar uma lista vazia desativa as restrições para esta action
             # O DRF interpreta isso como "acesso livre"
             return []
-        
+
         # Para todas as outras ações (list, create, destroy), exige Admin
         return [IsAdmin()]
+        """
