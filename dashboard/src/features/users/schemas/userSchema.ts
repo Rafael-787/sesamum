@@ -16,7 +16,7 @@ export const userSchema = z.object({
   role: z.enum(["admin", "company", "control"], {
     message: "Selecione uma função válida",
   }),
-  company_id: z
+  company: z
     .number({
       message: "Selecione uma empresa válida",
     })
