@@ -31,7 +31,7 @@ class CheckSearchStaffView(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         event_id = self.kwargs.get("event_id")
         get_object_or_404(Event, id=event_id)
-        return EventsStaff.objects.filter(event=event_id)
+        return EventsStaff.objects.filter(event=event_id).select_related("staff")
 
 
 class CheckEventsView(viewsets.ReadOnlyModelViewSet):
