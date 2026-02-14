@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "name", "email", "role", "company", "created_at"]
-        read_only_fields = ["role", "created_at"]
+        read_only_fields = ["created_at"]
 
     def to_representation(self, instance):
         # Chamamos a representação padrão (que traria o ID)

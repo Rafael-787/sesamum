@@ -36,7 +36,7 @@ export function UserForm({ mode, user, onSuccess, onCancel }: UserFormProps) {
       name: user?.name || "",
       email: user?.email || "",
       role: user?.role || "company",
-      company_id: user?.company_id || undefined,
+      company: user?.company_id || undefined,
     },
   });
 
