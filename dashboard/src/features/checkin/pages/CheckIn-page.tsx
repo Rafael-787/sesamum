@@ -4,7 +4,6 @@ import {
   PageContainer,
 } from "@/shared/components/layout/PageLayout";
 import { checksService } from "../api/checks.service";
-import { eventsService } from "@/features/events/api/events.service";
 import type { Event } from "@/features/events/types";
 import type { EventStaff } from "@/features/events/types";
 import { useAuth } from "@/shared/context/AuthContext";

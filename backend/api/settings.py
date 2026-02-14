@@ -98,6 +98,7 @@ if os.getenv("DEV", "False") == "True":
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
+    print("Db de desenvolvimento")
 else:
     DATABASES = {
         "default": {

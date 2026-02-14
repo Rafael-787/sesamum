@@ -37,7 +37,7 @@ router.register(r"invites", InviteViewSet, basename="invite")
 # Adicione ViewSets de Company, Project, Event conforme necessário para CRUD básico
 
 urlpatterns = [
-    path("", include(router.urls)),
+    # path("", include(router.urls)),
     # Auth
     path("auth/google/login/", GoogleLoginView.as_view(), name="google-login"),
     path(

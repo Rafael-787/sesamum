@@ -14,6 +14,17 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
   const totalStaff = overview?.metrics?.total_staff ?? 0;
   const totalCompanies = overview?.metrics?.total_companies ?? 0;
   const companies = overview?.companies ?? [];
+
+  /* Contador totais checks */
+  const totalsChecks = overview?.companies?.reduce(
+    (acc: any, company: any) => {
+      acc.checkin += company.checkin_count;
+      acc.checkout += company.checkout_count;
+      acc.registration += company.registration_count;
+      return acc;
+    },
+    { checkin: 0, checkout: 0, registration: 0 },
+  );
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -43,36 +54,43 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
                 Credenciamento Realizado
               </label>
               <span className="text-sm font-semibold text-text-title">
-                30 / 35 (90%)
+                {totalsChecks.registration} / {totalStaff} (
+                {totalStaff / totalsChecks.registration}%)
               </span>
             </div>
             <Progress.Root
               className="relative overflow-hidden bg-slate-200 rounded-full w-full h-3"
-              value={90}
+              value={totalStaff / totalsChecks.registration}
             >
               <Progress.Indicator
                 className="bg-toast-warning-border h-full transition-transform duration-300 ease-in-out"
-                style={{ transform: `translateX(-${100 - 90}%)` }}
+                style={{
+                  transform: `translateX(-${100 - totalStaff / totalsChecks.registration}%)`,
+                }}
               />
             </Progress.Root>
           </div>
           {/* Check-in Progress */}
+
           <div>
             <div className="flex justify-between items-center mb-2">
               <label className="text-sm font-medium text-text-subtitle">
                 Check-in Realizado
               </label>
               <span className="text-sm font-semibold text-text-title">
-                35 / 42 (83%)
+                {totalsChecks.checkin} / {totalsChecks.registration} (
+                {totalsChecks.registration / totalsChecks.checkin}%)
               </span>
             </div>
             <Progress.Root
               className="relative overflow-hidden bg-slate-200 rounded-full w-full h-3"
-              value={83}
+              value={totalsChecks.registration / totalsChecks.checkin}
             >
               <Progress.Indicator
                 className="bg-toast-success-border h-full transition-transform duration-300 ease-in-out"
-                style={{ transform: `translateX(-${100 - 83}%)` }}
+                style={{
+                  transform: `translateX(-${100 - totalsChecks.registration / totalsChecks.checkin}%)`,
+                }}
               />
             </Progress.Root>
           </div>
@@ -84,16 +102,19 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
                 Check-out Realizado
               </label>
               <span className="text-sm font-semibold text-text-title">
-                28 / 35 (80%)
+                {totalsChecks.checkout} / {totalsChecks.checkin} (
+                {totalsChecks.checkin / totalsChecks.checkout}%)
               </span>
             </div>
             <Progress.Root
               className="relative overflow-hidden bg-slate-200 rounded-full w-full h-3"
-              value={80}
+              value={totalsChecks.checkin / totalsChecks.checkout}
             >
               <Progress.Indicator
                 className="bg-toast-error-border h-full transition-transform duration-300 ease-in-out"
-                style={{ transform: `translateX(-${100 - 80}%)` }}
+                style={{
+                  transform: `translateX(-${100 - totalsChecks.checkin / totalsChecks.checkout}%)`,
+                }}
               />
             </Progress.Root>
           </div>
