@@ -56,7 +56,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
               <span className="text-sm font-semibold text-text-title">
                 {totalsChecks.registration} / {totalStaff} (
                 {totalsChecks.registration > 0
-                  ? (totalsChecks.registration / totalStaff) * 100
+                  ? Math.floor((totalsChecks.registration / totalStaff) * 100)
                   : 0}
                 %)
               </span>
@@ -82,7 +82,9 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
               </label>
               <span className="text-sm font-semibold text-text-title">
                 {totalsChecks.checkin} / {totalsChecks.registration} (
-                {(totalsChecks.checkin / totalsChecks.registration) * 100 || 0}
+                {Math.floor(
+                  (totalsChecks.checkin / totalsChecks.registration) * 100,
+                ) || 0}
                 %)
               </span>
             </div>
@@ -107,7 +109,10 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
               </label>
               <span className="text-sm font-semibold text-text-title">
                 {totalsChecks.checkout} / {totalsChecks.checkin} (
-                {(totalsChecks.checkout / totalsChecks.checkin) * 100 || 0}%)
+                {Math.floor(
+                  (totalsChecks.checkout / totalsChecks.checkin) * 100,
+                ) || 0}
+                %)
               </span>
             </div>
             <Progress.Root
