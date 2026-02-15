@@ -83,7 +83,8 @@ WSGI_APPLICATION = "api.wsgi.application"
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost",
-    "http://127.0.0.1",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
     "https://sesamum.demoiselle.icu",
     "https://sesamum.demoiselle.icu/api",
 ]
@@ -170,9 +171,9 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
-# CORS_ALLOWED_ORIGINS = [host.strip() for host in os.getenv("CORS_ALLOWED_ORIGINS","*").split(",") if host]
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "http://localhost"]
 
-
+"""
 CORS_ALLOW_HEADERS = [
     "accept",
     "accept-encoding",
@@ -185,6 +186,7 @@ CORS_ALLOW_HEADERS = [
     "x-requested-with",
     "x-user-role",
 ]
+"""
 
 # Se você estiver usando autenticação via cookies/sessão (JWT no header geralmente não exige isso, mas é bom ter)
 CORS_ALLOW_CREDENTIALS = False

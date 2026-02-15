@@ -93,7 +93,9 @@ const EventDetailsPage: React.FC = () => {
 
         // Fetch staffs for this event
         const staffsResponse = await eventsService.getStaffs(Number(id));
-        setStaffs(staffsResponse.data);
+        setStaffs(
+          staffsResponse.data.sort((a, b) => a.name.localeCompare(b.name)),
+        );
       } catch (err) {
         setError("Erro ao carregar evento");
         console.error("Error fetching event data:", err);

@@ -55,7 +55,10 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
               </label>
               <span className="text-sm font-semibold text-text-title">
                 {totalsChecks.registration} / {totalStaff} (
-                {(totalStaff / totalsChecks.registration) * 100 || 0}%)
+                {totalsChecks.registration > 0
+                  ? (totalStaff / totalsChecks.registration) * 100
+                  : 0}
+                %)
               </span>
             </div>
             <Progress.Root
@@ -65,7 +68,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
               <Progress.Indicator
                 className="bg-toast-warning-border h-full transition-transform duration-300 ease-in-out"
                 style={{
-                  transform: `translateX(-${100 - (totalStaff / totalsChecks.registration) * 100 || 0}%)`,
+                  transform: `translateX(-${100 - (totalsChecks.registration > 0 ? (totalStaff / totalsChecks.registration) * 100 : 0)}%)`,
                 }}
               />
             </Progress.Root>
@@ -90,7 +93,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
               <Progress.Indicator
                 className="bg-toast-success-border h-full transition-transform duration-300 ease-in-out"
                 style={{
-                  transform: `translateX(-${100 - (totalsChecks.registration / totalsChecks.checkin) * 100 || 0}%)`,
+                  transform: `translateX(-${100 - ((totalsChecks.registration / totalsChecks.checkin) * 100 || 0)}%)`,
                 }}
               />
             </Progress.Root>
@@ -114,7 +117,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
               <Progress.Indicator
                 className="bg-toast-error-border h-full transition-transform duration-300 ease-in-out"
                 style={{
-                  transform: `translateX(-${100 - (totalsChecks.checkin / totalsChecks.checkout) * 100 || 0}%)`,
+                  transform: `translateX(-${100 - ((totalsChecks.checkin / totalsChecks.checkout) * 100 || 0)}%)`,
                 }}
               />
             </Progress.Root>
