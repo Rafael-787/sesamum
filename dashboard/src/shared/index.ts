@@ -1,7 +1,3 @@
-// Shared Components Exports
-
-import MetricProgress from "./components/ui/ProgressBar";
-
 // Layout
 export { default as Sidebar } from "./components/layout/Sidebar";
 export { PageContainer, PageHeader } from "./components/layout/PageLayout";
