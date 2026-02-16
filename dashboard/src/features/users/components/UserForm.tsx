@@ -93,7 +93,7 @@ export function UserForm({ mode, user, onSuccess, onCancel }: UserFormProps) {
       const payload: any = {
         name: data.name,
         role: data.role,
-        company: data.company,
+        company_id: data.company,
       };
 
       // Only include email if it's not empty

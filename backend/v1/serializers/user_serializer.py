@@ -14,8 +14,15 @@ class UserSerializer(serializers.ModelSerializer):
         required=True,
         allow_blank=False,
     )
-    company = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all())
-    company_id = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all())
+    company = serializers.CharField(source="company.name", read_only=True)
+
+    # Campo de escrita que recebe o ID e salva na FK 'company' do Model
+    company_id = serializers.PrimaryKeyRelatedField(
+        queryset=Company.objects.all(),
+        source="company",
+        required=False,
+        allow_null=True,
+    )
 
     class Meta:
         model = User
