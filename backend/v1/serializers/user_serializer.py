@@ -15,10 +15,11 @@ class UserSerializer(serializers.ModelSerializer):
         allow_blank=False,
     )
     company = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all())
+    company_id = serializers.PrimaryKeyRelatedField(queryset=Company.objects.all())
 
     class Meta:
         model = User
-        fields = ["id", "name", "email", "role", "company", "created_at"]
+        fields = ["id", "name", "email", "role", "company", "company_id", "created_at"]
         read_only_fields = ["created_at"]
 
     def to_representation(self, instance):

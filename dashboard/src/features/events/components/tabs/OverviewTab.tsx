@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { MetricCard } from "@/features/dashboard/components/MetricCard";
+import { MetricProgress } from "@/shared";
 import Card from "@/shared/components/ui/Card";
 import * as Progress from "@radix-ui/react-progress";
 import { Building2, Users } from "lucide-react";
@@ -16,15 +17,19 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
   const companies = overview?.companies ?? [];
 
   /* Contador totais checks */
-  const totalsChecks = overview?.companies?.reduce(
-    (acc: any, company: any) => {
-      acc.checkin += company.checkin_count;
-      acc.checkout += company.checkout_count;
-      acc.registration += company.registration_count;
-      return acc;
-    },
-    { checkin: 0, checkout: 0, registration: 0 },
-  );
+  const totalsChecks = useMemo(() => {
+    return (
+      overview?.companies?.reduce(
+        (acc: any, company: any) => ({
+          checkin: acc.checkin + (company.checkin_count || 0),
+          checkout: acc.checkout + (company.checkout_count || 0),
+          registration: acc.registration + (company.registration_count || 0),
+        }),
+        { checkin: 0, checkout: 0, registration: 0 },
+      ) || { checkin: 0, checkout: 0, registration: 0 }
+    );
+  }, [overview]); // Só recalcula se 'overview' mudar
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -48,85 +53,28 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
         </h2>
         <div className="space-y-6">
           {/* Credenciamento Progress */}
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <label className="text-sm font-medium text-text-subtitle">
-                Credenciamento Realizado
-              </label>
-              <span className="text-sm font-semibold text-text-title">
-                {totalsChecks.registration} / {totalStaff} (
-                {totalsChecks.registration > 0
-                  ? Math.floor((totalsChecks.registration / totalStaff) * 100)
-                  : 0}
-                %)
-              </span>
-            </div>
-            <Progress.Root
-              className="relative overflow-hidden bg-slate-200 rounded-full w-full h-3"
-              value={totalsChecks.registration / totalStaff}
-            >
-              <Progress.Indicator
-                className="bg-toast-warning-border h-full transition-transform duration-300 ease-in-out"
-                style={{
-                  transform: `translateX(-${100 - (totalsChecks.registration > 0 ? (totalsChecks.registration / totalStaff) * 100 : 0)}%)`,
-                }}
-              />
-            </Progress.Root>
-          </div>
-          {/* Check-in Progress */}
+          <MetricProgress
+            label="Credenciamento Realizado"
+            current={totalsChecks.registration}
+            total={totalStaff}
+            colorClass="bg-toast-warning-border"
+          />
 
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <label className="text-sm font-medium text-text-subtitle">
-                Check-in Realizado
-              </label>
-              <span className="text-sm font-semibold text-text-title">
-                {totalsChecks.checkin} / {totalsChecks.registration} (
-                {Math.floor(
-                  (totalsChecks.checkin / totalsChecks.registration) * 100,
-                ) || 0}
-                %)
-              </span>
-            </div>
-            <Progress.Root
-              className="relative overflow-hidden bg-slate-200 rounded-full w-full h-3"
-              value={totalsChecks.checkin / totalsChecks.registration}
-            >
-              <Progress.Indicator
-                className="bg-toast-success-border h-full transition-transform duration-300 ease-in-out"
-                style={{
-                  transform: `translateX(-${100 - ((totalsChecks.checkin / totalsChecks.registration) * 100 || 0)}%)`,
-                }}
-              />
-            </Progress.Root>
-          </div>
+          {/* Check-in: Baseado em quem já fez Credenciamento */}
+          <MetricProgress
+            label="Check-in Realizado"
+            current={totalsChecks.checkin}
+            total={totalsChecks.registration}
+            colorClass="bg-toast-success-border"
+          />
 
-          {/* Check-out Progress */}
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <label className="text-sm font-medium text-text-subtitle">
-                Check-out Realizado
-              </label>
-              <span className="text-sm font-semibold text-text-title">
-                {totalsChecks.checkout} / {totalsChecks.checkin} (
-                {Math.floor(
-                  (totalsChecks.checkout / totalsChecks.checkin) * 100,
-                ) || 0}
-                %)
-              </span>
-            </div>
-            <Progress.Root
-              className="relative overflow-hidden bg-slate-200 rounded-full w-full h-3"
-              value={totalsChecks.checkout / totalsChecks.checkin}
-            >
-              <Progress.Indicator
-                className="bg-toast-error-border h-full transition-transform duration-300 ease-in-out"
-                style={{
-                  transform: `translateX(-${100 - ((totalsChecks.checkout / totalsChecks.checkin) * 100 || 0)}%)`,
-                }}
-              />
-            </Progress.Root>
-          </div>
+          {/* Check-out: Baseado em quem já fez Check-in */}
+          <MetricProgress
+            label="Check-out Realizado"
+            current={totalsChecks.checkout}
+            total={totalsChecks.checkin}
+            colorClass="bg-toast-error-border"
+          />
         </div>
       </Card>
 

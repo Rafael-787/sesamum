@@ -4,6 +4,8 @@ import Sidebar from "@/shared/components/layout/Sidebar";
 import { Menu } from "lucide-react";
 import { LoadingPage, PrivateRoute, Unauthorized, NotFound } from "./shared";
 import { protectedRoutes } from "./shared/config/routes";
+import { AvatarComponent } from "./shared";
+import { useAuth } from "./shared";
 
 // Lazy load auth pages
 const LoginPage = lazy(() => import("@/features/auth/pages/Login"));
@@ -11,6 +13,7 @@ const SignUpPage = lazy(() => import("@/features/auth/pages/SignUp"));
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { user } = useAuth();
 
   // Layout wrapper component for protected routes
   const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({
@@ -36,9 +39,7 @@ const App: React.FC = () => {
             </button>
           </div>
           {/* User Avatar Placeholder */}
-          <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs">
-            AD
-          </div>
+          <AvatarComponent alt={user?.name} size={30} />
         </header>
 
         {/* Scrollable Content */}

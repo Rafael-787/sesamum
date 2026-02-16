@@ -4,7 +4,7 @@ from tabnanny import check
 from django.db.models import Count, F, Q
 from django.db.models.expressions import ResolvedOuterRef
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, generics, viewsets
+from rest_framework import filters, generics, serializers, viewsets
 from rest_framework.response import Response
 from rest_framework.views import PermissionDenied
 
@@ -171,8 +171,35 @@ class EventOverviewView(generics.RetrieveAPIView):
         return Response(data)
 
 
+class StaffWithStatusSerializer(StaffSerializer):
+    """
+    Estende o StaffSerializer para incluir o last_status
+    específico do evento sendo visualizado.
+    """
+
+    last_status = serializers.SerializerMethodField()
+
+    def get_last_status(self, obj):
+        # Obtém o ID do evento da URL (kwargs da View)
+        event_id = self.context["view"].kwargs.get("event_id")
+
+        # Busca a relação EventsStaff correspondente a este Staff e Evento
+        # Otimização: Idealmente, o queryset da view faria prefetch,
+        # mas como é filtro dinâmico, buscamos direto aqui.
+        event_staff = EventsStaff.objects.filter(event_id=event_id, staff=obj).first()
+
+        if event_staff:
+            last_check = event_staff.checks_history.order_by("-timestamp").first()
+            return (
+                {"action": last_check.action, "timestamp": last_check.timestamp}
+                if last_check
+                else None
+            )
+        return None
+
+
 class EventStaffsTabView(viewsets.ReadOnlyModelViewSet):
-    serializer_class = StaffSerializer
+    serializer_class = StaffWithStatusSerializer
 
     def get_queryset(self):
         event_id = self.kwargs.get("event_id")

@@ -49,7 +49,7 @@ const CreateAndAddStaff: React.FC<CreateAndAddStaffProps> = ({
       setError(null);
 
       // Get company_id from logged user
-      const company_id = user?.company;
+      const company_id = user?.company_id;
 
       if (!company_id) {
         setError("Usuário não está associado a uma empresa");

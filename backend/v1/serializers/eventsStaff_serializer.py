@@ -36,12 +36,14 @@ class EventsStaffControlSerializer(serializers.ModelSerializer):
     staff_name = serializers.CharField(source="staff.name", read_only=True)
     is_registered = serializers.SerializerMethodField()
     last_status = serializers.SerializerMethodField()
+    company = serializers.SlugRelatedField(read_only=True, slug_field="name")
 
     class Meta:
         model = EventsStaff
         fields = [
             "id",
             "staff_name",
+            "company",
             "staff_cpf",
             "registration_check",
             "is_registered",
@@ -50,6 +52,34 @@ class EventsStaffControlSerializer(serializers.ModelSerializer):
 
     def get_is_registered(self, obj):
         return obj.registration_check_id is not None
+
+    def get_last_status(self, obj):
+        # Pega o último check para determinar estado atual (In/Out)
+        last_check = obj.checks_history.order_by("-timestamp").first()
+        return (
+            {"action": last_check.action, "timestamp": last_check.timestamp}
+            if last_check
+            else None
+        )
+
+
+class EventsStaffTabSerializer(serializers.ModelSerializer):
+    # Campos não obrigatórios (não pode ter field vazio no serializer)
+    event = serializers.PrimaryKeyRelatedField(
+        queryset=Event.objects.all(), required=False
+    )
+    staff = serializers.PrimaryKeyRelatedField(
+        queryset=Staff.objects.all(), required=False
+    )
+    created_by = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), required=False
+    )
+    # -----
+    staff_cpf = serializers.CharField(source="staff.cpf", read_only=True)
+
+    class Meta:
+        model = EventsStaff
+        fields = ["event", "staff", "staff_cpf", "last_status", "created_by"]
 
     def get_last_status(self, obj):
         # Pega o último check para determinar estado atual (In/Out)

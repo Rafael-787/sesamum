@@ -1,5 +1,7 @@
 // Shared Components Exports
 
+import MetricProgress from "./components/ui/ProgressBar";
+
 // Layout
 export { default as Sidebar } from "./components/layout/Sidebar";
 export { PageContainer, PageHeader } from "./components/layout/PageLayout";
@@ -29,6 +31,7 @@ export { default as Autocomplete } from "./components/ui/Autocomplete";
 export { default as LoadingPage } from "./components/layout/LoadingPage";
 export { Modal } from "./components/ui/Modal";
 export { Toast } from "./components/ui/Toast";
+export { default as MetricProgress } from "./components/ui/ProgressBar";
 
 // List Components
 export { default as ListCard } from "./components/list/ListCard";
