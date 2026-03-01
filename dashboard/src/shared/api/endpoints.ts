@@ -89,6 +89,7 @@ export const ENDPOINTS = {
     SEARCH_STAFF: (eventId: number) =>
       `/api/v1/checks/${eventId}/events-staff/`,
     LIST_EVENTS: "api/v1/checks/events/",
+    BY_ID: (id: string) => `/api/v1/checks/events-staff/${id}/`,
   },
 
   // Event Companies (Relationship)

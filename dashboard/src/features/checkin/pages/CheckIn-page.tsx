@@ -97,6 +97,7 @@ const CheckInPage: React.FC = () => {
         }
       } else {
         // QR Code (Event Staff ID) Search Mode
+        console.log(searchEventStaffId);
         if (!searchEventStaffId.trim()) {
           showToast("error", "Digite ou escaneie um ID");
           setLoading(false);

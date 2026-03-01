@@ -40,6 +40,7 @@ class ProjectViewSet(CreatedByMixin, AdminWriteCompanyReadMixin, viewsets.ModelV
                 project = Project.objects.distinct().get(id=pk)
             else:
                 # Busca o projeto pelo ID, garantindo que a empresa seja detentora OU participante
+                
                 project = Project.objects.distinct().get(
                     Q(id=pk)
                     & (

@@ -33,6 +33,15 @@ class CheckSearchStaffView(viewsets.ReadOnlyModelViewSet):
         get_object_or_404(Event, id=event_id)
         return EventsStaff.objects.filter(event=event_id).select_related("staff")
 
+class CheckSearchIDView(viewsets.ReadOnlyModelViewSet):
+    """Endpoint para busca de staffs pelo id do eventsStaff (QRcode)."""
+
+    queryset = EventsStaff.objects.all()
+    serializer_class = EventsStaffControlSerializer
+    permission_classes = [IsControlOrAdmin]
+
+    lookup_field = "id"
+
 
 class CheckEventsView(viewsets.ReadOnlyModelViewSet):
     queryset = Event.objects.all()

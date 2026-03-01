@@ -24,6 +24,7 @@ from v1.views import (
     RegisterWithInviteView,
     StaffViewSet,
     UserSetView,
+    CheckSearchIDView
 )
 
 router = DefaultRouter()
@@ -102,6 +103,11 @@ urlpatterns = [
         "checks/events/",
         CheckEventsView.as_view({"get": "list"}),
         name="list-events",
+    ),
+    path(
+        "checks/events-staff/<str:id>/",
+        CheckSearchIDView.as_view({"get": "retrieve"}),
+        name="get-events-staffs",
     ),
     # Router
     path("", include(router.urls)),

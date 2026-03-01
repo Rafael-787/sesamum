@@ -44,13 +44,15 @@ class EventViewSet(CreatedByMixin, AdminWriteCompanyReadMixin, viewsets.ModelVie
                 | Q(project__company=user.company),
             ).distinct()
 
+
         if self.action == "list":
             queryset = queryset.filter(project__isnull=True)
 
         return queryset
 
+"""
     def retrieve(self, request, pk=None):
-        """Detalhes de um Evento"""
+        Detalhes de um Evento
         try:
             if request.user.role in ["admin", "control"]:
                 event = Event.objects.get(id=pk)
@@ -65,7 +67,7 @@ class EventViewSet(CreatedByMixin, AdminWriteCompanyReadMixin, viewsets.ModelVie
 
         serializer = EventSerializer(event)
         return Response(serializer.data)
-
+"""
 
 class EventOverviewView(generics.RetrieveAPIView):
     queryset = Event.objects.all()

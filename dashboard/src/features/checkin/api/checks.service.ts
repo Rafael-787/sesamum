@@ -31,7 +31,7 @@ export const checksService = {
    * Get check by ID
    */
   getById: async (id: string) => {
-    return apiClient.get<EventStaff>(`${ENDPOINTS.CHECKS.LIST}${id}/`);
+    return apiClient.get<EventStaff>(`${ENDPOINTS.CHECKS.BY_ID(id)}`);
   },
   getEvents: async () => {
     return apiClient.get<Event[]>(`${ENDPOINTS.CHECKS.LIST_EVENTS}/`);
