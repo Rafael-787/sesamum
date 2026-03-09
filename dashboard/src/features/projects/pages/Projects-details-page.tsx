@@ -41,6 +41,7 @@ const ProjectDetailsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [isDeleteEventModalOpen, setIsDeleteEventModalOpen] = useState(false);
@@ -67,6 +68,7 @@ const ProjectDetailsPage: React.FC = () => {
         // Fetch project details
         const projectResponse = await projectsService.getById(Number(id));
         setProject(projectResponse.data);
+        setIsOwner(projectResponse.data.owner);
 
         // Track visit to recently visited
         addRecentVisit({
@@ -84,10 +86,12 @@ const ProjectDetailsPage: React.FC = () => {
         setEvents(eventsResponse.data);
 
         // Fetch companies for events in this project
-        const companiesResponse = await projectsService.getCompanies(
-          Number(id),
-        );
-        setCompanies(companiesResponse.data);
+        if (isOwner) {
+          const companiesResponse = await projectsService.getCompanies(
+            Number(id),
+          );
+          setCompanies(companiesResponse.data);
+        }
       } catch (err) {
         setError("Erro ao carregar projeto");
         console.error("Error fetching project data:", err);

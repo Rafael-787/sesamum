@@ -33,30 +33,39 @@ class ProjectViewSet(CreatedByMixin, AdminWriteCompanyReadMixin, viewsets.ModelV
         ).distinct()
 
     def retrieve(self, request, pk=None):
-        """Detalhes de um Projeto"""
-        try:
-            # Libera todos os projetos para admin ou control
-            if request.user.role in ["admin", "control"]:
-                project = Project.objects.distinct().get(id=pk)
-            else:
-                # Busca o projeto pelo ID, garantindo que a empresa seja detentora OU participante
-                
-                project = Project.objects.distinct().get(
-                    Q(id=pk)
-                    & (
-                        Q(company=request.user.company)
-                        | Q(
-                            events__participating_companies__company=request.user.company
+            """Detalhes de um Projeto"""
+            try:
+                # Libera todos os projetos para admin ou control
+                if request.user.role in ["admin", "control"]:
+                    project = Project.objects.filter(id=pk).distinct().get()
+                else:
+                    # Busca o projeto pelo ID, garantindo que a empresa seja detentora OU participante
+                    project = Project.objects.filter(
+                        Q(id=pk)
+                        & (
+                            Q(company=request.user.company)
+                            | Q(
+                                events__participating_companies__company=request.user.company
+                            )
                         )
-                    )
+                    ).distinct().get()
+            except Project.DoesNotExist:
+                raise PermissionDenied(
+                    "Projeto não encontrado ou você não tem permissão de acesso."
                 )
-        except Project.DoesNotExist:
-            raise PermissionDenied(
-                "Projeto não encontrado ou você não tem permissão de acesso."
-            )
 
-        serializer = ProjectSerializer(project)
-        return Response(serializer.data)
+            serializer = ProjectSerializer(project)
+            data = serializer.data
+            
+            # Adiciona o campo booleano 'owner' na resposta
+            # Verifica se o usuário tem uma empresa e se o ID dela é o mesmo do projeto
+            is_owner = False
+            if request.user.company_id and project.company_id == request.user.company_id:
+                is_owner = True
+                
+            data["owner"] = is_owner
+
+            return Response(data)
 
 
 class ProjectEventsTabView(viewsets.ReadOnlyModelViewSet):

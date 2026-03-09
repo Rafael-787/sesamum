@@ -78,21 +78,65 @@ export const getEventStatus = (event: {
 
 // Form date conversion utilities
 export const formatDateToISO = (dateStr: string): string => {
-  // Convert DD/MM/YYYY to YYYY-MM-DD
-  const [day, month, year] = dateStr.split("/");
-  return `${year}-${month}-${day}`;
+  if (!dateStr) return "";
+
+  const parts = dateStr.trim().split(" ");
+  const datePart = parts[0];
+  const timePart = parts[1] || "00:00";
+
+  if (!datePart.includes("/")) {
+    // Se for um formato reconhecido que não seja DD/MM/YYYY
+    const d = new Date(dateStr);
+    return isNaN(d.getTime()) ? dateStr : d.toISOString();
+  }
+
+  const [day, month, year] = datePart.split("/");
+  const [hour, minute] = timePart.split(":");
+
+  // Instancia a data no fuso local e exporta em ISO 8601 com 'Z' (UTC)
+  const date = new Date(
+    parseInt(year, 10),
+    parseInt(month, 10) - 1,
+    parseInt(day, 10),
+    parseInt(hour, 10),
+    parseInt(minute, 10),
+  );
+
+  return date.toISOString();
 };
 
 export const formatDateToDDMMYYYY = (isoDate: string): string => {
-  // Convert YYYY-MM-DD to DD/MM/YYYY
-  const [year, month, day] = isoDate.split("-");
+  if (!isoDate) return "";
+
+  if (isoDate.includes("/")) return isoDate.split(" ")[0]; // Fallback se já estiver formatada
+
+  // Lê a data convertendo de volta para o horário local para exibir corretamente no input
+  if (isoDate.includes("T")) {
+    const date = new Date(isoDate);
+    if (!isNaN(date.getTime())) {
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+  }
+
+  // Fallback para datas que venham apenas como "YYYY-MM-DD" sem horário e sem UTC
+  const datePart = isoDate.split(/T|\s/)[0];
+  if (!datePart.includes("-")) return isoDate;
+
+  const [year, month, day] = datePart.split("-");
   return `${day}/${month}/${year}`;
 };
 
 export const isValidDate = (dateStr: string): boolean => {
   if (!dateStr || dateStr.includes("_")) return false;
-  const [day, month, year] = dateStr.split("/");
+
+  const dateOnly = dateStr.trim().split(" ")[0];
+  const [day, month, year] = dateOnly.split("/");
+
   const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+
   return (
     date.getFullYear() === parseInt(year) &&
     date.getMonth() === parseInt(month) - 1 &&

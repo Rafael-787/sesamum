@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRef } from "react";
 import {
   PageHeader,
   PageContainer,
@@ -14,6 +15,7 @@ import {
   UserCheck,
   Clock,
   QrCode,
+  AlertCircle,
 } from "lucide-react";
 import Badge from "@/shared/components/ui/Badge";
 import { formatDateTime } from "@/shared/lib/dateUtils";
@@ -37,6 +39,19 @@ const CheckInPage: React.FC = () => {
     type: "success" | "error";
     message: string;
   }>({ open: false, type: "success", message: "" });
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [scanFeedback, setScanFeedback] = useState<{
+    type: "in" | "out" | "error";
+    message: string;
+    name?: string;
+  } | null>(null);
+
+  // Efeito para manter o cursor sempre focado no input do leitor
+  useEffect(() => {
+    if (searchMode === "qrcode" && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [searchMode, scanFeedback]);
 
   // Fetch open events on mount
   useEffect(() => {
@@ -119,6 +134,60 @@ const CheckInPage: React.FC = () => {
       setSearchResult(null);
     } finally {
       setLoading(false);
+    }
+  };
+  const handleQRCodeScan = async () => {
+    if (!searchEventStaffId.trim()) return;
+
+    setLoading(true);
+    try {
+      // 1. Busca o staff diretamente pelo ID lido
+      const response = await checksService.getById(searchEventStaffId);
+      const staff = response.data;
+
+      // 2. Define a ação lógica (In/Out/Register)
+      let nextAction: "registration" | "check-in" | "check-out";
+
+      if (!staff.is_registered) {
+        nextAction = "registration";
+      } else if (staff.last_status?.action !== "check-in") {
+        nextAction = "check-in";
+      } else {
+        nextAction = "check-out";
+      }
+
+      // 3. Executa a ação imediatamente
+      await checksService.create({
+        action: nextAction,
+        events_staff: staff.id,
+      });
+
+      // 4. Define o feedback visual
+      setScanFeedback({
+        type: nextAction === "check-out" ? "out" : "in",
+        message:
+          nextAction === "check-out"
+            ? "Check-out Realizado"
+            : "Check-in Realizado",
+        name: staff.staff_name,
+      });
+    } catch (err: any) {
+      setScanFeedback({
+        type: "error",
+        message:
+          err.response?.data?.error ||
+          "Staff não encontrado ou QR Code inválido",
+      });
+    } finally {
+      setLoading(false);
+      setSearchEventStaffId(""); // Limpa o input para o próximo leitor
+
+      if (inputRef.current) {
+        inputRef.current.focus(); // Retorna o foco
+      }
+
+      // Remove o feedback após 3 segundos
+      setTimeout(() => setScanFeedback(null), 3000);
     }
   };
 
@@ -291,12 +360,17 @@ const CheckInPage: React.FC = () => {
               />
             ) : (
               <input
+                ref={inputRef}
                 type="text"
-                placeholder="Digite ou escaneie o ID do QR Code"
+                placeholder="Aguardando leitor de QR Code..."
                 value={searchEventStaffId}
                 onChange={(e) => setSearchEventStaffId(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                onKeyDown={(e) => e.key === "Enter" && handleQRCodeScan()}
                 className="w-full pl-10 pr-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-input-bg border border-input-border text-input-text font-mono"
+                autoFocus
+                onBlur={() =>
+                  searchMode === "qrcode" && inputRef.current?.focus()
+                } // Força o foco a não se perder
               />
             )}
           </div>
@@ -314,6 +388,35 @@ const CheckInPage: React.FC = () => {
           </p>
         )}
       </div>
+      {/* Alerta visual para uso com qrcode*/}
+      {scanFeedback && searchMode === "qrcode" && (
+        <div
+          className={`mt-6 p-10 rounded-2xl flex flex-col items-center justify-center text-center shadow-lg transition-all animate-in fade-in zoom-in duration-200 ${
+            scanFeedback.type === "in"
+              ? "bg-green-600 text-white"
+              : scanFeedback.type === "out"
+                ? "bg-orange-600 text-white"
+                : "bg-red-600 text-white"
+          }`}
+        >
+          {scanFeedback.type === "in" && (
+            <CheckCircle size={80} className="mb-4" />
+          )}
+          {scanFeedback.type === "out" && (
+            <XCircle size={80} className="mb-4" />
+          )}
+          {scanFeedback.type === "error" && (
+            <AlertCircle size={80} className="mb-4" />
+          )}
+
+          <h2 className="text-4xl font-bold mb-2 uppercase tracking-wide">
+            {scanFeedback.message}
+          </h2>
+          {scanFeedback.name && (
+            <p className="text-2xl font-medium mt-2">{scanFeedback.name}</p>
+          )}
+        </div>
+      )}
 
       {/* Search Result */}
       {searchResult && (

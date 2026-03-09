@@ -10,4 +10,5 @@ export interface Project {
   date_end?: string;
   events_qnt?: number;
   company_role?: "production" | "service";
+  owner: boolean;
 }

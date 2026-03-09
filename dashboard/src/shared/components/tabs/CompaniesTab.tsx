@@ -3,7 +3,7 @@ import ListToolbar from "@/shared/components/list/ListToolbar";
 import ListCard from "@/shared/components/list/ListCard";
 import Badge from "@/shared/components/ui/Badge";
 import { Modal } from "@/shared/components/ui/Modal";
-import { Building2 } from "lucide-react";
+import { Building2, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import AddExistingCompany from "@/features/events/components/tabs/AddExistingCompany";
 import { useAuth } from "@/shared/context/AuthContext";
@@ -14,7 +14,9 @@ interface Company {
   cnpj: string;
   role: string;
   staffCount: number;
+  staffLimit?: number; // Propriedade opcional adicionada
 }
+
 interface ListAction {
   label: string;
   onClick: (item: any) => void;
@@ -49,7 +51,6 @@ const CompaniesTab: React.FC<CompaniesTabProps> = ({
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
 
-  // Map UI filter to company role
   const filterMap: Record<string, string[]> = {
     all: ["production", "service"],
     production: ["production"],
@@ -126,11 +127,14 @@ const CompaniesTab: React.FC<CompaniesTabProps> = ({
                     <Building2 size={14} />
                     {company.cnpj}
                   </span>
-                  {/* Mostrador de qnt de staff desativado
-                  <span className="flex items-center gap-1">
-                    <UserIcon size={14} />
-                    {company.staffCount} staffs
-                    </span>*/}
+
+                  {/* Exibe o limite de staffs se estiver disponível */}
+                  {company.staffLimit !== undefined && (
+                    <span className="flex items-center gap-1">
+                      <Users size={14} />
+                      Limite: {company.staffLimit} staffs
+                    </span>
+                  )}
                 </div>
               </div>
             </ListCard.Body>

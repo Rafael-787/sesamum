@@ -25,6 +25,12 @@ class CheckSerializer(serializers.ModelSerializer):
         action = data.get("action")
         events_staff = data.get("events_staff")
 
+        # Regra 2.C: Checks permitidos apenas em eventos abertos
+        if events_staff.event.status != "open":
+            raise serializers.ValidationError(
+                "Ações de check só são permitidas em eventos abertos."
+            )
+
         # Regra 2.B: Check-in/out só permitido se credenciado
         if action in ["check-in", "check-out"]:
             if not events_staff.registration_check_id:

@@ -15,7 +15,7 @@ import { eventCompaniesService } from "../api/eventCompanies.service";
 
 import type { CompanyWithEventData } from "@/features/companies";
 import type { Event, Overview, StaffWithStatus } from "../types";
-import { formatDate } from "@/shared/lib/dateUtils";
+import { formatDate, formatDateTime } from "@/shared/lib/dateUtils";
 import { useRecentlyVisited } from "@/shared/hooks/useRecentlyVisited";
 import { Modal } from "@/shared/components/ui/Modal";
 import { EventForm } from "../components/EventForm";
@@ -87,9 +87,13 @@ const EventDetailsPage: React.FC = () => {
         const overviewResponse = await eventsService.getOverview(Number(id));
         setOverview(overviewResponse.data);
 
-        // Fetch companies for this event
+        // Fetch companies for this event e mapeia o staff_limit
         const companiesResponse = await eventsService.getCompanies(Number(id));
-        setCompanies(companiesResponse.data);
+        const mappedCompanies = companiesResponse.data.map((c: any) => ({
+          ...c,
+          staffLimit: c.staff_limit || c.staffLimit,
+        }));
+        setCompanies(mappedCompanies);
 
         // Fetch staffs for this event
         const staffsResponse = await eventsService.getStaffs(Number(id));
@@ -173,7 +177,12 @@ const EventDetailsPage: React.FC = () => {
     if (!id) return;
     try {
       const companiesResponse = await eventsService.getCompanies(Number(id));
-      setCompanies(companiesResponse.data);
+      const mappedCompanies = companiesResponse.data.map((c: any) => ({
+        ...c,
+        staffLimit: c.staff_limit || c.staffLimit,
+      }));
+      setCompanies(mappedCompanies);
+
       const overviewResponse = await eventsService.getOverview(Number(id));
       setOverview(overviewResponse.data);
     } catch (err) {
@@ -201,7 +210,7 @@ const EventDetailsPage: React.FC = () => {
 
   // Lógica para chamar o serviço e remover a empresa
   const handleRemoveCompany = async () => {
-    if (!companyToRemove || !event?.id) return; // Certifique-se de ter o eventId disponível no contexto
+    if (!companyToRemove || !event?.id) return;
 
     try {
       // Chama o serviço para desassociar a empresa do evento
@@ -216,7 +225,11 @@ const EventDetailsPage: React.FC = () => {
 
       // Atualiza a lista de empresas aqui
       const companiesResponse = await eventsService.getCompanies(Number(id));
-      setCompanies(companiesResponse.data);
+      const mappedCompanies = companiesResponse.data.map((c: any) => ({
+        ...c,
+        staffLimit: c.staff_limit || c.staffLimit,
+      }));
+      setCompanies(mappedCompanies);
 
       setIsDeleteCompanyModalOpen(false);
       setCompanyToRemove(null);
@@ -229,8 +242,6 @@ const EventDetailsPage: React.FC = () => {
       });
     }
   };
-
-  // Example data - to be calculated from EventStaff/EventCompany APIs
 
   if (loading) {
     return (
@@ -287,14 +298,16 @@ const EventDetailsPage: React.FC = () => {
               Data de Início
             </label>
             <p className="mt-1 text-text-title">
-              {formatDate(event.date_begin)}
+              {formatDateTime(event.date_begin)}
             </p>
           </div>
           <div>
             <label className="text-sm font-medium text-text-subtitle">
               Data de Término
             </label>
-            <p className="mt-1 text-text-title">{formatDate(event.date_end)}</p>
+            <p className="mt-1 text-text-title">
+              {formatDateTime(event.date_end)}
+            </p>
           </div>
           {event.location && (
             <div>
@@ -353,7 +366,7 @@ const EventDetailsPage: React.FC = () => {
                         {
                           label: "Desassociar",
                           icon: <Trash size={16} />,
-                          variant: "destructive", // Estilo vermelho similar ao StaffTab
+                          variant: "destructive",
                           onClick: (c) => confirmRemoveCompany(c),
                         },
                       ]}
@@ -401,6 +414,8 @@ const EventDetailsPage: React.FC = () => {
         message={toast.message}
         onOpenChange={(open) => setToast({ ...toast, open })}
       />
+
+      {/* Remove Company Dialog */}
       <ConfirmDialog
         open={isDeleteCompanyModalOpen}
         onOpenChange={(isOpen) => {

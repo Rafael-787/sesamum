@@ -217,13 +217,25 @@ class EventStaffsTabView(viewsets.ReadOnlyModelViewSet):
                 ).distinct()
         return Staff.objects.none()
 
+class CompanyWithEventDetailsSerializer(CompanySerializer):
+    """
+    Estende o CompanySerializer para incluir o staff_limit e role
+    específicos da relação do evento sendo visualizado.
+    """
+    staff_limit = serializers.IntegerField(read_only=True)
+    role = serializers.CharField(read_only=True)
+
+    class Meta(CompanySerializer.Meta):
+        # Herda os campos padrão da empresa e adiciona os novos do evento
+        fields = CompanySerializer.Meta.fields + ["staff_limit", "role"]
 
 class EventCompaniesTabView(viewsets.ReadOnlyModelViewSet):
-    serializer_class = CompanySerializer
+    serializer_class = CompanyWithEventDetailsSerializer # Usa o novo serializer
 
     def get_queryset(self):
         event_id = self.kwargs.get("event_id")
         user = self.request.user
+        
         # Verificar se o usuário é de uma empresa cadastrada como produção no evento ou dona do projeto
         is_production = (
             EventsCompany.objects.filter(
@@ -232,10 +244,17 @@ class EventCompaniesTabView(viewsets.ReadOnlyModelViewSet):
             # Verifica company_owner do projeto
             or Event.objects.filter(id=event_id, project__company=user.company).exists()
         )
+        
         if event_id:
             if user.role in ["admin", "control"] or is_production:
-                # Filtra os staffs que possuem uma entrada na tabela EventsStaff para o evento
-                return Company.objects.filter(eventscompany__event=event_id).distinct()
+                # Retorna as empresas e anota (traz as colunas) da tabela intermediária
+                return Company.objects.filter(
+                    eventscompany__event=event_id
+                ).annotate(
+                    staff_limit=F("eventscompany__staff_limit"),
+                    role=F("eventscompany__role")
+                ).distinct()
             else:
                 raise PermissionDenied("Você não possui autorização para essa ação.")
+                
         return Company.objects.none()
