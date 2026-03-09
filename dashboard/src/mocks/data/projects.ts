@@ -17,6 +17,7 @@ export let mockProjects: Project[] = [
     date_end: "2026-02-17T23:59:59Z",
     events_qnt: 12,
     company_role: "production",
+    owner: true, // Propriedade adicionada
   },
   {
     id: 2,
@@ -27,6 +28,7 @@ export let mockProjects: Project[] = [
     date_end: "2026-01-31T23:59:59Z",
     events_qnt: 8,
     company_role: "production",
+    owner: true, // Propriedade adicionada
   },
   {
     id: 3,
@@ -37,6 +39,7 @@ export let mockProjects: Project[] = [
     date_end: "2025-11-03T23:59:59Z",
     events_qnt: 5,
     company_role: "service",
+    owner: false, // Propriedade adicionada
   },
   {
     id: 4,
@@ -47,6 +50,7 @@ export let mockProjects: Project[] = [
     date_end: "2026-03-15T23:59:59Z",
     events_qnt: 15,
     company_role: "production",
+    owner: true, // Propriedade adicionada
   },
   {
     id: 5,
@@ -57,6 +61,7 @@ export let mockProjects: Project[] = [
     date_end: "2026-04-20T23:59:59Z",
     events_qnt: 3,
     company_role: "service",
+    owner: false, // Propriedade adicionada
   },
   {
     id: 6,
@@ -67,6 +72,7 @@ export let mockProjects: Project[] = [
     date_end: "2025-10-22T23:59:59Z",
     events_qnt: 20,
     company_role: "production",
+    owner: true, // Propriedade adicionada
   },
   {
     id: 7,
@@ -77,6 +83,7 @@ export let mockProjects: Project[] = [
     date_end: "2026-05-17T23:59:59Z",
     events_qnt: 0,
     company_role: "service",
+    owner: false, // Propriedade adicionada
   },
 ];
 
@@ -94,6 +101,8 @@ export const resetMockProjects = () => {
       date_begin: "2026-02-14T00:00:00Z",
       date_end: "2026-02-17T23:59:59Z",
       events_qnt: 12,
+      company_role: "production", // Adicionado para manter a consistência
+      owner: true, // Propriedade adicionada
     },
     {
       id: 2,
@@ -103,6 +112,8 @@ export const resetMockProjects = () => {
       date_begin: "2026-01-10T00:00:00Z",
       date_end: "2026-01-31T23:59:59Z",
       events_qnt: 8,
+      company_role: "production",
+      owner: true, // Propriedade adicionada
     },
     {
       id: 3,
@@ -112,6 +123,8 @@ export const resetMockProjects = () => {
       date_begin: "2025-11-01T00:00:00Z",
       date_end: "2025-11-03T23:59:59Z",
       events_qnt: 5,
+      company_role: "service",
+      owner: false, // Propriedade adicionada
     },
     {
       id: 4,
@@ -121,6 +134,8 @@ export const resetMockProjects = () => {
       date_begin: "2026-03-01T00:00:00Z",
       date_end: "2026-03-15T23:59:59Z",
       events_qnt: 15,
+      company_role: "production",
+      owner: true, // Propriedade adicionada
     },
     {
       id: 5,
@@ -130,6 +145,8 @@ export const resetMockProjects = () => {
       date_begin: "2026-04-20T00:00:00Z",
       date_end: "2026-04-20T23:59:59Z",
       events_qnt: 3,
+      company_role: "service",
+      owner: false, // Propriedade adicionada
     },
     {
       id: 6,
@@ -139,6 +156,8 @@ export const resetMockProjects = () => {
       date_begin: "2025-10-15T00:00:00Z",
       date_end: "2025-10-22T23:59:59Z",
       events_qnt: 20,
+      company_role: "production",
+      owner: true, // Propriedade adicionada
     },
     {
       id: 7,
@@ -148,6 +167,8 @@ export const resetMockProjects = () => {
       date_begin: "2026-05-10T00:00:00Z",
       date_end: "2026-05-17T23:59:59Z",
       events_qnt: 0,
+      company_role: "service",
+      owner: false, // Propriedade adicionada
     },
   ];
 };
