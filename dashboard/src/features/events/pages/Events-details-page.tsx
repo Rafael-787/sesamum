@@ -45,6 +45,7 @@ const EventDetailsPage: React.FC = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [isDeleteCompanyModalOpen, setIsDeleteCompanyModalOpen] =
     useState(false);
   const [companyToRemove, setCompanyToRemove] = useState<any>(null);
@@ -243,6 +244,44 @@ const EventDetailsPage: React.FC = () => {
     }
   };
 
+  const handleExportReport = async () => {
+    if (!id) return;
+
+    try {
+      setIsExporting(true);
+      const response = await eventsService.exportReport(Number(id));
+
+      // Cria um link temporário para forçar o download do Blob
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+
+      // Define o nome do ficheiro (pode também tentar extrair do cabeçalho content-disposition se preferir)
+      link.setAttribute("download", `relatorio_evento_${event?.name}.csv`);
+      document.body.appendChild(link);
+      link.click();
+
+      // Limpeza
+      link.remove();
+      window.URL.revokeObjectURL(url);
+
+      setToast({
+        open: true,
+        type: "success",
+        message: "Relatório exportado com sucesso!",
+      });
+    } catch (err) {
+      console.error("Erro ao exportar relatório:", err);
+      setToast({
+        open: true,
+        type: "error",
+        message: "Erro ao exportar o relatório.",
+      });
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   if (loading) {
     return (
       <DetailsPageContainer>
@@ -273,6 +312,7 @@ const EventDetailsPage: React.FC = () => {
         subtitle={`Evento${event.type === "project" ? " de Projeto" : ""}`}
         onEdit={canEdit ? handleEdit : undefined}
         onDelete={canDelete ? handleDelete : undefined}
+        onExport={handleExportReport || undefined}
       />
 
       <DetailsInfoSection>

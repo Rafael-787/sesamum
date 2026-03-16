@@ -6,6 +6,7 @@ interface PageHeaderProps {
   subtitle?: string;
   onEdit?: () => void;
   onDelete?: () => void;
+  onExport?: () => void;
 }
 
 export const DetailsPageHeader: React.FC<PageHeaderProps> = ({
@@ -13,13 +14,14 @@ export const DetailsPageHeader: React.FC<PageHeaderProps> = ({
   subtitle,
   onEdit,
   onDelete,
+  onExport,
 }) => (
   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
     <div>
       <h1 className="font-bold text-3xl text-text-title">{title}</h1>
       {subtitle && <p className="mt-1 text-subtitle ">{subtitle}</p>}
     </div>
-    {(onEdit || onDelete) && (
+    {(onEdit || onDelete || onExport) && (
       <div className="flex gap-3">
         {onEdit && (
           <button
@@ -35,6 +37,14 @@ export const DetailsPageHeader: React.FC<PageHeaderProps> = ({
             className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 hover:cursor-pointer transition-colors font-medium"
           >
             Excluir
+          </button>
+        )}
+        {onExport && (
+          <button
+            onClick={onExport}
+            className="px-4 py-2 bg-toast-warning-border text-white rounded-lg hover:bg-toast-warning-text hover:cursor-pointer transition-colors font-medium"
+          >
+            Relatório
           </button>
         )}
       </div>

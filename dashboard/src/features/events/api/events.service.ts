@@ -176,4 +176,9 @@ export const eventsService = {
   getOverview: (eventId: number) => {
     return apiClient.get<Overview>(ENDPOINTS.EVENTS.OVERVIEW(eventId));
   },
+  exportReport: (eventId: number) => {
+    return apiClient.get<any>(ENDPOINTS.EXPORT.EVENT(eventId), {
+      responseType: "blob", // Obrigatório para lidar com ficheiros
+    });
+  },
 };

@@ -18,3 +18,4 @@ from .projects_views import (
 )
 from .staff_views import StaffViewSet
 from .users_views import UserSetView
+from .export_views import EventExportReportView

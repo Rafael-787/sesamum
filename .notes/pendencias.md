@@ -17,8 +17,10 @@
 - [ ] Bloquear staffs.
   - Apresentar para Admin caso pessoa esteja bloqueada por qualquer compny.
 - [ ] Foto vinda do google acount para users.
+- [ ] UI para alterar staff_limit das empresas.
 - [ ] Company owner poder add eventos e empresas.
-- [ ] Relatório final gerado automático
+- [x] Relatório final gerado automático
+  - [ ] Identificação da exportação
 - [ ] Avisa no próximo credenciamento caso staff não tenha feito checkout no evento anterior (check em aberto).
 - [ ] Sistema para duplicar evento.
   - Levar companies e staffs junto.
@@ -26,15 +28,3 @@
   - Pensado para caso de checkout válidos que não puderam ser efetuados no credenciamento. Ex: saídadas médicas.
   - **REFUTADO:** abre brecha para company poder gerar dados "indevidos" de checkout.
   - **ALTERNATIVA:** sistema móvel de checkout. Sensor com plataforma móvel.
-
-| Nome    | Telefone |
-| ------- | -------- |
-| Rafael  | 54654564 |
-| Letícia | 161651   |
-
-- [ ] bullet point
-
-> [!NOTE]
-> Algo de importante
-
-$$\sum_{0}^{\infty}\int_{0}^{l}f_{(x)}$$

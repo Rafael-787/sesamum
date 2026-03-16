@@ -110,4 +110,8 @@ export const ENDPOINTS = {
       `/api/v1/events/${eventId}/staff/${staffId}/`,
     BULK: (eventId: number) => `/api/v1/events/${eventId}/staff/bulk/`,
   },
+
+  EXPORT: {
+    EVENT: (eventId: number) => `/api/v1/events/${eventId}/export-report/`,
+  },
 } as const;
