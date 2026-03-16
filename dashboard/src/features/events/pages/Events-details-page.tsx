@@ -45,7 +45,7 @@ const EventDetailsPage: React.FC = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
+  //const [isExporting, setIsExporting] = useState(false);
   const [isDeleteCompanyModalOpen, setIsDeleteCompanyModalOpen] =
     useState(false);
   const [companyToRemove, setCompanyToRemove] = useState<any>(null);
@@ -248,7 +248,7 @@ const EventDetailsPage: React.FC = () => {
     if (!id) return;
 
     try {
-      setIsExporting(true);
+      //setIsExporting(true);
       const response = await eventsService.exportReport(Number(id));
 
       // Cria um link temporário para forçar o download do Blob
@@ -278,7 +278,7 @@ const EventDetailsPage: React.FC = () => {
         message: "Erro ao exportar o relatório.",
       });
     } finally {
-      setIsExporting(false);
+      //setIsExporting(false);
     }
   };
 
