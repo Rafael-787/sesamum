@@ -27,7 +27,8 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/*Alterado para 2 colunas, esperando implementação do Card Equipe no Projeto*/}
         <MetricCard
           title="Eventos no Projeto"
           value={totalEvents}
@@ -40,12 +41,14 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
           icon={<Building2 />}
           color="company"
         />
+        {/* Aguardando implementação 
+
         <MetricCard
           title="Equipe no Projeto"
           value={totalStaff}
           icon={<Users />}
           color="user"
-        />
+        /*/}
       </div>
 
       <Card>

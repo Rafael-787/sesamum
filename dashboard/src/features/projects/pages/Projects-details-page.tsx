@@ -86,12 +86,11 @@ const ProjectDetailsPage: React.FC = () => {
         setEvents(eventsResponse.data);
 
         // Fetch companies for events in this project
-        if (isOwner) {
-          const companiesResponse = await projectsService.getCompanies(
-            Number(id),
-          );
-          setCompanies(companiesResponse.data);
-        }
+
+        const companiesResponse = await projectsService.getCompanies(
+          Number(id),
+        );
+        setCompanies(companiesResponse.data);
       } catch (err) {
         setError("Erro ao carregar projeto");
         console.error("Error fetching project data:", err);
