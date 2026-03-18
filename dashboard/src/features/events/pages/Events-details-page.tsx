@@ -10,7 +10,7 @@ import OverviewTab from "../components/tabs/OverviewTab";
 import StaffTab from "../components/tabs/StaffTab";
 import CompaniesTab from "@/shared/components/tabs/CompaniesTab";
 import { eventsService } from "../api/events.service";
-import { Trash } from "lucide-react";
+import { Trash, Users } from "lucide-react";
 import { eventCompaniesService } from "../api/eventCompanies.service";
 
 import type { CompanyWithEventData } from "@/features/companies";
@@ -29,7 +29,7 @@ const EventDetailsPage: React.FC = () => {
   const navigate = useNavigate();
   const { addRecentVisit } = useRecentlyVisited();
 
-  // Check permissions (must be called before any conditional returns)
+  // Check permissions
   const { can, isAdmin, isControl } = usePermissions();
 
   const [staffSearch, setStaffSearch] = useState("");
@@ -45,10 +45,18 @@ const EventDetailsPage: React.FC = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  //const [isExporting, setIsExporting] = useState(false);
+
   const [isDeleteCompanyModalOpen, setIsDeleteCompanyModalOpen] =
     useState(false);
   const [companyToRemove, setCompanyToRemove] = useState<any>(null);
+
+  // Estados para o Modal de Limite de Staff
+  const [changeStaffLimitModalOpen, setChangeStaffLimitModalOpen] =
+    useState(false);
+  const [companyToEditLimit, setCompanyToEditLimit] = useState<any>(null);
+  const [newStaffLimit, setNewStaffLimit] = useState<number | "">("");
+  const [isUpdatingLimit, setIsUpdatingLimit] = useState(false);
+
   const [toast, setToast] = useState<{
     open: boolean;
     type: "success" | "error";
@@ -118,7 +126,6 @@ const EventDetailsPage: React.FC = () => {
 
   const handleEditSuccess = async () => {
     setIsEditModalOpen(false);
-    // Refetch event data
     if (!id) return;
     try {
       const eventResponse = await eventsService.getById(Number(id));
@@ -174,7 +181,6 @@ const EventDetailsPage: React.FC = () => {
   };
 
   const handleCompanyAdded = async () => {
-    // Refetch companies after adding a new one
     if (!id) return;
     try {
       const companiesResponse = await eventsService.getCompanies(Number(id));
@@ -192,7 +198,6 @@ const EventDetailsPage: React.FC = () => {
   };
 
   const handleStaffAdded = async () => {
-    // Refetch staffs after adding new ones
     if (!id) return;
     try {
       const staffsResponse = await eventsService.getStaffs(Number(id));
@@ -209,22 +214,29 @@ const EventDetailsPage: React.FC = () => {
     setIsDeleteCompanyModalOpen(true);
   };
 
-  // Lógica para chamar o serviço e remover a empresa
+  // Abre o modal de alteração de limite e preenche o valor atual
+  const changeStaffLimit = (company: any) => {
+    setCompanyToEditLimit(company);
+    setNewStaffLimit(
+      company.staffLimit !== undefined && company.staffLimit !== null
+        ? company.staffLimit
+        : "",
+    );
+    setChangeStaffLimitModalOpen(true);
+  };
+
   const handleRemoveCompany = async () => {
     if (!companyToRemove || !event?.id) return;
 
     try {
-      // Chama o serviço para desassociar a empresa do evento
       await eventCompaniesService.delete(Number(event.id), companyToRemove.id);
 
-      // Feedback de sucesso
       setToast({
         open: true,
         type: "success",
         message: `${companyToRemove.name} foi removido do evento.`,
       });
 
-      // Atualiza a lista de empresas aqui
       const companiesResponse = await eventsService.getCompanies(Number(id));
       const mappedCompanies = companiesResponse.data.map((c: any) => ({
         ...c,
@@ -244,24 +256,64 @@ const EventDetailsPage: React.FC = () => {
     }
   };
 
+  // Submete a alteração de limite para a API
+  const handleUpdateStaffLimit = async () => {
+    if (!companyToEditLimit || !event?.id || newStaffLimit === "") return;
+
+    try {
+      setIsUpdatingLimit(true);
+
+      // Assumindo que o seu eventCompaniesService tenha o método update
+      await eventCompaniesService.update(
+        Number(event.id),
+        companyToEditLimit.id,
+        {
+          staff_limit: newStaffLimit,
+        },
+      );
+
+      setToast({
+        open: true,
+        type: "success",
+        message: `Limite de staffs atualizado com sucesso.`,
+      });
+
+      // Recarrega a lista de empresas para refletir a alteração
+      const companiesResponse = await eventsService.getCompanies(Number(id));
+      const mappedCompanies = companiesResponse.data.map((c: any) => ({
+        ...c,
+        staffLimit: c.staff_limit || c.staffLimit,
+      }));
+      setCompanies(mappedCompanies);
+
+      setChangeStaffLimitModalOpen(false);
+      setCompanyToEditLimit(null);
+    } catch (error) {
+      console.error("Erro ao atualizar limite:", error);
+      setToast({
+        open: true,
+        type: "error",
+        message: `Erro ao atualizar limite de staffs.`,
+      });
+    } finally {
+      setIsUpdatingLimit(false);
+    }
+  };
+
   const handleExportReport = async () => {
     if (!id) return;
 
     try {
-      //setIsExporting(true);
       const response = await eventsService.exportReport(Number(id));
 
-      // Cria um link temporário para forçar o download do Blob
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
 
-      // Define o nome do ficheiro (pode também tentar extrair do cabeçalho content-disposition se preferir)
       link.setAttribute("download", `relatorio_evento_${event?.name}.csv`);
       document.body.appendChild(link);
       link.click();
 
-      // Limpeza
       link.remove();
       window.URL.revokeObjectURL(url);
 
@@ -277,8 +329,6 @@ const EventDetailsPage: React.FC = () => {
         type: "error",
         message: "Erro ao exportar o relatório.",
       });
-    } finally {
-      //setIsExporting(false);
     }
   };
 
@@ -409,6 +459,12 @@ const EventDetailsPage: React.FC = () => {
                           variant: "destructive",
                           onClick: (c) => confirmRemoveCompany(c),
                         },
+                        {
+                          label: "Limite de staffs",
+                          icon: <Users size={16} />,
+                          variant: "default",
+                          onClick: (c) => changeStaffLimit(c),
+                        },
                       ]}
                     />
                   ),
@@ -469,6 +525,63 @@ const EventDetailsPage: React.FC = () => {
         onConfirm={handleRemoveCompany}
         variant="danger"
       />
+
+      {/* Modal para Mudar Staff Limit */}
+      <Modal
+        open={changeStaffLimitModalOpen}
+        onOpenChange={(isOpen) => {
+          setChangeStaffLimitModalOpen(isOpen);
+          if (!isOpen) setCompanyToEditLimit(null);
+        }}
+        title="Mudar Limite de Staffs"
+      >
+        <div className="space-y-4">
+          <p className="text-sm text-gray-600">
+            Defina o novo limite de staffs para a empresa{" "}
+            <strong>{companyToEditLimit?.name}</strong> neste evento.
+          </p>
+
+          <div>
+            <label
+              htmlFor="staffLimit"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Limite
+            </label>
+            <input
+              id="staffLimit"
+              type="number"
+              min="0"
+              value={newStaffLimit}
+              onChange={(e) =>
+                setNewStaffLimit(e.target.value ? Number(e.target.value) : "")
+              }
+              className="w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm bg-input-bg border border-input-border text-input-text"
+              placeholder="Digite o limite..."
+            />
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <button
+              onClick={() => {
+                setChangeStaffLimitModalOpen(false);
+                setCompanyToEditLimit(null);
+              }}
+              className="flex-1 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 hover:cursor-pointer transition-colors"
+              disabled={isUpdatingLimit}
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={handleUpdateStaffLimit}
+              disabled={isUpdatingLimit || newStaffLimit === ""}
+              className="flex-1 px-4 py-2 rounded-lg text-sm font-medium text-white bg-primary hover:bg-button-bg-hover hover:cursor-pointer transition-colors disabled:opacity-50"
+            >
+              {isUpdatingLimit ? "Salvando..." : "Salvar"}
+            </button>
+          </div>
+        </div>
+      </Modal>
     </DetailsPageContainer>
   );
 };
