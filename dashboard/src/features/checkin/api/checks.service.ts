@@ -34,7 +34,7 @@ export const checksService = {
     return apiClient.get<EventStaff>(`${ENDPOINTS.CHECKS.BY_ID(id)}`);
   },
   getEvents: async () => {
-    return apiClient.get<Event[]>(`${ENDPOINTS.CHECKS.LIST_EVENTS}/`);
+    return apiClient.get<Event[]>(`${ENDPOINTS.CHECKS.LIST_EVENTS}`);
   },
   SearchStaff: async (eventId: number, params?: { search?: string }) => {
     return apiClient.get<EventStaff[]>(ENDPOINTS.CHECKS.SEARCH_STAFF(eventId), {

@@ -1,10 +1,13 @@
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from ..models import Check, Event, EventsStaff
 from ..permissions import IsControlOrAdmin
 from ..serializers import CheckSerializer, EventSerializer, EventsStaffControlSerializer
+from ..utils import generate_tspl_label
 
 
 class CheckViewSet(viewsets.ModelViewSet):
@@ -42,8 +45,21 @@ class CheckSearchIDView(viewsets.ReadOnlyModelViewSet):
 
     lookup_field = "id"
 
+    @action(detail=True, methods=['get'], url_path='print-label')
+    def print_label(self, request, id=None, **kwargs):
+        # Aqui get_object() retorna corretamente um EventsStaff
+        event_staff = self.get_object()
+        
+        name = event_staff.staff.name
+        # Como EventsStaff não tem 'role' no model, usar valor fixo ou buscar de EventsCompany se aplicável
+        role = "Staff" 
+        qr_data = str(event_staff.id)
+        
+        label_data = generate_tspl_label(name=name, role=role, qr_data=qr_data)
+        
+        return Response({"label_data": label_data})
 
 class CheckEventsView(viewsets.ReadOnlyModelViewSet):
-    queryset = Event.objects.all()
+    queryset = Event.objects.filter(status="open")
     serializer_class = EventSerializer
     permission_classes = [IsControlOrAdmin]
