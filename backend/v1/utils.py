@@ -15,7 +15,6 @@ def sanitize_digits(value):
         return ""
     return re.sub(r"\D", "", value)
 
-
 # Constantes de Enums
 STATUS_CHOICES = (
     ("open", "Open"),

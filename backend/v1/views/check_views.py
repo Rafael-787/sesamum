@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from ..models import Check, Event, EventsStaff
 from ..permissions import IsControlOrAdmin
 from ..serializers import CheckSerializer, EventSerializer, EventsStaffControlSerializer
-from ..utils import generate_tspl_label
+from ..zpl import generate_zpl_label
 
 
 class CheckViewSet(viewsets.ModelViewSet):
@@ -55,7 +55,7 @@ class CheckSearchIDView(viewsets.ReadOnlyModelViewSet):
         role = "Staff" 
         qr_data = str(event_staff.id)
         
-        label_data = generate_tspl_label(name=name, role=role, qr_data=qr_data)
+        label_data = generate_zpl_label(name=name, role=role, qr_data=qr_data)
         
         return Response({"label_data": label_data})
 

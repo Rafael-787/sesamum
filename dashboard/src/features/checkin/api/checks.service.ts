@@ -41,4 +41,11 @@ export const checksService = {
       params,
     });
   },
+
+  /**
+   * Get label to print
+   */
+  getPrintLabel: (id: string) => {
+    return apiClient.get(ENDPOINTS.CHECKS.PRINT_LABEL(id));
+  },
 };

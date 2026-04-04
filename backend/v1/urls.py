@@ -110,6 +110,11 @@ urlpatterns = [
         CheckSearchIDView.as_view({"get": "retrieve"}),
         name="get-events-staffs",
     ),
+    path(
+        "checks/print_label/<str:id>/",
+        CheckSearchIDView.as_view({"get": "print_label"}),
+        name="print-events-staff-label",
+    ),
     # Export
     path(
         "events/<int:event_id>/export-report/", 

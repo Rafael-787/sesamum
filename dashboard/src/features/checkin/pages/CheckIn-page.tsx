@@ -16,12 +16,50 @@ import {
   Clock,
   QrCode,
   AlertCircle,
+  Printer, // <-- Novo Ícone Importado
 } from "lucide-react";
 import Badge from "@/shared/components/ui/Badge";
 import { formatDateTime } from "@/shared/lib/dateUtils";
 import { Toast } from "@/shared/components/ui/Toast";
+import qz from "qz-tray";
 // import type { Check } from "@/shared/types";
 
+// Função utilitária para imprimir via WebUSB
+const printViaQZ = async (tsplData: string) => {
+  try {
+    // Conecta ao QZ Tray rodando na máquina local
+    if (!qz.websocket.isActive()) {
+      await qz.websocket.connect();
+    }
+
+    // Busca a impressora pelo nome (ajuste "4BarCode" para o nome exato que aparece no Windows)
+    const printers = await qz.printers.find("4BarCode");
+
+    // Cria a configuração de impressão
+    const config = qz.configs.create(printers);
+
+    // Envia os dados RAW (TSPL)
+    const data = [
+      {
+        type: "raw",
+        format: "plain",
+        data: tsplData,
+      },
+    ];
+
+    await qz.print(config, data);
+
+    return true;
+  } catch (error) {
+    console.error("Erro na impressão QZ Tray:", error);
+    throw error;
+  } finally {
+    // Opcional: desconectar após imprimir, ou manter ativo para próximas impressões mais rápidas
+    if (qz.websocket.isActive()) {
+      qz.websocket.disconnect();
+    }
+  }
+};
 type SearchMode = "cpf" | "qrcode";
 
 const CheckInPage: React.FC = () => {
@@ -218,6 +256,27 @@ const CheckInPage: React.FC = () => {
     }
   };
 
+  // --- Função para lidar com a impressão ---
+  const handlePrint = async () => {
+    if (!searchResult) return;
+
+    setLoading(true);
+    try {
+      // Busca o modelo TSPL gerado no Django
+      const response = await checksService.getPrintLabel(searchResult.id);
+
+      // Envia para o QZ Tray
+      await printViaQZ(response.data.label_data);
+
+      showToast("success", "Etiqueta enviada para a impressora!");
+    } catch (err: any) {
+      console.error("Error printing label:", err);
+      showToast("error", "Erro ao imprimir. O QZ Tray está aberto?");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const showToast = (type: "success" | "error", message: string) => {
     setToast({ open: true, type, message });
   };
@@ -254,6 +313,9 @@ const CheckInPage: React.FC = () => {
     searchResult.last_status?.action !== "check-in";
   const canCheckOut =
     searchResult && searchResult.last_status?.action === "check-in";
+
+  // Apenas quem já se registou pode imprimir
+  const canPrint = searchResult && searchResult.is_registered;
 
   return (
     <PageContainer>
@@ -513,7 +575,19 @@ const CheckInPage: React.FC = () => {
               </button>
             )}
 
-            {!canRegister && !canCheckIn && !canCheckOut && (
+            {/* NOVO BOTÃO DE IMPRESSÃO */}
+            {canPrint && (
+              <button
+                onClick={handlePrint}
+                disabled={loading}
+                className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 hover:cursor-pointer transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed ml-auto"
+              >
+                <Printer size={18} />
+                Imprimir Etiqueta
+              </button>
+            )}
+
+            {!canRegister && !canCheckIn && !canCheckOut && !canPrint && (
               <div className="flex items-center gap-2 text-gray-600">
                 <Clock size={18} />
                 <span>Nenhuma ação disponível no momento</span>
