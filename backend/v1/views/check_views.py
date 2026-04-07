@@ -47,15 +47,14 @@ class CheckSearchIDView(viewsets.ReadOnlyModelViewSet):
 
     @action(detail=True, methods=['get'], url_path='print-label')
     def print_label(self, request, id=None, **kwargs):
-        # Aqui get_object() retorna corretamente um EventsStaff
         event_staff = self.get_object()
         
         name = event_staff.staff.name
-        # Como EventsStaff não tem 'role' no model, usar valor fixo ou buscar de EventsCompany se aplicável
-        role = "Staff" 
+        # Acessa o nome da empresa do staff (com fallback caso seja nulo)
+        company = event_staff.staff.company.name if event_staff.staff.company else "Staff" 
         qr_data = str(event_staff.id)
         
-        label_data = generate_zpl_label(name=name, role=role, qr_data=qr_data)
+        label_data = generate_zpl_label(name=name, company=company, qr_data=qr_data)
         
         return Response({"label_data": label_data})
 
