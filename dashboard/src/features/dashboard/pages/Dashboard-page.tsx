@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { RefreshCw, Calendar, Building2, Users, Briefcase } from "lucide-react";
+import { RefreshCw } from "lucide-react";
+//import {Calendar, Building2, Users, Briefcase} from "lucide-react"
 import {
   PageContainer,
   PageHeader,
 } from "@/shared/components/layout/PageLayout";
-import { MetricCard } from "../components/MetricCard";
+//import { MetricCard } from "../components/MetricCard";
 import { EventCalendar } from "../components/EventCalendar";
 import { RecentActivityList } from "../components/RecentActivity";
 import { useRealTimeData } from "@/shared/hooks/useRealTimeData";
@@ -69,7 +70,7 @@ const DashboardPage: React.FC = () => {
 
   // Real-time data hooks with 10-minute intervals
   const {
-    data: metrics,
+    //data: metrics,
     loading: metricsLoading,
     error: metricsError,
     lastUpdate: metricsLastUpdate,
