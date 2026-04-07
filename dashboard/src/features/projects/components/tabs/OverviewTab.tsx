@@ -2,7 +2,7 @@ import React from "react";
 import { MetricCard } from "@/features/dashboard/components/MetricCard";
 import Card from "@/shared/components/ui/Card";
 import * as Progress from "@radix-ui/react-progress";
-import { Building2, Users, Calendar } from "lucide-react";
+import { Building2, Calendar } from "lucide-react";
 
 interface OverviewTabProps {
   totalStaff: number;
@@ -16,7 +16,7 @@ interface OverviewTabProps {
 }
 
 const OverviewTab: React.FC<OverviewTabProps> = ({
-  totalStaff,
+  //totalStaff,
   //eventsStaff,
   totalEvents,
   totalCompanies,
