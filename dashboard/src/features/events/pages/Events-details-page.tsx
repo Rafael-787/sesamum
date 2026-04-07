@@ -97,12 +97,19 @@ const EventDetailsPage: React.FC = () => {
         setOverview(overviewResponse.data);
 
         // Fetch companies for this event e mapeia o staff_limit
-        const companiesResponse = await eventsService.getCompanies(Number(id));
-        const mappedCompanies = companiesResponse.data.map((c: any) => ({
-          ...c,
-          staffLimit: c.staff_limit || c.staffLimit,
-        }));
-        setCompanies(mappedCompanies);
+        const isAuthorized =
+          event?.company_role === "production" || isAdmin() || isControl();
+
+        if (isAuthorized) {
+          const companiesResponse = await eventsService.getCompanies(
+            Number(id),
+          );
+          const mappedCompanies = companiesResponse.data.map((c: any) => ({
+            ...c,
+            staffLimit: c.staff_limit || c.staffLimit,
+          }));
+          setCompanies(mappedCompanies);
+        }
 
         // Fetch staffs for this event
         const staffsResponse = await eventsService.getStaffs(Number(id));
@@ -180,15 +187,19 @@ const EventDetailsPage: React.FC = () => {
     setShowDeleteConfirm(false);
   };
 
+  const isAuthorized =
+    event?.company_role === "production" || isAdmin() || isControl();
   const handleCompanyAdded = async () => {
     if (!id) return;
     try {
-      const companiesResponse = await eventsService.getCompanies(Number(id));
-      const mappedCompanies = companiesResponse.data.map((c: any) => ({
-        ...c,
-        staffLimit: c.staff_limit || c.staffLimit,
-      }));
-      setCompanies(mappedCompanies);
+      if (isAuthorized) {
+        const companiesResponse = await eventsService.getCompanies(Number(id));
+        const mappedCompanies = companiesResponse.data.map((c: any) => ({
+          ...c,
+          staffLimit: c.staff_limit || c.staffLimit,
+        }));
+        setCompanies(mappedCompanies);
+      }
 
       const overviewResponse = await eventsService.getOverview(Number(id));
       setOverview(overviewResponse.data);
@@ -237,12 +248,14 @@ const EventDetailsPage: React.FC = () => {
         message: `${companyToRemove.name} foi removido do evento.`,
       });
 
-      const companiesResponse = await eventsService.getCompanies(Number(id));
-      const mappedCompanies = companiesResponse.data.map((c: any) => ({
-        ...c,
-        staffLimit: c.staff_limit || c.staffLimit,
-      }));
-      setCompanies(mappedCompanies);
+      if (isAuthorized) {
+        const companiesResponse = await eventsService.getCompanies(Number(id));
+        const mappedCompanies = companiesResponse.data.map((c: any) => ({
+          ...c,
+          staffLimit: c.staff_limit || c.staffLimit,
+        }));
+        setCompanies(mappedCompanies);
+      }
 
       setIsDeleteCompanyModalOpen(false);
       setCompanyToRemove(null);
@@ -279,12 +292,14 @@ const EventDetailsPage: React.FC = () => {
       });
 
       // Recarrega a lista de empresas para refletir a alteração
-      const companiesResponse = await eventsService.getCompanies(Number(id));
-      const mappedCompanies = companiesResponse.data.map((c: any) => ({
-        ...c,
-        staffLimit: c.staff_limit || c.staffLimit,
-      }));
-      setCompanies(mappedCompanies);
+      if (isAuthorized) {
+        const companiesResponse = await eventsService.getCompanies(Number(id));
+        const mappedCompanies = companiesResponse.data.map((c: any) => ({
+          ...c,
+          staffLimit: c.staff_limit || c.staffLimit,
+        }));
+        setCompanies(mappedCompanies);
+      }
 
       setChangeStaffLimitModalOpen(false);
       setCompanyToEditLimit(null);
@@ -422,7 +437,16 @@ const EventDetailsPage: React.FC = () => {
         tabs={[
           {
             title: "Visão Geral",
-            content: <OverviewTab overview={overview} />,
+            content: (
+              <OverviewTab
+                overview={overview}
+                canViewCompanies={
+                  event.company_role === "production" ||
+                  isAdmin() ||
+                  isControl()
+                }
+              />
+            ),
           },
           {
             title: "Staffs",

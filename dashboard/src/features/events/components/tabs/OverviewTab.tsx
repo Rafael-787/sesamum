@@ -9,9 +9,13 @@ import type { Overview } from "../../types";
 
 interface OverviewTabProps {
   overview: Overview | null;
+  canViewCompanies?: boolean; // <-- Nova propriedade
 }
 
-const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
+const OverviewTab: React.FC<OverviewTabProps> = ({
+  overview,
+  canViewCompanies = false,
+}) => {
   const totalStaff = overview?.metrics?.total_staff ?? 0;
   const totalCompanies = overview?.metrics?.total_companies ?? 0;
   const companies = overview?.companies ?? [];
@@ -78,43 +82,47 @@ const OverviewTab: React.FC<OverviewTabProps> = ({ overview }) => {
         </div>
       </Card>
 
-      <Card>
-        <h2 className="text-xl font-semibold text-text-title mb-6">
-          Staffs por Empresa
-          <p className="text-xs font-medium text-subtitle">
-            (Credenciado / contratado)
-          </p>
-        </h2>
-        <div className="space-y-4">
-          {companies.map((company, index) => {
-            const percentage =
-              (company.registration_count / company.staff_limit) * 100 || 0;
-            return (
-              <div key={index}>
-                <div className="flex justify-between items-center mb-2">
-                  <div>
-                    <p className="text-sm font-medium text-text-title">
-                      {company.name}
-                    </p>
+      {/* Condicional para mostrar Staffs por Empresa apenas para quem tem permissão */}
+      {canViewCompanies && (
+        <Card>
+          <h2 className="text-xl font-semibold text-text-title mb-6">
+            Staffs por Empresa
+            <p className="text-xs font-medium text-subtitle">
+              (Credenciado / contratado)
+            </p>
+          </h2>
+          <div className="space-y-4">
+            {companies.map((company, index) => {
+              const percentage =
+                (company.registration_count / company.staff_limit) * 100 || 0;
+              return (
+                <div key={index}>
+                  <div className="flex justify-between items-center mb-2">
+                    <div>
+                      <p className="text-sm font-medium text-text-title">
+                        {company.name}
+                      </p>
+                    </div>
+                    <span className="text-sm font-semibold text-text-title">
+                      {company.registration_count} / {company.staff_limit}{" "}
+                      staffs
+                    </span>
                   </div>
-                  <span className="text-sm font-semibold text-text-title">
-                    {company.registration_count} / {company.staff_limit} staffs
-                  </span>
+                  <Progress.Root
+                    className="relative overflow-hidden bg-slate-200 rounded-full w-full h-2"
+                    value={percentage}
+                  >
+                    <Progress.Indicator
+                      className="bg-primary h-full transition-transform duration-300 ease-in-out"
+                      style={{ transform: `translateX(-${100 - percentage}%)` }}
+                    />
+                  </Progress.Root>
                 </div>
-                <Progress.Root
-                  className="relative overflow-hidden bg-slate-200 rounded-full w-full h-2"
-                  value={percentage}
-                >
-                  <Progress.Indicator
-                    className="bg-primary h-full transition-transform duration-300 ease-in-out"
-                    style={{ transform: `translateX(-${100 - percentage}%)` }}
-                  />
-                </Progress.Root>
-              </div>
-            );
-          })}
-        </div>
-      </Card>
+              );
+            })}
+          </div>
+        </Card>
+      )}
     </div>
   );
 };
