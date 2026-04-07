@@ -109,7 +109,7 @@ const DashboardPage: React.FC = () => {
   return (
     <PageContainer>
       <PageHeader
-        title="Bem vindo Admin"
+        title="Bem vindo"
         subtitle={
           lastUpdate
             ? ` Última atualização: ${formatDateTime(lastUpdate.toISOString())}`
@@ -128,6 +128,7 @@ const DashboardPage: React.FC = () => {
       )}
 
       {/* Metrics Cards Grid */}
+      {/*
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <MetricCard
           title="Eventos Ativos"
@@ -157,7 +158,7 @@ const DashboardPage: React.FC = () => {
           color="user"
           loading={metricsLoading}
         />
-      </div>
+      </div>*/}
 
       {/* Calendar and Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
