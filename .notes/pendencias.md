@@ -11,6 +11,8 @@
   - Erro de tipo de variable, date vs datetime
 - [x] Apresentar número staff_limit
 - [x] Card de empresas no projeto
+- [ ] Credenciamento máximo por empresa
+- [ ] Filtro credenciado
 
 ## Features
 
@@ -30,3 +32,4 @@
   - Pensado para caso de checkout válidos que não puderam ser efetuados no credenciamento. Ex: saídadas médicas.
   - **REFUTADO:** abre brecha para company poder gerar dados "indevidos" de checkout.
   - **ALTERNATIVA:** sistema móvel de checkout. Sensor com plataforma móvel.
+- [ ] Botão de voltar na UI
