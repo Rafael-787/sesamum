@@ -5,21 +5,44 @@ from django.utils.timezone import localtime
 from rest_framework import views
 from rest_framework.permissions import IsAuthenticated
 
-from ..models import Event, EventsStaff
+from ..models import Event, EventsStaff, EventsCompany, CompanyRole, UserRole
 
 class EventExportReportView(views.APIView):
-    permission_classes = [IsAuthenticated] # Ajuste para a sua permissão (ex: IsAdmin ou a sua lógica customizada)
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, event_id):
-        # Valida a existência do evento
+        user = request.user
         event = get_object_or_404(Event, id=event_id)
 
-        # Busca os staffs otimizando as queries com select_related e prefetch_related
-        events_staffs = EventsStaff.objects.filter(event=event).select_related(
+        # Regras de acesso completo
+        can_see_all = False
+        if user.role == UserRole.ADMIN:
+            can_see_all = True
+        elif user.company:
+            # É a empresa Owner do projeto?
+            if event.project and event.project.company == user.company:
+                can_see_all = True
+            # É uma empresa participante como Production?
+            elif EventsCompany.objects.filter(
+                event=event, 
+                company=user.company, 
+                role=CompanyRole.PRODUCTION
+            ).exists():
+                can_see_all = True
+
+        # Queryset base otimizado
+        events_staffs_qs = EventsStaff.objects.filter(event=event).select_related(
             'staff', 'staff__company'
         ).prefetch_related(
             'checks_history'
         )
+
+        # Aplica o filtro limitando à própria empresa caso não tenha acesso total
+        if not can_see_all:
+            if user.company:
+                events_staffs_qs = events_staffs_qs.filter(staff__company=user.company)
+            else:
+                events_staffs_qs = events_staffs_qs.none()
 
         # Configura o response para forçar o download do arquivo CSV
         response = HttpResponse(content_type='text/csv; charset=utf-8')
@@ -41,7 +64,7 @@ class EventExportReportView(views.APIView):
         ])
 
         # Processamento dos dados
-        for es in events_staffs:
+        for es in events_staffs_qs:
             checks = es.checks_history.all().order_by('timestamp')
             
             registration_time = "-"

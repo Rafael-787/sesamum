@@ -13,6 +13,13 @@
 - [x] Card de empresas no projeto
 - [ ] Credenciamento máximo por empresa
 - [ ] Filtro credenciado
+- [ ] Permitir import csv por vírgula e ponto e vírgula
+- [ ] Contagem checkin sem contar duplicado
+- [ ] Contagem de checkout em checkin
+  - Caso a pessoa entre novamente após fazer o checkout essa contagem de checkout some. Checkout como contagem de "pessoas fora".
+- [ ] Melhorar usabilidade UI para check por cpf no celular
+- [ ] Pop-up de aviso de erro de cor diferente do de check-out
+- [ ] Melhorar sistema novo staff caso ele seja um staff já existente
 
 ## Features
 
@@ -33,3 +40,4 @@
   - **REFUTADO:** abre brecha para company poder gerar dados "indevidos" de checkout.
   - **ALTERNATIVA:** sistema móvel de checkout. Sensor com plataforma móvel.
 - [ ] Botão de voltar na UI
+- [ ] Permtir que uma emoresa tenha mais de um setor (ex: Force - segurança e limpeza)
