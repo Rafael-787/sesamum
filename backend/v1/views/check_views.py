@@ -51,10 +51,11 @@ class CheckSearchIDView(viewsets.ReadOnlyModelViewSet):
         
         name = event_staff.staff.name
         # Acessa o nome da empresa do staff (com fallback caso seja nulo)
-        company = event_staff.staff.company.name if event_staff.staff.company else "Staff" 
+        company = event_staff.staff.company.name if event_staff.staff.company else "Staff"
+        event_name = event_staff.event.name 
         qr_data = str(event_staff.id)
         
-        label_data = generate_zpl_label(name=name, company=company, qr_data=qr_data)
+        label_data = generate_zpl_label(name=name, company=company, qr_data=qr_data,event=event_name)
         
         return Response({"label_data": label_data})
 

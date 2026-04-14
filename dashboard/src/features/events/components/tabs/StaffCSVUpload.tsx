@@ -51,7 +51,12 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
       return;
     }
 
-    const headers = lines[0].split(",").map((h) => h.trim().toLowerCase());
+    // Detecta se o arquivo usa ponto e vírgula ou vírgula
+    const delimiter = lines[0].includes(";") ? ";" : ",";
+
+    const headers = lines[0]
+      .split(delimiter)
+      .map((h) => h.trim().toLowerCase());
     const requiredHeaders = ["nome", "cpf"];
     const missingHeaders = requiredHeaders.filter((h) => !headers.includes(h));
 
@@ -66,7 +71,7 @@ const StaffCSVUpload: React.FC<StaffCSVUploadProps> = ({
     const validationErrors: ValidationError[] = [];
 
     for (let i = 1; i < lines.length; i++) {
-      const values = lines[i].split(",").map((v) => v.trim());
+      const values = lines[i].split(delimiter).map((v) => v.trim());
       const row: Record<string, string> = {};
 
       headers.forEach((header, index) => {

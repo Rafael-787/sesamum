@@ -1,4 +1,4 @@
-def generate_zpl_label(name: str, company: str = "Staff", qr_data: str = "") -> str:
+def generate_zpl_label(name: str, company: str = "Staff", qr_data: str = "", event:str = "") -> str:
     """
     Gera os comandos ZPL para impressão da pulseira/etiqueta.
     ^XA e ^XZ abrem e fecham o formato.
@@ -16,6 +16,7 @@ def generate_zpl_label(name: str, company: str = "Staff", qr_data: str = "") -> 
         "^LL2344"           # Altura (289mm)
         f"^FO120,640^A0R,40,40^FD{display_name}^FS"
         f"^FO80,640^A0R,30,30^FD{company}^FS"
+        f"^FO40,640^A0R,30,30^FD{event}^FS"
         f"^FO10,440^BQN,2,6^FDQA,{qr_data}^FS"
         "^XZ"
     )

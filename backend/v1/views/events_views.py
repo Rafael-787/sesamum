@@ -1,8 +1,9 @@
 from socket import has_ipv6
 from tabnanny import check
 
-from django.db.models import Count, F, Q
+from django.db.models import Count, F, Q, OuterRef, Subquery, IntegerField
 from django.db.models.expressions import ResolvedOuterRef
+from django.db.models.functions import Coalesce
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics, serializers, viewsets
 from rest_framework.response import Response
@@ -92,23 +93,41 @@ class EventOverviewView(generics.RetrieveAPIView):
     def get_queryset_empresas(self):
         event_id = self.kwargs.get("pk")
         condicao_empresa = Q(event__event_staffs__staff__company=F("company"))
+        
         condicao_registration = Q(
             event__event_staffs__checks_history__action="registration"
         )
         condicao_checkin = Q(event__event_staffs__checks_history__action="check-in")
-        condicao_out = Q(event__event_staffs__checks_history__action="check-out")
+
+        # 1. Subquery para pegar a última ação do staff
+        ultima_acao_sq = Check.objects.filter(
+            events_staff_id=OuterRef("id")
+        ).order_by("-timestamp").values("action")[:1]
+
+        # 2. Subquery para contar staffs desta empresa e evento que estão em "check-out"
+        checkout_count_sq = EventsStaff.objects.filter(
+            event_id=OuterRef("event_id"),
+            staff__company_id=OuterRef("company_id")
+        ).annotate(
+            ultima_acao=Subquery(ultima_acao_sq)
+        ).filter(
+            ultima_acao="check-out"
+        ).values("event_id").annotate(  # Agrupamento necessário para a contagem
+            cnt=Count("id")
+        ).values("cnt")
+
         return (
             EventsCompany.objects.filter(event=event_id)
             .annotate(
                 checkin_count=Count(
-                    "event__event_staffs__checks_history",
+                    "event__event_staffs", # Conta o staff, não o registro de check-in
                     filter=condicao_empresa & condicao_checkin,
                     distinct=True,
                 ),
-                checkout_count=Count(
-                    "event__event_staffs__checks_history",
-                    filter=condicao_empresa & condicao_out,
-                    distinct=True,
+                # 3. Acopla usando Coalesce (evita null, retornando 0)
+                checkout_count=Coalesce(
+                    Subquery(checkout_count_sq, output_field=IntegerField()), 
+                    0
                 ),
                 registration_count=Count(
                     "event__event_staffs__checks_history",
