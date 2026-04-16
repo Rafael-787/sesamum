@@ -15,8 +15,8 @@ import {
   UserCheck,
   Clock,
   QrCode,
-  AlertCircle,
-  Printer, // <-- Novo Ícone Importado
+  Printer,
+  TriangleAlert,
 } from "lucide-react";
 import Badge from "@/shared/components/ui/Badge";
 import { formatDateTime } from "@/shared/lib/dateUtils";
@@ -349,7 +349,13 @@ const CheckInPage: React.FC = () => {
             }`}
           >
             <Search size={18} />
-            Buscar por CPF
+            <>
+              {/* Lupa aparece apenas no mobile (telas menores que 'sm') */}
+              <span className="sm:hidden"> CPF</span>
+
+              {/* Texto aparece apenas no desktop (telas 'sm' ou maiores) */}
+              <span className="hidden sm:inline">Buscar pelo CPF</span>
+            </>
           </button>
           <button
             onClick={() => {
@@ -364,7 +370,13 @@ const CheckInPage: React.FC = () => {
             }`}
           >
             <QrCode size={18} />
-            Buscar por QR Code
+            <>
+              {/* Lupa aparece apenas no mobile (telas menores que 'sm') */}
+              <span className="sm:hidden"> QR Code</span>
+
+              {/* Texto aparece apenas no desktop (telas 'sm' ou maiores) */}
+              <span className="hidden sm:inline">Buscar por QR Code</span>
+            </>
           </button>
         </div>
       </div>
@@ -424,6 +436,8 @@ const CheckInPage: React.FC = () => {
               <input
                 ref={inputRef}
                 type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 placeholder="Aguardando leitor de QR Code..."
                 value={searchEventStaffId}
                 onChange={(e) => setSearchEventStaffId(e.target.value)}
@@ -439,9 +453,24 @@ const CheckInPage: React.FC = () => {
           <button
             onClick={handleSearch}
             disabled={loading}
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-hover hover:cursor-pointer transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 sm:px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-hover hover:cursor-pointer transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
           >
-            {loading ? "Buscando..." : "Buscar"}
+            {loading ? (
+              <>
+                {/* Loading abreviado no mobile */}
+                <span className="sm:hidden">...</span>
+                {/* Loading completo no desktop */}
+                <span className="hidden sm:inline">Buscando...</span>
+              </>
+            ) : (
+              <>
+                {/* Lupa aparece apenas no mobile (telas menores que 'sm') */}
+                <Search size={20} className="sm:hidden" />
+
+                {/* Texto aparece apenas no desktop (telas 'sm' ou maiores) */}
+                <span className="hidden sm:inline">Buscar</span>
+              </>
+            )}
           </button>
         </div>
         {searchMode === "qrcode" && (
@@ -458,7 +487,7 @@ const CheckInPage: React.FC = () => {
               ? "bg-green-600 text-white"
               : scanFeedback.type === "out"
                 ? "bg-orange-600 text-white"
-                : "bg-red-600 text-white"
+                : "bg-yellow-600 text-white"
           }`}
         >
           {scanFeedback.type === "in" && (
@@ -468,7 +497,7 @@ const CheckInPage: React.FC = () => {
             <XCircle size={80} className="mb-4" />
           )}
           {scanFeedback.type === "error" && (
-            <AlertCircle size={80} className="mb-4" />
+            <TriangleAlert size={80} className="mb-4" />
           )}
 
           <h2 className="text-4xl font-bold mb-2 uppercase tracking-wide">
