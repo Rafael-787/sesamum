@@ -85,7 +85,7 @@ const StaffTab: React.FC<StaffTabProps> = ({
     { value: "all", label: "Todos" },
     { value: "check-in", label: "Check-in" },
     { value: "check-out", label: "Check-out" },
-    { value: "credentialed", label: "Credenciado" },
+    { value: "registration", label: "Credenciado" },
     { value: "pending", label: "Pendente" },
   ];
 

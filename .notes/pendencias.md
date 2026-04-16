@@ -12,10 +12,10 @@
 - [x] Apresentar número staff_limit
 - [x] Card de empresas no projeto
 - [ ] Credenciamento máximo por empresa
-- [ ] Filtro credenciado
-- [ ] Permitir import csv por vírgula e ponto e vírgula
-- [ ] Contagem checkin sem contar duplicado
-- [ ] Contagem de checkout em checkin
+- [x] Filtro credenciado
+- [x] Permitir import csv por vírgula e ponto e vírgula
+- [x] Contagem checkin sem contar duplicado
+- [x] Contagem de checkout em checkin
   - Caso a pessoa entre novamente após fazer o checkout essa contagem de checkout some. Checkout como contagem de "pessoas fora".
 - [ ] Melhorar usabilidade UI para check por cpf no celular
 - [ ] Pop-up de aviso de erro de cor diferente do de check-out
