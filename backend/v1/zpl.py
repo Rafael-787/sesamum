@@ -11,7 +11,7 @@ def generate_zpl_label(name: str, company: str = "Staff", qr_data: str = "", eve
 
     zpl = (
         "^XA"
-        "CI28" # UTF8
+        "^CI28" # UTF8
         "^POI" # Inverte a impressão para começar na ponta de saída
         "^PW200"           # Largura (25mm)
         "^LL2344"           # Altura (289mm)
