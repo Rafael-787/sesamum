@@ -425,6 +425,8 @@ const CheckInPage: React.FC = () => {
             {searchMode === "cpf" ? (
               <input
                 type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
                 placeholder="Digite o CPF (somente números)"
                 value={searchCPF}
                 onChange={(e) => setSearchCPF(e.target.value)}
@@ -436,8 +438,6 @@ const CheckInPage: React.FC = () => {
               <input
                 ref={inputRef}
                 type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
                 placeholder="Aguardando leitor de QR Code..."
                 value={searchEventStaffId}
                 onChange={(e) => setSearchEventStaffId(e.target.value)}
