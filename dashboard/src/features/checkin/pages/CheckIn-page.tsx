@@ -273,7 +273,7 @@ const CheckInPage: React.FC = () => {
       // Envia para o QZ Tray
       await printViaQZ(response.data.label_data);
 
-      showToast("success", "Etiqueta enviada para a impressora!");
+      showToast("success", "Pulseira enviada para a impressora!");
     } catch (err: any) {
       console.error("Error printing label:", err);
       showToast("error", "Erro ao imprimir. O QZ Tray está aberto?");
@@ -617,7 +617,7 @@ const CheckInPage: React.FC = () => {
                 className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 hover:cursor-pointer transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed ml-auto"
               >
                 <Printer size={18} />
-                Imprimir Etiqueta
+                Imprimir Pulseira
               </button>
             )}
 

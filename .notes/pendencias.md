@@ -20,12 +20,15 @@
 - [x] Melhorar usabilidade UI para check por cpf no celular
 - [x] Pop-up de aviso de erro de cor diferente do de check-out
 - [ ] Melhorar sistema novo staff caso ele seja um staff já existente
+- [ ] Retirar avisos QZTray
 
 ## Features
 
 - [ ] Bloquear staffs.
   - Apresentar para Admin caso pessoa esteja bloqueada por qualquer compny.
 - [ ] Foto vinda do google acount para users.
+- [ ] Possibilitar empresa sem staff_limit
+  - Empresa sem staff_limit o limit é considerado a quantidade que foi subida no sistema
 - [x] UI para alterar staff_limit das empresas.
 - [ ] Company owner poder add eventos e empresas.
 - [ ] Implementar card de Equipe no projeto.
