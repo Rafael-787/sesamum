@@ -4,48 +4,64 @@ import { MetricProgress } from "@/shared";
 import Card from "@/shared/components/ui/Card";
 import * as Progress from "@radix-ui/react-progress";
 import { Building2, Users } from "lucide-react";
+import { useAuth } from "@/shared/context/AuthContext";
 
 import type { Overview } from "../../types";
 
 interface OverviewTabProps {
   overview: Overview | null;
-  canViewCompanies?: boolean; // <-- Nova propriedade
+  canViewCompanies?: boolean;
 }
 
 const OverviewTab: React.FC<OverviewTabProps> = ({
   overview,
   canViewCompanies = false,
 }) => {
-  const totalStaff = overview?.metrics?.total_staff ?? 0;
-  const totalCompanies = overview?.metrics?.total_companies ?? 0;
-  const companies = overview?.companies ?? [];
+  const { user } = useAuth();
 
-  /* Contador totais checks */
+  // Filtra as empresas: mostra todas se tiver permissão, senão mostra apenas a do usuário
+  const relevantCompanies = useMemo(() => {
+    if (!overview?.companies) return [];
+    if (canViewCompanies) return overview.companies;
+    return overview.companies.filter((c: any) => c.name === user?.company_id);
+  }, [overview, canViewCompanies, user]);
+
+  // Totalizadores baseados apenas nas empresas relevantes para a visualização atual
   const totalsChecks = useMemo(() => {
-    return (
-      overview?.companies?.reduce(
-        (acc: any, company: any) => ({
-          checkin: acc.checkin + (company.checkin_count || 0),
-          checkout: acc.checkout + (company.checkout_count || 0),
-          registration: acc.registration + (company.registration_count || 0),
-        }),
-        { checkin: 0, checkout: 0, registration: 0 },
-      ) || { checkin: 0, checkout: 0, registration: 0 }
+    return relevantCompanies.reduce(
+      (acc: any, company: any) => ({
+        checkin: acc.checkin + (company.checkin_count || 0),
+        checkout: acc.checkout + (company.checkout_count || 0),
+        registration: acc.registration + (company.registration_count || 0),
+        staff_limit: acc.staff_limit + (company.staff_limit || 0),
+      }),
+      { checkin: 0, checkout: 0, registration: 0, staff_limit: 0 },
     );
-  }, [overview]); // Só recalcula se 'overview' mudar
+  }, [relevantCompanies]);
+
+  // Define os totais dos cards e barra de progresso baseados no escopo de visualização
+  const totalStaffTarget = canViewCompanies
+    ? (totalsChecks.staff_limit ?? 0)
+    : totalsChecks.staff_limit;
+
+  const totalCompaniesCount = canViewCompanies
+    ? (overview?.metrics?.total_companies ?? 0)
+    : relevantCompanies.length;
 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <MetricCard
-          title="Empresas Atribuídas"
-          value={totalCompanies}
-          icon={<Building2 />}
-          color="company"
-        />
+        {canViewCompanies && (
+          <MetricCard
+            title="Empresas Atribuídas"
+            value={totalCompaniesCount}
+            icon={<Building2 />}
+            color="company"
+          />
+        )}
         <MetricCard
           title="Staffs Atribuídos"
-          value={totalStaff}
+          value={totalStaffTarget}
           icon={<Users />}
           color="user"
         />
@@ -60,7 +76,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
           <MetricProgress
             label="Credenciamento Realizado"
             current={totalsChecks.registration}
-            total={totalStaff}
+            total={totalStaffTarget}
             colorClass="bg-toast-warning-border"
           />
 
@@ -92,7 +108,7 @@ const OverviewTab: React.FC<OverviewTabProps> = ({
             </p>
           </h2>
           <div className="space-y-4">
-            {companies.map((company, index) => {
+            {overview?.companies?.map((company, index) => {
               const percentage =
                 (company.registration_count / company.staff_limit) * 100 || 0;
               return (

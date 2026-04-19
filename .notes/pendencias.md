@@ -11,7 +11,7 @@
   - Erro de tipo de variable, date vs datetime
 - [x] Apresentar número staff_limit
 - [x] Card de empresas no projeto
-- [ ] Credenciamento máximo por empresa
+- [x] Credenciamento máximo por empresa
 - [x] Filtro credenciado
 - [x] Permitir import csv por vírgula e ponto e vírgula
 - [x] Contagem checkin sem contar duplicado

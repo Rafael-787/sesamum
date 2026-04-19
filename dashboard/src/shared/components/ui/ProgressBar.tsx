@@ -29,7 +29,7 @@ const MetricProgress = ({
           {label}
         </label>
         <span className="text-sm font-semibold text-text-title">
-          {current} / {total} ({Math.floor(safePercentage)}%)
+          {current} / {total} ({Math.floor((current / total) * 100)}%)
         </span>
       </div>
 
