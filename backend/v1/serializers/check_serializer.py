@@ -11,6 +11,7 @@ from ..models import (
     Staff,
     User,
     UserInvite,
+    EventsCompany
 )
 from ..utils import sanitize_digits
 
@@ -38,11 +39,34 @@ class CheckSerializer(serializers.ModelSerializer):
                     "Staff não credenciado (Registration Required)."
                 )
 
-        # Regra 2.A: Registration só permitido se ainda não tiver check ID
+        # Regra 2.A: Registration só permitido se ainda não tiver check ID e não tiver atingido staff_limit
         if action == "registration":
+           if action == "registration":
             if events_staff.registration_check_id:
+                raise serializers.ValidationError("Staff já credenciado para este evento.")
+
+            # 1. Identifica o evento e a empresa do staff
+            event = events_staff.event
+            company = events_staff.staff.company
+
+            # 2. Busca o limite configurado para esta empresa no evento
+            try:
+                event_config = EventsCompany.objects.get(event=event, company=company)
+                limit = event_config.staff_limit
+            except EventsCompany.DoesNotExist:
+                raise serializers.ValidationError("Esta empresa não possui permissão para este evento.")
+
+            # 3. Conta quantos staffs desta empresa já foram credenciados no evento
+            current_registered_count = EventsStaff.objects.filter(
+                event=event,
+                staff__company=company,
+                registration_check__isnull=False
+            ).count()
+
+            # 4. Bloqueia se o limite for atingido
+            if current_registered_count >= limit:
                 raise serializers.ValidationError(
-                    "Staff já credenciado para este evento."
+                    f"Limite de credenciamento atingido para a empresa {company.name} ({limit} vagas)."
                 )
 
         return data

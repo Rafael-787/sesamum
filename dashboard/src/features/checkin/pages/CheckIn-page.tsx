@@ -166,9 +166,14 @@ const CheckInPage: React.FC = () => {
           setSelectedEventId(response.data.event_id ?? null);
         }
       }
-    } catch (err) {
-      console.error("Error searching staff:", err);
-      showToast("error", "Erro ao buscar staff");
+    } catch (err: any) {
+      //console.error("Error searching staff:", err);
+
+      const backendMessage = err.response?.data?.non_field_errors?.[0];
+
+      const finalMessage = backendMessage || "Erro ao buscar staff";
+
+      showToast("error", finalMessage);
       setSearchResult(null);
     } finally {
       setLoading(false);
@@ -246,9 +251,9 @@ const CheckInPage: React.FC = () => {
       // Refresh the search result to update status
       handleSearch();
     } catch (err: any) {
-      console.error("Error performing check action:", err);
+      //console.error("Error performing check action:", err);
       const errorMessage =
-        err.response?.data?.error ||
+        err.response?.data?.non_field_errors?.[0] ||
         `Erro ao realizar ${getActionLabel(action)}`;
       showToast("error", errorMessage);
     } finally {
