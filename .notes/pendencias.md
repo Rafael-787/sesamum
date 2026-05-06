@@ -19,7 +19,7 @@
   - Caso a pessoa entre novamente após fazer o checkout essa contagem de checkout some. Checkout como contagem de "pessoas fora".
 - [x] Melhorar usabilidade UI para check por cpf no celular
 - [x] Pop-up de aviso de erro de cor diferente do de check-out
-- [ ] Melhorar sistema novo staff caso ele seja um staff já existente
+- [x] Melhorar sistema novo staff caso ele seja um staff já existente
 - [ ] Retirar avisos QZTray
 
 ## Features

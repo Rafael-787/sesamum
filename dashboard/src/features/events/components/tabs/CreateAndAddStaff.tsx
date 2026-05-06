@@ -80,10 +80,14 @@ const CreateAndAddStaff: React.FC<CreateAndAddStaffProps> = ({
       if (err.response?.status === 409) {
         setError("CPF já cadastrado no sistema");
       } else if (err.response?.status === 400) {
-        setError(
-          err.response?.data?.message ||
-            "Dados inválidos. Verifique os campos.",
-        );
+        if (err.response?.data?.cpf) {
+          setError("Staff já existe, use a opção adicionar staff existente.");
+        } else {
+          setError(
+            err.response?.data?.message ||
+              "Dados inválidos. Verifique os campos.",
+          );
+        }
       } else {
         setError(
           err.response?.data?.message ||
